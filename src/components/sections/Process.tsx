@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import SectionLabel from "@/components/ui/SectionLabel";
+import GenImage from "@/components/ui/GenImage";
 
 const STEPS = [
   {
@@ -94,7 +95,15 @@ export default function Process() {
       ref={sectionRef}
       className="relative overflow-hidden bg-n50 py-24 md:h-screen md:py-0"
     >
-      <div className="mx-auto flex h-full max-w-[1320px] flex-col justify-center px-[clamp(20px,4vw,56px)]">
+      {/* AM-6 contour field — same texture family as What-we-do, ≤15% */}
+      <GenImage
+        src="/assets/gen/am6-topo-diagonal.png"
+        fill
+        sizes="100vw"
+        className="absolute inset-0 opacity-[0.08]"
+      />
+
+      <div className="relative mx-auto flex h-full max-w-[1320px] flex-col justify-center px-[clamp(20px,4vw,56px)]">
         <div className="mb-14 flex items-end justify-between gap-8">
           <SectionLabel index="06">How we work</SectionLabel>
           <div className="hidden h-px w-40 overflow-hidden bg-n150 md:block">
