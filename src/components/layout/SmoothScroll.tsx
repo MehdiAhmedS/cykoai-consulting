@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { initParallax } from "@/lib/parallax";
 
 /**
  * Drives the whole page's smooth scroll via Lenis, synced to GSAP's ticker
@@ -34,7 +35,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     (window as typeof window & { __lenis?: Lenis }).__lenis = lenis;
     window.dispatchEvent(new Event("lenis:ready"));
 
+    // One shared translator for every [data-speed] layer on the page
+    // (no-op under reduced motion; scan happens after hydration so all
+    // sections' layers are in the DOM).
+    const cleanupParallax = initParallax();
+
     return () => {
+      cleanupParallax();
       gsap.ticker.remove(tickerCallback);
       lenis.destroy();
       delete (window as typeof window & { __lenis?: Lenis }).__lenis;

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type Lenis from "lenis";
 import LogoMark from "@/components/ui/LogoMark";
 
 const LINKS = [
@@ -12,22 +13,67 @@ const LINKS = [
 /**
  * The DS's "permanent dark inverse band": solid Windsor, 64px, hairline
  * bottom border. No blur, no hide-on-scroll, no shrink tricks.
+ * <900px: hamburger → full-screen Windsor overlay, links stacked in
+ * Space Grotesk, focus trapped, Lenis paused while open.
  */
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Full-screen overlay: lock scroll + close on Escape while open.
   useEffect(() => {
     if (!menuOpen) return;
-    const previous = document.body.style.overflow;
+
+    const lenis = (window as typeof window & { __lenis?: Lenis }).__lenis;
+    lenis?.stop();
+    const burger = burgerRef.current;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    const overlay = overlayRef.current;
+    const focusables = () =>
+      Array.from(
+        overlay?.querySelectorAll<HTMLElement>("a[href]") ?? []
+      );
+    focusables()[0]?.focus();
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        return;
+      }
+      // Trap Tab between the burger and the overlay links.
+      if (e.key === "Tab") {
+        const items = [burgerRef.current, ...focusables()].filter(
+          Boolean
+        ) as HTMLElement[];
+        if (items.length === 0) return;
+        e.preventDefault();
+        const idx = items.indexOf(document.activeElement as HTMLElement);
+        const next = e.shiftKey
+          ? idx <= 0
+            ? items.length - 1
+            : idx - 1
+          : idx === -1 || idx === items.length - 1
+            ? 0
+            : idx + 1;
+        items[next].focus();
+      }
+    };
+    // Overlay only exists below 900px — close if the viewport grows past it.
+    const mq = matchMedia("(min-width: 900px)");
+    const onMq = () => {
+      if (mq.matches) setMenuOpen(false);
     };
     addEventListener("keydown", onKey);
+    mq.addEventListener("change", onMq);
+
     return () => {
-      document.body.style.overflow = previous;
+      document.body.style.overflow = previousOverflow;
+      lenis?.start();
       removeEventListener("keydown", onKey);
+      mq.removeEventListener("change", onMq);
+      burger?.focus();
     };
   }, [menuOpen]);
 
@@ -67,6 +113,7 @@ export default function Navbar() {
         </nav>
 
         <button
+          ref={burgerRef}
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
@@ -90,6 +137,7 @@ export default function Navbar() {
       {/* Mobile: full-screen Windsor overlay, links stacked in Space Grotesk */}
       <div
         id="mobile-menu"
+        ref={overlayRef}
         className={`fixed inset-x-0 bottom-0 top-16 z-40 bg-windsor transition-opacity duration-300 ease-out-expo min-[900px]:hidden ${
           menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
