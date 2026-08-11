@@ -70,7 +70,7 @@ export default function Philosophy() {
     >
       <div className="relative mx-auto flex h-full max-w-[1320px] flex-col justify-center px-[clamp(20px,4vw,56px)] motion-reduce:py-24">
         <div className="motion-safe:absolute motion-safe:left-[clamp(20px,4vw,56px)] motion-safe:top-16">
-          <SectionLabel index="04" tone="inverse">
+          <SectionLabel index="05" tone="inverse">
             Our philosophy
           </SectionLabel>
         </div>

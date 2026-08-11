@@ -96,7 +96,7 @@ export default function Process() {
     >
       <div className="mx-auto flex h-full max-w-[1320px] flex-col justify-center px-[clamp(20px,4vw,56px)]">
         <div className="mb-14 flex items-end justify-between gap-8">
-          <SectionLabel index="05">How we work</SectionLabel>
+          <SectionLabel index="06">How we work</SectionLabel>
           <div className="hidden h-px w-40 overflow-hidden bg-n150 md:block">
             <div
               ref={progressRef}

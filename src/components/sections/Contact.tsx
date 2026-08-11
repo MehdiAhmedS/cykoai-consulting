@@ -46,7 +46,7 @@ export default function Contact() {
       <div className="relative mx-auto grid max-w-[1320px] grid-cols-1 gap-16 px-[clamp(20px,4vw,56px)] lg:grid-cols-2">
         <div>
           <Reveal>
-            <SectionLabel index="06">Get in touch</SectionLabel>
+            <SectionLabel index="07">Get in touch</SectionLabel>
           </Reveal>
           <h2 className="mt-8 font-display text-[clamp(2.2rem,4.6vw,3.6rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-windsor">
             <SplitText>Let&rsquo;s shape what&rsquo;s next.</SplitText>
