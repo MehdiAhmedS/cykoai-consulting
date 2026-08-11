@@ -99,10 +99,9 @@ body {
 
 /* Color-grade wrapper for §AM imagery that drifts off-palette:
    Windsor multiply veil + slight desaturation pulls any asset back
-   toward the brand without regenerating it (REDESIGN_PLAN.md §AM.3). */
-.img-grade {
-  position: relative;
-}
+   toward the brand without regenerating it (REDESIGN_PLAN.md §AM.3).
+   No position here — it would sit outside Tailwind's layers and defeat
+   the wrapper's own position utilities; GenImage always brings one. */
 .img-grade::after {
   content: "";
   position: absolute;
