@@ -1,59 +1,65 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { gsap, SplitText as GSAPSplitText } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
 interface SplitTextProps {
   children: string;
   className?: string;
   delay?: number;
-  by?: "word" | "line";
   once?: boolean;
 }
 
-const container: Variants = {
-  hidden: {},
-  visible: (delay: number) => ({
-    transition: { staggerChildren: 0.05, delayChildren: delay },
-  }),
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: "110%", rotate: 2 },
-  visible: {
-    opacity: 1,
-    y: "0%",
-    rotate: 0,
-    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-/** Splits text into words that rise into place, masked by overflow-hidden. */
+/**
+ * Masked line-by-line headline reveal on the official GSAP SplitText
+ * (free since 3.13). autoSplit re-splits when fonts load or lines
+ * rewrap, so line breaks stay true; aria handling is SplitText's
+ * built-in (aria-label on the target, pieces hidden).
+ */
 export default function SplitText({
   children,
   className,
   delay = 0,
   once = true,
 }: SplitTextProps) {
-  const words = children.split(" ");
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.85) return;
+
+    const split = GSAPSplitText.create(el, {
+      type: "lines",
+      mask: "lines",
+      autoSplit: true,
+      onSplit: (self) =>
+        gsap.from(self.lines, {
+          yPercent: 110,
+          duration: 0.8,
+          ease: "expo.out",
+          stagger: 0.09,
+          delay,
+          scrollTrigger: {
+            trigger: el,
+            start: "top 82%",
+            toggleActions: once
+              ? "play none none none"
+              : "play none none reverse",
+          },
+        }),
+    });
+
+    return () => {
+      split.revert();
+    };
+  }, [delay, once]);
 
   return (
-    <motion.span
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once, amount: 0.6 }}
-      variants={container}
-      custom={delay}
-      className={cn("inline", className)}
-      aria-label={children}
-    >
-      {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden align-top pb-[0.15em] pr-[0.28em]">
-          <motion.span variants={item} className="inline-block">
-            {word}
-          </motion.span>
-        </span>
-      ))}
-    </motion.span>
+    <span ref={ref} className={cn("inline-block", className)}>
+      {children}
+    </span>
   );
 }

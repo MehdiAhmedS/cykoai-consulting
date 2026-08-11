@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitText from "@/components/ui/SplitText";
 import Reveal from "@/components/ui/Reveal";
-import MagneticButton from "@/components/ui/MagneticButton";
+import Button from "@/components/ui/Button";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 const FIELD_CLASS =
-  "w-full rounded-2xl border border-border bg-white/[0.03] px-5 py-4 text-[0.95rem] text-ink placeholder:text-ink-faint outline-none transition-colors duration-300 focus:border-white/25 focus:bg-white/[0.05]";
+  "w-full rounded-xs border border-n300 bg-white px-4 py-3 text-[0.95rem] text-windsor placeholder:text-n500 outline-none transition-[border-color,box-shadow] duration-200 focus:border-driftwood focus:shadow-[0_0_0_3px_rgba(173,135,82,0.25)]";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -43,21 +42,17 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative py-32 md:py-44">
-      <div className="ambient-glow left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 bg-gold/[0.08]" />
-
-      <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 gap-16 px-6 md:px-10 lg:grid-cols-2">
+    <section id="contact" className="relative bg-white py-[clamp(88px,14vh,150px)]">
+      <div className="relative mx-auto grid max-w-[1320px] grid-cols-1 gap-16 px-[clamp(20px,4vw,56px)] lg:grid-cols-2">
         <div>
           <Reveal>
             <SectionLabel index="06">Get in touch</SectionLabel>
           </Reveal>
-          <h2 className="mt-8 font-display font-medium leading-[1.02] tracking-[-0.02em] text-[clamp(2.5rem,5.5vw,4.5rem)]">
-            <SplitText className="text-ink">
-              Let&rsquo;s shape what&rsquo;s next.
-            </SplitText>
+          <h2 className="mt-8 font-display text-[clamp(2.2rem,4.6vw,3.6rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-windsor">
+            <SplitText>Let&rsquo;s shape what&rsquo;s next.</SplitText>
           </h2>
           <Reveal delay={0.2}>
-            <p className="mt-8 max-w-md text-[1.05rem] leading-relaxed text-ink-muted">
+            <p className="mt-8 max-w-md text-[1.05rem] leading-[1.7] text-n500">
               Tell us where your organization is headed, and where it feels
               stuck. We typically respond within one business day.
             </p>
@@ -67,12 +62,11 @@ export default function Contact() {
             <div className="mt-12 flex flex-col gap-1">
               <a
                 href="mailto:info@cykoai.com"
-                data-cursor="link"
-                className="w-fit text-[1.1rem] text-ink underline decoration-border-strong underline-offset-4 transition-colors hover:text-gold"
+                className="w-fit text-[1.1rem] text-windsor underline decoration-driftwood underline-offset-4 transition-colors duration-250 hover:text-driftwood-deep"
               >
                 info@cykoai.com
               </a>
-              <span className="text-[0.85rem] text-ink-faint">
+              <span className="text-[0.85rem] text-n500">
                 For press and partnerships, same address.
               </span>
             </div>
@@ -80,7 +74,10 @@ export default function Contact() {
         </div>
 
         <Reveal delay={0.15}>
-          <form onSubmit={handleSubmit} className="glass flex flex-col gap-4 rounded-3xl p-8">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4 rounded-sm border border-n150 bg-white p-8"
+          >
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <input
                 name="name"
@@ -111,26 +108,26 @@ export default function Contact() {
             />
 
             <div className="mt-2 flex items-center justify-between gap-4">
-              <MagneticButton
+              <Button
                 type="submit"
                 disabled={status === "submitting"}
                 variant="solid"
-                size="md"
                 className="w-fit"
               >
                 {status === "submitting" ? "Sending…" : "Send message"}
-              </MagneticButton>
+              </Button>
 
-              <motion.span
-                initial={false}
-                animate={{ opacity: status === "success" || status === "error" ? 1 : 0 }}
-                className={`text-[0.85rem] ${
-                  status === "success" ? "text-gold-light" : "text-red-400"
-                }`}
+              <span
+                role="status"
+                className={`text-[0.85rem] transition-opacity duration-200 ${
+                  status === "success" || status === "error"
+                    ? "opacity-100"
+                    : "opacity-0"
+                } ${status === "error" ? "text-rose" : "text-driftwood-deep"}`}
               >
                 {status === "success" && "Thanks — we'll be in touch shortly."}
                 {status === "error" && error}
-              </motion.span>
+              </span>
             </div>
           </form>
         </Reveal>
