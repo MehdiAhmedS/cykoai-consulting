@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# business/legal documents (not source)
+/incorporation/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

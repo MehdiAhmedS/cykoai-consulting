@@ -1,0 +1,83 @@
+{
+  "project": "cykoai-consulting",
+  "phase": "P-A asset generation — executed in Cowork, 11 Aug 2026",
+  "credits": { "starting_balance": 110, "ending_balance": 93.65, "total_spent": 16.35, "note": "includes 7.5cr ripple video sample (cut from plan) and one cube regeneration after review" },
+  "instructions": "Claude Code: download each asset's raw_url to public/assets/gen/<file>. Do not regenerate. Optimize to AVIF/WebP at build via next/image. All decorative uses: alt='' and aria-hidden.",
+  "assets": [
+    {
+      "id": "am2-rings-plaster",
+      "file": "am2-rings-plaster.png",
+      "status": "approved",
+      "role": "Light interstitial band between Services and Philosophy (see design-explorations/context-demo-am2.html)",
+      "motif": "rings",
+      "model": "recraft_v4_1 (utility, palette-locked)",
+      "job_id": "cdb4f521-c778-4768-b5a6-36bdd413e80d",
+      "raw_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HlImVYDbWVjeo2yWiwZslwcKAY/hf_20260811_104350_cdb4f521-c778-4768-b5a6-36bdd413e80d.png",
+      "px": "1344x768",
+      "credits": 1.25,
+      "prompt": "White-on-white bas relief carving of concentric tree growth rings, raking side light, faint warm bronze edge glow, matte plaster surface, minimalist, abstract, no people, no text, no watermark"
+    },
+    {
+      "id": "am2b-rings-limestone",
+      "file": "am2b-rings-limestone.png",
+      "status": "approved",
+      "role": "Second light-band moment — name-story/About area, or swap-in alternative for the interstitial",
+      "motif": "rings",
+      "model": "soul_cinematic (1.5k)",
+      "job_id": "85c73e4e-8e05-4525-8dde-7f51ebb36d4e",
+      "raw_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HlImVYDbWVjeo2yWiwZslwcKAY/hf_20260811_111610_85c73e4e-8e05-4525-8dde-7f51ebb36d4e.png",
+      "px": "1696x960",
+      "credits": 0.12,
+      "prompt": "Carved pale limestone wall with concentric tree growth ring relief, museum raking light from the left, one thin ring inlaid in warm bronze, macro architectural photography, matte, minimalist, abstract, no people, no text, no watermark"
+    },
+    {
+      "id": "am1-monolith",
+      "file": "am1-monolith.png",
+      "status": "approved",
+      "role": "Dark-band texture: Philosophy backdrop at 8-15% opacity drifting 0.92 (omit if it fights the pinned text — fallback law) + source for the OG/social image crop",
+      "motif": "diagonal",
+      "model": "soul_cinematic (2k)",
+      "job_id": "db3c61e3-2ef5-439e-a73d-e67917776f87",
+      "raw_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HlImVYDbWVjeo2yWiwZslwcKAY/hf_20260811_112345_db3c61e3-2ef5-439e-a73d-e67917776f87.png",
+      "px": "2528x1088",
+      "credits": 0.12,
+      "prompt": "Monumental minimalist concrete monolith, single precise diagonal cut through it revealing warm bronze light within, near-black navy environment, cinematic architectural still, matte surfaces, deep controlled shadow, single hard light source, minimalist, abstract, no people, no text, no watermark"
+    },
+    {
+      "id": "am5-monogram-cube-cutout",
+      "file": "am5-monogram-cube.png",
+      "status": "approved",
+      "role": "Parallax object (transparent PNG): drifts behind the Why-Cykoai artifact column at 0.88; may anchor the footer corner at 0.94",
+      "motif": "diagonal",
+      "model": "recraft_v4_1 (utility, palette-locked) + image_background_remover",
+      "job_id": "be2e3edc-2920-4b98-a8dc-23463db8cca1",
+      "source_job_id": "a2e2fd56-0974-4439-9ce3-4d80af890d61",
+      "raw_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HlImVYDbWVjeo2yWiwZslwcKAY/hf_20260811_114427_be2e3edc-2920-4b98-a8dc-23463db8cca1.png",
+      "px": "1024x1024",
+      "credits": 2.5,
+      "prompt": "Minimalist product photograph of a solid matte dark navy cube split cleanly in two by a single 45-degree diagonal cut, the two halves slightly offset, the flat cut faces glowing soft warm white, floating on a plain light grey seamless studio background, sharp geometric edges, single hard light source, no people, no text, no watermark"
+    },
+    {
+      "id": "am6-topo-diagonal",
+      "file": "am6-topo-diagonal.png",
+      "status": "approved",
+      "role": "Light background texture at <=15% opacity behind the What-we-do rows (and optionally Process)",
+      "motif": "lines + diagonal",
+      "model": "recraft_v4_1 (utility, palette-locked, flat background)",
+      "job_id": "f31427f8-e5e1-4be9-89d0-5b209b156188",
+      "raw_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HlImVYDbWVjeo2yWiwZslwcKAY/hf_20260811_112345_f31427f8-e5e1-4be9-89d0-5b209b156188.png",
+      "px": "1344x768",
+      "credits": 1.25,
+      "prompt": "Ultra-minimal topographic contour line drawing, thin light grey contour lines on off-white background, one straight diagonal line crossing the entire field, a single contour line in warm bronze, flat clean vector style, minimalist, abstract, no people, no text, no watermark"
+    }
+  ],
+  "retired": [
+    { "id": "am5-first-attempt", "job_ids": ["0319e013-e9b2-42b8-9232-b38adaa59a00", "14b9b014-03c6-4b4b-be94-e51938cffa63"], "reason": "rejected by Mehdi — malformed cube; replaced by recraft utility regeneration" },
+    { "id": "am5-soul-retry-candidate", "job_ids": ["d8c1cd33-42e6-4fa9-863c-11b08e238480"], "reason": "explored, not selected" },
+    { "id": "am3-water-ripple-still", "reason": "cut — rings/ripple motif rebalanced; dark bands now carry the diagonal (am1-monolith)" },
+    { "id": "am4-ring-disc-object", "reason": "cut — redundant with the two approved ring reliefs" },
+    { "id": "ripple-video-sample", "job_id": "bd630055-5b76-4b80-ae1c-0e8ed2472a29", "credits": 7.5, "reason": "cut by Mehdi — video out of the plan; clip remains in the Higgsfield library if ever wanted" },
+    { "id": "am2-alternates", "job_ids": ["3a83c3d5-6fcd-4aa8-9a79-7bc03952960b", "e10318bc-0b06-45cc-8a87-99dadf77c820", "8eff04c3-2966-419b-aab1-ed71e1e4d4c7"], "reason": "explored, not selected; remain in the Higgsfield library" }
+  ],
+  "motif_balance": "Hero = dotted world + arcs (code, no image). Light bands = rings (growth). Dark bands + objects = the diagonal (the mark). Row backgrounds = contour lines. No motif repeats across adjacent sections."
+}

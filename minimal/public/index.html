@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("cykoai-theme");
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.dataset.theme = theme;
+  } catch (e) {
+    document.documentElement.dataset.theme = "dark";
+  }
+})();
+</script>
+<title>Cykoai — Forward Deployed AI &amp; Cybersecurity Consulting</title>
+<meta name="description" content="Cykoai is a forward deployed AI and cybersecurity consulting firm helping enterprises adopt disruptive technology with confidence — AI strategy, security, architecture, and transformation." />
+<meta property="og:title" content="Cykoai — Forward Deployed AI & Cybersecurity Consulting" />
+<meta property="og:description" content="We help organizations stop reacting to technological change and start shaping it." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#0b1527" />
+<link rel="icon" type="image/png" href="brand/cykoai-monogram.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav force-dark" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="wordmark">
+      <img class="logo-mark" src="brand/cykoai-monogram.png" alt="Cykoai" width="40" height="40" />
+      Cykoai <span>Consulting</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#what-we-do">What We Do</a>
+      <a href="#services">Services</a>
+      <a href="#philosophy">Philosophy</a>
+      <a href="#process">Process</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.2" />
+        <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" />
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 14.2A8.5 8.5 0 1 1 9.8 4a6.7 6.7 0 0 0 10.2 10.2Z" />
+      </svg>
+    </button>
+    <a href="#contact" class="btn btn-outline btn-sm nav-cta">Start a conversation</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+  <nav class="nav-mobile" id="navMobile" aria-label="Mobile">
+    <a href="#what-we-do">What We Do</a>
+    <a href="#services">Services</a>
+    <a href="#philosophy">Philosophy</a>
+    <a href="#process">Process</a>
+    <a href="#contact" class="btn btn-outline">Start a conversation</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero force-dark" id="top">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="container hero-inner">
+      <div class="badge reveal">
+        <span class="dot"></span>
+        Forward Deployed AI &amp; Cybersecurity Consulting
+      </div>
+      <h1 class="hero-title reveal" style="transition-delay:.05s">
+        The future moves<br />
+        faster than your<br />
+        <span class="accent-text">organization.</span>
+      </h1>
+      <p class="hero-sub reveal" style="transition-delay:.15s">
+        Cykoai helps enterprises adopt AI, security, and emerging technology
+        with precision — turning disruption into an advantage, not an anxiety.
+      </p>
+      <div class="hero-ctas reveal" style="transition-delay:.25s">
+        <a href="#contact" class="btn btn-solid btn-lg">Book a strategy session</a>
+        <a href="#what-we-do" class="btn btn-ghost btn-lg">Explore our approach</a>
+      </div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"><i></i></div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT WE DO ============ -->
+  <section class="section" id="what-we-do">
+    <div class="container">
+      <p class="label reveal"><span class="idx">01</span><i></i>What we do</p>
+      <div class="split-head">
+        <h2 class="h2 reveal">One firm across the full stack of technological change.</h2>
+        <p class="lead reveal" style="transition-delay:.1s">
+          Most firms specialize in a single layer — a model, a network, an
+          audit. We operate across all of them at once, because in practice
+          they are never separate problems. Adoption fails at the seams.
+        </p>
+      </div>
+
+      <div class="grid grid-4">
+        <article class="card reveal">
+          <svg class="glyph" viewBox="0 0 120 120"><use href="#glyph-network"/></svg>
+          <h3>Intelligence systems</h3>
+          <p>AI strategy and enterprise AI built on real workflows — not demos. We design systems that hold up under production load and scrutiny.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.06s">
+          <svg class="glyph" viewBox="0 0 120 120"><use href="#glyph-field"/></svg>
+          <h3>Security &amp; resilience</h3>
+          <p>Cybersecurity woven into architecture from day one, so adoption never outpaces your ability to defend what you've built.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.12s">
+          <svg class="glyph" viewBox="0 0 120 120"><use href="#glyph-grid"/></svg>
+          <h3>Architecture &amp; strategy</h3>
+          <p>Enterprise architecture and technology strategy that turn ambition into a sequence of decisions your teams can actually execute.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.18s">
+          <svg class="glyph" viewBox="0 0 120 120"><use href="#glyph-flow"/></svg>
+          <h3>Velocity &amp; automation</h3>
+          <p>Automation, productivity, and digital transformation programs that compound — each one making the next easier to ship.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section alt" id="services">
+    <div class="container">
+      <div class="split-head">
+        <div>
+          <p class="label reveal"><span class="idx">02</span><i></i>Services</p>
+          <h2 class="h2 reveal">Seven disciplines. One point of accountability.</h2>
+        </div>
+        <p class="lead reveal" style="transition-delay:.1s">
+          Engage us for one discipline or all seven — every engagement is
+          staffed by people who&rsquo;ve shipped the thing, not just advised on it.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <article class="card reveal">
+          <div class="card-top"><span class="idx">01</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-network"/></svg></div>
+          <h3>AI Strategy</h3>
+          <p>From possibility to roadmap — where AI creates defensible advantage for your business, and where it doesn't.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.05s">
+          <div class="card-top"><span class="idx">02</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-field"/></svg></div>
+          <h3>Cybersecurity</h3>
+          <p>Defend the surface area you're creating. Security designed alongside adoption, never bolted on afterward.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.1s">
+          <div class="card-top"><span class="idx">03</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-pulse"/></svg></div>
+          <h3>Enterprise AI</h3>
+          <p>Production-grade intelligence systems — evaluated, monitored, and owned by your teams, not a vendor.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-top"><span class="idx">04</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-flow"/></svg></div>
+          <h3>Automation</h3>
+          <p>Remove friction at scale. Automation programs that compound, freeing your best people for higher judgment work.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.05s">
+          <div class="card-top"><span class="idx">05</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-ascend"/></svg></div>
+          <h3>Digital Transformation</h3>
+          <p>Modernize without breaking what already works. Sequenced change your organization can actually absorb.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.1s">
+          <div class="card-top"><span class="idx">06</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-grid"/></svg></div>
+          <h3>Enterprise Architecture</h3>
+          <p>Structure built for change, not just for today. Systems that stay coherent as they scale.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-top"><span class="idx">07</span><svg class="glyph sm" viewBox="0 0 120 120"><use href="#glyph-orbit"/></svg></div>
+          <h3>Technology Advisory</h3>
+          <p>An outside perspective your board can trust — clear-eyed, independent, and fluent in what's actually happening in the field.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY CYKOAI ============ -->
+  <section class="section" id="why">
+    <div class="container">
+      <p class="label reveal"><span class="idx">03</span><i></i>Why Cykoai</p>
+      <h2 class="h2 wide reveal">Confidence is earned by people who&rsquo;ve done the work before.</h2>
+
+      <div class="rows">
+        <div class="row reveal">
+          <svg class="glyph lg" viewBox="0 0 120 120"><use href="#glyph-network"/></svg>
+          <div>
+            <span class="idx">01</span>
+            <h3>Fluent in both worlds</h3>
+            <p>Our people have shipped production AI systems and defended enterprise networks. We translate between the technical and the boardroom without losing precision on either side.</p>
+          </div>
+        </div>
+        <div class="row reverse reveal">
+          <svg class="glyph lg" viewBox="0 0 120 120"><use href="#glyph-weave"/></svg>
+          <div>
+            <span class="idx">02</span>
+            <h3>Built to survive scrutiny</h3>
+            <p>Every recommendation is stress-tested against security, governance, and regulatory reality — so what we build together holds up in an audit, not just in a demo.</p>
+          </div>
+        </div>
+        <div class="row reveal">
+          <svg class="glyph lg" viewBox="0 0 120 120"><use href="#glyph-pulse"/></svg>
+          <div>
+            <span class="idx">03</span>
+            <h3>Skin in the game</h3>
+            <p>We stay through implementation. Forward deployed means our teams sit inside yours, accountable for outcomes — not a slide deck handed off at the door.</p>
+          </div>
+        </div>
+        <div class="row reverse reveal">
+          <svg class="glyph lg" viewBox="0 0 120 120"><use href="#glyph-orbit"/></svg>
+          <div>
+            <span class="idx">04</span>
+            <h3>Speed without recklessness</h3>
+            <p>Momentum matters, but so does control. We move quickly toward decisions that are reversible, and carefully toward the ones that aren't.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHILOSOPHY (scroll-pinned line reveal) ============ -->
+  <section class="philosophy-pin" id="philosophy">
+    <div class="philosophy-sticky">
+      <div class="philosophy-glow" aria-hidden="true"></div>
+      <div class="container philosophy-inner">
+        <p class="label philosophy-label"><span class="idx">04</span><i></i>Our philosophy</p>
+        <div class="philosophy-lines" id="philosophyLines">
+          <p class="phil-line">Technology changes faster than organizations.</p>
+          <p class="phil-line">Organizations become anxious.</p>
+          <p class="phil-line">Anxious organizations make poor decisions.</p>
+          <p class="phil-line accent-text big">Cykoai creates clarity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section alt" id="process">
+    <div class="container">
+      <p class="label reveal"><span class="idx">05</span><i></i>How we work</p>
+      <ol class="timeline">
+        <li class="reveal">
+          <span class="idx">01</span>
+          <div><h3>Assess</h3><p>We map where your organization actually stands — technically, operationally, and culturally — against where you intend to go.</p></div>
+        </li>
+        <li class="reveal" style="transition-delay:.05s">
+          <span class="idx">02</span>
+          <div><h3>Align</h3><p>Strategy and business case, built together with the executives who'll be accountable for the outcome.</p></div>
+        </li>
+        <li class="reveal" style="transition-delay:.1s">
+          <span class="idx">03</span>
+          <div><h3>Design</h3><p>Architecture with security, governance, and scale considered from the first sketch — not bolted on afterward.</p></div>
+        </li>
+        <li class="reveal" style="transition-delay:.15s">
+          <span class="idx">04</span>
+          <div><h3>Deploy</h3><p>Forward-deployed engineers and strategists work inside your teams, shipping the thing rather than presenting it.</p></div>
+        </li>
+        <li class="reveal" style="transition-delay:.2s">
+          <span class="idx">05</span>
+          <div><h3>Sustain</h3><p>We instrument, measure, and hand off a system your teams can run and evolve long after the engagement ends.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section contact" id="contact">
+    <div class="container contact-grid">
+      <div>
+        <p class="label reveal"><span class="idx">06</span><i></i>Get in touch</p>
+        <h2 class="h2 reveal">Let&rsquo;s shape what&rsquo;s next.</h2>
+        <p class="lead reveal" style="transition-delay:.1s">
+          Tell us where your organization is headed, and where it feels stuck.
+          We typically respond within one business day.
+        </p>
+        <a href="mailto:info@cykoai.com" class="email-link reveal" style="transition-delay:.15s">info@cykoai.com</a>
+        <p class="fine-print">For press and partnerships, same address.</p>
+      </div>
+
+      <form class="glass form reveal" id="contactForm" style="transition-delay:.1s">
+        <div class="form-row">
+          <input name="name" required placeholder="Full name" />
+          <input name="company" required placeholder="Company" />
+        </div>
+        <input type="email" name="email" required placeholder="Work email" />
+        <textarea name="message" required rows="4" placeholder="What are you trying to solve?"></textarea>
+        <div class="form-footer">
+          <button type="submit" class="btn btn-solid">Send message</button>
+          <span class="form-status" id="formStatus"></span>
+        </div>
+        <!--
+          Static site, no backend: submitting opens a pre-filled mailto:
+          link. Wire this up to Formspree / Netlify Forms / your own API
+          route when you're ready to collect submissions server-side.
+        -->
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="wordmark footer-wordmark">
+        <img class="logo-mark logo-on-dark" src="brand/cykoai-monogram.png" alt="Cykoai" width="40" height="40" />
+        <span class="logo-on-dark">Cykoai</span>
+        <img class="logo-on-light" src="brand/cykoai-logo.png" alt="Cykoai Consulting" />
+      </span>
+      <p>Forward deployed AI and cybersecurity consulting for organizations shaping the future instead of reacting to it.</p>
+      <a href="#contact" class="btn btn-outline btn-sm">Start a conversation</a>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Company</h4>
+        <a href="#what-we-do">What we do</a>
+        <a href="#services">Services</a>
+        <a href="#philosophy">Philosophy</a>
+        <a href="#process">Process</a>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <a href="mailto:info@cykoai.com">info@cykoai.com</a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span id="year"></span>
+    <span>Designed and built in-house.</span>
+  </div>
+</footer>
+
+<!-- Reusable abstract SVG glyphs (no icon pack, no AI clipart) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="glyph-network">
+      <line x1="60" y1="28" x2="30" y2="55" /><line x1="60" y1="28" x2="90" y2="55" />
+      <line x1="30" y1="55" x2="42" y2="92" /><line x1="90" y1="55" x2="78" y2="92" />
+      <line x1="30" y1="55" x2="90" y2="55" /><line x1="42" y1="92" x2="78" y2="92" />
+      <circle cx="60" cy="28" r="4" /><circle cx="30" cy="55" r="4" /><circle cx="90" cy="55" r="4" />
+      <circle cx="42" cy="92" r="4" /><circle cx="78" cy="92" r="4" />
+    </g>
+    <g id="glyph-field">
+      <circle cx="60" cy="60" r="18" /><circle cx="60" cy="60" r="30" /><circle cx="60" cy="60" r="42" />
+      <circle cx="60" cy="60" r="6" class="fill" />
+    </g>
+    <g id="glyph-flow">
+      <path d="M20 45 C45 25, 75 85, 100 55" /><path d="M20 57 C45 37, 75 97, 100 67" /><path d="M20 69 C45 49, 75 109, 100 79" />
+    </g>
+    <g id="glyph-grid">
+      <rect x="30" y="30" width="8" height="8" rx="2" class="fill" /><rect x="46" y="30" width="8" height="8" rx="2" class="fill" /><rect x="62" y="30" width="8" height="8" rx="2" class="fill" /><rect x="78" y="30" width="8" height="8" rx="2" class="fill" />
+      <rect x="30" y="46" width="8" height="8" rx="2" class="fill" /><rect x="46" y="46" width="8" height="8" rx="2" class="fill" /><rect x="62" y="46" width="8" height="8" rx="2" class="fill" /><rect x="78" y="46" width="8" height="8" rx="2" class="fill" />
+      <rect x="30" y="62" width="8" height="8" rx="2" class="fill" /><rect x="46" y="62" width="8" height="8" rx="2" class="fill" /><rect x="62" y="62" width="8" height="8" rx="2" class="fill" /><rect x="78" y="62" width="8" height="8" rx="2" class="fill" />
+      <rect x="30" y="78" width="8" height="8" rx="2" class="fill" /><rect x="46" y="78" width="8" height="8" rx="2" class="fill" /><rect x="62" y="78" width="8" height="8" rx="2" class="fill" /><rect x="78" y="78" width="8" height="8" rx="2" class="fill" />
+    </g>
+    <g id="glyph-orbit">
+      <circle cx="60" cy="60" r="4" class="fill" />
+      <circle cx="60" cy="60" r="24" /><circle cx="84" cy="60" r="3.5" class="fill" />
+      <circle cx="60" cy="60" r="38" /><circle cx="22" cy="60" r="3.5" class="fill" />
+    </g>
+    <g id="glyph-ascend">
+      <rect x="28" y="68" width="7" height="22" rx="3" class="fill" /><rect x="41" y="56" width="7" height="34" rx="3" class="fill" />
+      <rect x="54" y="62" width="7" height="28" rx="3" class="fill" /><rect x="67" y="46" width="7" height="44" rx="3" class="fill" />
+      <rect x="80" y="38" width="7" height="52" rx="3" class="fill" />
+    </g>
+    <g id="glyph-weave">
+      <path d="M30 30 Q60 10, 90 30" /><path d="M30 52 Q60 72, 90 52" /><path d="M30 74 Q60 54, 90 74" />
+    </g>
+    <g id="glyph-pulse">
+      <path d="M18 60 H42 L50 38 L62 82 L72 60 H102" />
+    </g>
+  </defs>
+</svg>
+
+<script src="script.js"></script>
+<script type="text/javascript" src="https://res.public.onecdn.static.microsoft/customerconnect/v1/7dttl/init.js" id="chatbot" environmentId="81712a2b-7007-ead7-b1b3-eeda4048f645" region="europe" crossorigin="anonymous"></script>
+</body>
+</html>

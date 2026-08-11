@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cykoai — Redesign Direction &amp; Inspiration Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --windsor:#0B1527; --windsor-2:#13203A; --white:#FFFFFF; --driftwood:#AD8752; --driftwood-deep:#7D5F33;
+    --spruce:#2C5530; --rose:#912F40;
+    --n700:#3A4356; --n500:#6B7385; --n300:#B4B9C4; --n150:#E4E6EA; --n100:#F2F3F5; --n50:#F9F9FA;
+    --display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--white);color:var(--windsor);-webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+  a{color:inherit}
+
+  /* ================= header ================= */
+  header{background:var(--windsor);color:var(--white);position:relative;overflow:hidden}
+  header .diag{position:absolute;inset:0;pointer-events:none}
+  header .diag line{stroke:rgba(255,255,255,.07);stroke-width:110}
+  header .diag line.thin{stroke:rgba(173,135,82,.5);stroke-width:1.5}
+  header .wrap{position:relative;padding-top:64px;padding-bottom:72px}
+  .doc-meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--n300)}
+  .doc-meta b{color:var(--driftwood);font-weight:500}
+  header h1{font-family:var(--display);font-weight:600;letter-spacing:-.03em;line-height:1.04;
+    font-size:clamp(2.2rem,5vw,3.6rem);margin-top:34px;max-width:18ch}
+  header .sub{margin-top:20px;color:var(--n300);max-width:62ch;font-size:1.02rem}
+  .chip-row{margin-top:30px;display:flex;gap:10px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:10px;letter-spacing:.12em;border:1px solid rgba(255,255,255,.25);
+    padding:6px 12px;border-radius:999px;color:var(--white)}
+  .chip.on{border-color:var(--driftwood);color:var(--driftwood)}
+
+  /* ================= structure ================= */
+  section.part{padding:clamp(56px,9vh,96px) 0;border-bottom:1px solid var(--n150)}
+  section.part.dark{background:var(--windsor);color:var(--white);border-bottom:0}
+  .part-head{display:flex;align-items:baseline;gap:18px;margin-bottom:8px}
+  .part-num{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--driftwood)}
+  .part h2{font-family:var(--display);font-weight:600;letter-spacing:-.025em;font-size:clamp(1.5rem,3vw,2.1rem)}
+  .part .intro{margin-top:14px;color:var(--n500);max-width:70ch;font-size:1.02rem}
+  .part.dark .intro{color:var(--n300)}
+  .part .intro strong{color:var(--windsor);font-weight:600}
+  .part.dark .intro strong{color:var(--white)}
+
+  /* diagnosis table */
+  .vs{margin-top:36px;border:1px solid var(--n150);border-radius:4px;overflow:hidden}
+  .vs-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--n150)}
+  .vs-row:first-child{border-top:0;background:var(--n50)}
+  .vs-row:first-child div{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--n500);padding:12px 18px}
+  .vs-cell{padding:16px 18px;font-size:.92rem;line-height:1.55}
+  .vs-cell:first-child{border-right:1px solid var(--n150);color:var(--n700)}
+  .vs-cell:last-child{color:var(--rose)}
+  .vs-cell b{font-weight:600;color:var(--windsor)}
+  .keep-kill{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .kk{border:1px solid var(--n150);border-radius:4px;padding:22px 22px 16px}
+  .kk h3{font-family:var(--mono);font-size:11px;letter-spacing:.18em;font-weight:500;padding-bottom:12px;border-bottom:1px solid var(--n150)}
+  .kk.keep h3{color:var(--spruce)}
+  .kk.kill h3{color:var(--rose)}
+  .kk ul{list-style:none;margin-top:6px}
+  .kk li{padding:9px 0;border-bottom:1px solid var(--n100);font-size:.9rem;color:var(--n700);line-height:1.5}
+  .kk li:last-child{border-bottom:0}
+  .kk li b{color:var(--windsor);font-weight:600}
+
+  /* principles */
+  .prin-grid{margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:0;border:1px solid rgba(255,255,255,.14);border-radius:4px;overflow:hidden}
+  .prin{padding:26px 24px;border:0 solid rgba(255,255,255,.14);border-bottom-width:1px;border-right-width:1px}
+  .prin .k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--driftwood)}
+  .prin h3{font-family:var(--display);font-weight:600;font-size:1.15rem;letter-spacing:-.01em;margin-top:10px}
+  .prin p{margin-top:8px;font-size:.9rem;color:var(--n300);line-height:1.6}
+
+  /* recipe */
+  .recipe{margin-top:36px;display:flex;flex-direction:column;border-top:1px solid var(--n150)}
+  .r-row{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--n150)}
+  .r-row .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--n500);padding-top:3px}
+  .r-row .v{font-size:.95rem;color:var(--n700);line-height:1.65}
+  .r-row .v b{color:var(--windsor);font-weight:600}
+  .r-row .v code{font-family:var(--mono);font-size:.82em;background:var(--n100);padding:2px 6px;border-radius:2px;color:var(--windsor)}
+  .r-row .v .acc{color:var(--driftwood-deep);font-weight:500}
+
+  /* library */
+  .group{margin-top:44px}
+  .group-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:2px solid var(--windsor);padding-bottom:10px}
+  .group-head h3{font-family:var(--display);font-weight:600;font-size:1.25rem;letter-spacing:-.01em}
+  .group-head .g-note{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--n500);text-align:right}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-top:18px}
+  .card{border:1px solid var(--n150);border-radius:4px;padding:20px 20px 18px;background:var(--white);
+    display:flex;flex-direction:column;gap:10px;transition:border-color .25s var(--ease)}
+  .card:hover{border-color:var(--driftwood)}
+  .card .t-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .card h4{font-family:var(--display);font-weight:600;font-size:1.05rem;letter-spacing:-.01em}
+  .card h4 a{text-decoration:none;border-bottom:1px solid var(--n300);padding-bottom:2px}
+  .card h4 a:hover{border-color:var(--driftwood);color:var(--driftwood-deep)}
+  .card .url{font-family:var(--mono);font-size:9.5px;color:var(--n300);letter-spacing:.04em;white-space:nowrap}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tg{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--n500);border:1px solid var(--n150);padding:3px 8px;border-radius:999px}
+  .tg.hot{color:var(--driftwood-deep);border-color:var(--driftwood)}
+  .card .why{font-size:.88rem;color:var(--n700);line-height:1.55}
+  .card .steal{font-size:.85rem;color:var(--windsor);line-height:1.55;border-top:1px solid var(--n100);padding-top:10px}
+  .card .steal::before{content:"STEAL — ";font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--driftwood-deep)}
+  .gal-table{margin-top:18px;border-top:1px solid var(--n150)}
+  .gal-row{display:grid;grid-template-columns:220px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid var(--n150);font-size:.92rem}
+  .gal-row a{font-weight:500;text-decoration:none;border-bottom:1px solid var(--n300)}
+  .gal-row a:hover{color:var(--driftwood-deep);border-color:var(--driftwood)}
+  .gal-row span{color:var(--n500)}
+
+  /* section notes */
+  .sec-note{margin-top:26px;border:1px solid var(--n150);border-radius:4px;overflow:hidden}
+  .sec-note .head{display:flex;align-items:center;gap:14px;padding:15px 20px;background:var(--n50);border-bottom:1px solid var(--n150)}
+  .sec-note .head .n{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--driftwood-deep)}
+  .sec-note .head h3{font-family:var(--display);font-weight:600;font-size:1.08rem;letter-spacing:-.01em}
+  .sec-note .head .new{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--spruce);border:1px solid var(--spruce);padding:3px 8px;border-radius:999px}
+  .sec-body{display:grid;grid-template-columns:1fr 1.4fr;gap:0}
+  .sec-body .now,.sec-body .redo{padding:18px 20px;font-size:.9rem;line-height:1.6}
+  .sec-body .now{border-right:1px solid var(--n150);color:var(--n500)}
+  .sec-body .now::before,.sec-body .redo::before{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;margin-bottom:8px}
+  .sec-body .now::before{content:"NOW";color:var(--rose)}
+  .sec-body .redo::before{content:"REDESIGN";color:var(--spruce)}
+  .sec-body .redo{color:var(--n700)}
+  .sec-body .redo b{color:var(--windsor);font-weight:600}
+  .sec-refs{padding:12px 20px;border-top:1px solid var(--n100);font-size:.82rem;color:var(--n500)}
+  .sec-refs::before{content:"REFS — ";font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--n300)}
+  .sec-refs a{color:var(--driftwood-deep);text-decoration:none;border-bottom:1px solid var(--n150)}
+  .sec-refs a:hover{border-color:var(--driftwood)}
+
+  /* cheat sheet */
+  .cheat{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .ch{border:1px solid rgba(255,255,255,.14);border-radius:4px;padding:20px 20px 16px}
+  .ch .k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--driftwood)}
+  .ch h3{font-family:var(--display);font-weight:600;font-size:1.05rem;margin-top:8px}
+  .ch p{margin-top:8px;font-size:.88rem;color:var(--n300);line-height:1.6}
+  .ch code{font-family:var(--mono);font-size:.8em;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:2px;color:var(--white)}
+  .dep{margin-top:28px;border-top:1px solid rgba(255,255,255,.14);padding-top:18px;display:flex;gap:28px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+  .dep span{color:var(--n300)}
+  .dep b{font-weight:500}
+  .dep .ok{color:#7FB58A}
+  .dep .no{color:#D98A97;text-decoration:line-through;text-decoration-thickness:1px}
+
+  /* next steps */
+  .steps{margin-top:32px;counter-reset:st;display:flex;flex-direction:column;border-top:1px solid var(--n150)}
+  .step{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--n150)}
+  .step::before{counter-increment:st;content:"0" counter(st);font-family:var(--display);font-weight:600;font-size:1.6rem;color:var(--n150)}
+  .step h3{font-family:var(--display);font-weight:600;font-size:1.1rem;letter-spacing:-.01em}
+  .step p{margin-top:6px;font-size:.93rem;color:var(--n500);line-height:1.6;max-width:64ch}
+  .step p b{color:var(--windsor);font-weight:600}
+
+  .board-foot{background:var(--windsor);color:var(--n300);font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    padding:26px 0;margin-top:0}
+  .board-foot .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  @media (max-width:760px){
+    .sec-body{grid-template-columns:1fr}
+    .sec-body .now{border-right:0;border-bottom:1px solid var(--n150)}
+    .cheat{grid-template-columns:1fr}
+    .gal-row{grid-template-columns:1fr;gap:4px}
+    .vs-row{grid-template-columns:1fr}
+    .vs-cell:first-child{border-right:0;border-bottom:1px dashed var(--n150)}
+    .keep-kill{grid-template-columns:1fr}
+    .r-row{grid-template-columns:1fr;gap:6px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="diag" viewBox="0 0 1400 520" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="700" y1="620" x2="1500" y2="-100"/>
+    <line class="thin" x1="420" y1="640" x2="1460" y2="-120"/>
+  </svg>
+  <div class="wrap">
+    <div class="doc-meta">
+      <span>CYKOAI CONSULTING — <b>DESIGN PHASE 01</b></span>
+      <span>AUG 2026 · INTERNAL</span>
+    </div>
+    <h1>Redesign direction &amp; inspiration board</h1>
+    <p class="sub">Why the current landing page reads as AI-generated, the direction that fixes it,
+      a verified library of reference sites, and section-by-section notes for the rebuild.
+      This document follows the rules it proposes.</p>
+    <div class="chip-row">
+      <span class="chip on">Editorial authority</span>
+      <span class="chip on">Dark cinematic bands</span>
+      <span class="chip on">Abstract koi / sequoia</span>
+      <span class="chip on">Rich scroll, no WebGL</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 DIAGNOSIS ============ -->
+<section class="part" id="diagnosis">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num">PART 01</span><h2>The diagnosis</h2></div>
+    <p class="intro">Nothing in the current build is individually wrong — it is the <strong>complete default kit</strong> of
+      2025–26 AI-generated "premium dark tech" sites: navy ground, gold gradient text, glass cards, glow blobs,
+      tilt-on-hover, magnetic buttons, a custom cursor, film grain, and a rotating 3D crystal. Together they are a
+      fingerprint. Worse, they contradict the rules your own design system already wrote down:</p>
+
+    <div class="vs">
+      <div class="vs-row"><div>YOUR DESIGN SYSTEM SAYS</div><div>THE CURRENT BUILD DOES</div></div>
+      <div class="vs-row">
+        <div class="vs-cell"><b>"Flat color fields only</b> — no gradients, no grain."</div>
+        <div class="vs-cell">Gradient text utilities, <code>blur(120px)</code> ambient glow blobs, a fixed film-grain noise overlay.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell"><b>"No transparency/blur structurally</b> — crisp, not glassy."</div>
+        <div class="vs-cell"><code>.glass</code> backdrop-blur panels for cards, nav, and the contact form.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell"><b>"Motion minimal and purposeful</b> — 200–360ms, controlled, no playful overshoot."</div>
+        <div class="vs-cell">Magnetic buttons, tilt cards, a custom cursor, an infinite looping scroll indicator.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell"><b>"Sharp, angular geometry</b> — 2/4/8px radii; the brand does not round heavily."</div>
+        <div class="vs-cell"><code>rounded-3xl</code> (24px) cards and pill CTAs throughout.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell"><b>"The diagonal cut is the one background motif."</b></div>
+        <div class="vs-cell">The diagonal never appears once. Generic network/orbit/grid glyphs stand in for identity.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell"><b>"Until real imagery exists, plain color fields</b> — no generated imagery."</div>
+        <div class="vs-cell">A WebGL crystal + particle lattice as the hero's centerpiece.</div>
+      </div>
+    </div>
+
+    <div class="keep-kill">
+      <div class="kk keep">
+        <h3>KEEP — IT'S ALREADY GOOD</h3>
+        <ul>
+          <li><b>The copy voice.</b> "The future moves faster than your organization," "adoption fails at the seams," the four Philosophy lines — on-brand, better than most agencies would write.</li>
+          <li><b>The section architecture.</b> Hero → What we do → Services → Why → Philosophy → Process → Contact is the right story order.</li>
+          <li><b>The stack.</b> Next.js + Lenis + GSAP ScrollTrigger is exactly the right toolset for the new direction.</li>
+          <li><b>Two structural patterns.</b> The pinned Philosophy sequence and the horizontal Process scroll — keep the mechanics, redress the surfaces.</li>
+          <li><b>Theme plumbing.</b> The light/dark token system and no-flash init script are solid engineering.</li>
+        </ul>
+      </div>
+      <div class="kk kill">
+        <h3>KILL — THE SLOP LAYER</h3>
+        <ul>
+          <li><b>3D crystal + particles</b> (and with them the three.js / R3F / postprocessing dependencies — a large bundle win).</li>
+          <li><b>Glass, glows, gradient text, grain</b> — all four banned by your own system.</li>
+          <li><b>Tilt cards, magnetic buttons, custom cursor</b> — borrowed gestures that read "template."</li>
+          <li><b>Generic abstract glyphs</b> — replace with the diagonal mark and ring geometry, or nothing.</li>
+          <li><b>Details eroding trust:</b> section numbers out of order (03/04 swapped vs. page order); Testimonials &amp; CaseStudies components built but unused — never fake proof, publish thinking instead.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 PRINCIPLES ============ -->
+<section class="part dark" id="principles">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num" style="color:var(--driftwood)">PART 02</span><h2>Principles — the page must be the proof</h2></div>
+    <p class="intro">Cykoai sells <strong>calm in a time of flux</strong>. A site dressed in glow and hype
+      contradicts the pitch before a word is read. Every design decision should demonstrate the promise:</p>
+    <div class="prin-grid">
+      <div class="prin"><div class="k">P1</div><h3>Calm is the demo</h3><p>Generous whitespace, slow confident motion, one accent color. If a section feels busy, it is arguing against the business.</p></div>
+      <div class="prin"><div class="k">P2</div><h3>The koi, abstracted</h3><p>Agility as behavior, not imagery: fluid smooth-scroll, layered drift, interfaces that respond instantly but never jump.</p></div>
+      <div class="prin"><div class="k">P3</div><h3>The sequoia, abstracted</h3><p>Endurance as structure: strict grid, hairline rules, concentric ring geometry, vertical scale. Things that look like they were built to stay.</p></div>
+      <div class="prin"><div class="k">P4</div><h3>One diagonal, everywhere</h3><p>The logo's cut is the entire graphic language — section dividers, reveals, underlines, hover states. One motif, repeated with discipline, beats ten decorations.</p></div>
+      <div class="prin"><div class="k">P5</div><h3>Proof over pitch</h3><p>Artifacts instead of adjectives: engagement notes, methodology, numbers, published thinking. Consulting is bought on evidence of judgment.</p></div>
+      <div class="prin"><div class="k">P6</div><h3>Light body, dark bands</h3><p>White "memo" surfaces carry the reading; Windsor Blue bands carry the cinema — hero, philosophy, footer. The alternation is the rhythm of the whole page.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 RECIPE ============ -->
+<section class="part" id="recipe">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num">PART 03</span><h2>The recipe</h2></div>
+    <p class="intro">Concrete rules for the rebuild — your existing tokens, applied with more nerve.</p>
+    <div class="recipe">
+      <div class="r-row"><div class="k">TYPE</div><div class="v"><b>Space Grotesk</b> display at <code>-0.03em</code> / <code>1.02</code> leading, pushed larger than feels safe (hero ≈ <code>clamp(2.9rem, 6.5vw, 5.8rem)</code>). <b>Inter</b> body at <code>1.125rem / 1.65</code>, max 46–52ch. <b>JetBrains Mono</b> 10–11px caps with <code>.14–.22em</code> tracking for every label, number, and annotation — the "instrumentation" voice.</div></div>
+      <div class="r-row"><div class="k">COLOR</div><div class="v">White / <code>#F9F9FA</code> surfaces; <b>Windsor Blue</b> bands for nav, hero, philosophy, footer only. <span class="acc">Driftwood</span> is spent like money: links, rules, focus rings, one highlighted word per screen — never a fill. Spruce and Burnt Rose only inside tags and data. Zero gradients.</div></div>
+      <div class="r-row"><div class="k">LAYOUT</div><div class="v"><code>1320px</code> max grid, hairline <code>1px</code> borders instead of shadows, radii <b>2–8px</b> and nothing rounder. Asymmetry over centering: big statement left, evidence right. Numbered everything (<code>01–07</code>) in mono.</div></div>
+      <div class="r-row"><div class="k">MOTION</div><div class="v"><b>Lenis</b> smooth-scroll under <b>GSAP ScrollTrigger</b>. Max <b>3 parallax speeds</b> per viewport (≈ <code>0.85 / 0.92 / 1.0</code>), max <b>2 pinned moments</b> per page (Philosophy, Process). Reveals 500–800ms on <code>expo-out</code>, staggers ≤ 90ms. Hovers 200–300ms, color/rule shifts only — nothing scales, tilts, or follows the mouse. <code>prefers-reduced-motion</code> → fully static. Transforms and opacity only.</div></div>
+      <div class="r-row"><div class="k">IMAGERY</div><div class="v">None until it's real. The graphic layer is <b>line geometry only</b>: the diagonal at architectural scale, concentric rings, hairline grids. When photography arrives, treat it like Watershed's dithered landscapes — atmospheric, never stock.</div></div>
+      <div class="r-row"><div class="k">VOICE</div><div class="v">Sentence case everywhere. Short declaratives. Numbers over adjectives. No exclamation points, no "unlock/supercharge/revolutionary," no emoji. The register of a firm that has already thought this through.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 LIBRARY ============ -->
+<section class="part" id="library">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num">PART 04</span><h2>The inspiration library</h2></div>
+    <p class="intro">Every link verified live, August 2026. Grouped by what each is <strong>for</strong> —
+      study the north stars whole, the rest for one specific move each.</p>
+
+    <div class="group">
+      <div class="group-head"><h3>A — North stars</h3><div class="g-note">STUDY THESE WHOLE — CLOSEST TOTAL MATCHES</div></div>
+      <div class="cards">
+        <div class="card">
+          <div class="t-row"><h4><a href="https://daylightcomputer.com" target="_blank">Daylight Computer</a></h4><span class="url">daylightcomputer.com</span></div>
+          <div class="tags"><span class="tg hot">closest match</span><span class="tg">light editorial</span><span class="tg">no WebGL</span></div>
+          <p class="why">The "calm computer" — warm paper tones, huge type, pinned horizontal bands, video reveals. Built by basement.studio entirely with DOM/CSS. It is your brief, executed: calm as the product, drama from scroll choreography alone.</p>
+          <p class="steal">The whole temperature. Also its horizontal pinned storytelling — your Process section, done right.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://column.com" target="_blank">Column</a></h4><span class="url">column.com</span></div>
+          <div class="tags"><span class="tg hot">navy twin</span><span class="tg">proof-over-pitch</span><span class="tg">editorial</span></div>
+          <p class="why">A bank that sells trust with a navy nearly identical to Windsor Blue (#0B1B34), rule-lines, dense small type, and real artifacts (API payloads) instead of marketing claims. Almost no motion — and it feels more confident for it.</p>
+          <p class="steal">The light-body/dark-band split and the artifact habit: show a redacted engagement timeline, not adjectives.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.exoape.com" target="_blank">Exo Ape</a></h4><span class="url">exoape.com</span></div>
+          <div class="tags"><span class="tg hot">parallax craft</span><span class="tg">light editorial</span><span class="tg">no WebGL</span></div>
+          <p class="why">The best light-editorial parallax on the web: oversized type, images and headlines drifting at different speeds, line-by-line masked reveals — all DOM. Proof that "award-site feel" needs no 3D.</p>
+          <p class="steal">Multi-speed layers (image slower than text) and masked line-by-line headline reveals.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.anthropic.com" target="_blank">Anthropic</a></h4><span class="url">anthropic.com</span></div>
+          <div class="tags"><span class="tg">calm authority</span><span class="tg">light editorial</span></div>
+          <p class="why">The benchmark for anti-hype in AI: ivory ground, serif-led editorial grid, one muted accent, book-like pacing. Reads as an institution, not a startup.</p>
+          <p class="steal">Unhurried spacing and accent discipline — one warm color, spent sparingly, exactly like your Driftwood.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://linear.app" target="_blank">Linear</a></h4><span class="url">linear.app</span></div>
+          <div class="tags"><span class="tg">dark craft</span><span class="tg">precision</span></div>
+          <p class="why">The reference for dark surfaces that read "control room," not "crypto": near-black ground, crisp 1px borders, engineered stillness, micro-transitions with zero showiness.</p>
+          <p class="steal">The dark-band finish quality — hairlines and restraint — for your Windsor sections.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.palantir.com" target="_blank">Palantir</a></h4><span class="url">palantir.com</span></div>
+          <div class="tags"><span class="tg">forward deployed</span><span class="tg">dark cinematic</span><span class="tg">mono labels</span></div>
+          <p class="why">The origin of your business model, and of the aesthetic that earns it: austere near-black, grotesk + mono captions, zero marketing fluff. Serious by subtraction.</p>
+          <p class="steal">Mono uppercase "instrumentation" labels over dark bands — credibility without a single adjective.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.distyl.ai" target="_blank">Distyl</a></h4><span class="url">distyl.ai</span></div>
+          <div class="tags"><span class="tg">direct competitor</span><span class="tg">premium editorial</span></div>
+          <p class="why">Ex-Palantir AI consultancy — the nearest business twin with a designed site: dusk photography, named methodology modules presented as a card system, quiet confidence throughout.</p>
+          <p class="steal">Productizing the playbook: name your delivery method and present it as designed modules.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><h3>B — Editorial authority</h3><div class="g-note">THE LIGHT BODY — TYPE, RHYTHM, RESTRAINT</div></div>
+      <div class="cards">
+        <div class="card">
+          <div class="t-row"><h4><a href="https://mercury.com" target="_blank">Mercury</a></h4><span class="url">mercury.com</span></div>
+          <div class="tags"><span class="tg">type discipline</span></div>
+          <p class="why">One commanding statement per viewport; everything else small and quiet. The type-scale contrast does the persuading.</p>
+          <p class="steal">The scale gap: hero statements 4× bigger than anything near them.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.sequoiacap.com" target="_blank">Sequoia Capital</a></h4><span class="url">sequoiacap.com</span></div>
+          <div class="tags"><span class="tg">publication posture</span><span class="tg">motion toggle</span></div>
+          <p class="why">Your name's other half runs its homepage as an editorial publication — content as credibility. Ships a literal "Motion On/Off" toggle: motion as option, not identity.</p>
+          <p class="steal">The publication posture for your future insights section — and the motion-governance attitude.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://stripe.com" target="_blank">Stripe</a></h4><span class="url">stripe.com</span></div>
+          <div class="tags"><span class="tg">diagonal brand</span><span class="tg">stat authority</span></div>
+          <p class="why">The masterclass in a diagonal mark carried through an entire system — dividers, cards, corners. Authority via numbers ("$1.9T processed"), not adjectives.</p>
+          <p class="steal">Diagonal-as-system, and stat-led credibility strips.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://ramp.com" target="_blank">Ramp</a></h4><span class="url">ramp.com</span></div>
+          <div class="tags"><span class="tg">blunt copy</span></div>
+          <p class="why">"Time is money. Save both." Dark-on-white minimalism where short declarative copy is the design.</p>
+          <p class="steal">The copy register — blunt, confident, zero hedge.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://attio.com" target="_blank">Attio</a></h4><span class="url">attio.com</span></div>
+          <div class="tags"><span class="tg">one accent</span></div>
+          <p class="why">Neutral grays with a single cyan accent, progressive disclosure down the page, hover-level motion only.</p>
+          <p class="steal">One-accent discipline → Driftwood only for rules, links, and the mark.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://watershed.com" target="_blank">Watershed</a></h4><span class="url">watershed.com</span></div>
+          <div class="tags"><span class="tg">textured imagery</span></div>
+          <p class="why">Enterprise gravity with soft dithered landscape imagery — atmosphere without stock-photo noise.</p>
+          <p class="steal">The dithered treatment, for when real photography eventually arrives.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://sierra.ai" target="_blank">Sierra</a></h4><span class="url">sierra.ai</span></div>
+          <div class="tags"><span class="tg">outcome-first</span></div>
+          <p class="why">Bret Taylor's agent company: warm neutrals, serif-inflected editorial, "Better outcomes." — anti-hype made visual.</p>
+          <p class="steal">Outcome-first headline grammar over quiet client-proof rows.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><h3>C — Dark bands &amp; credibility</h3><div class="g-note">SECURITY / ENTERPRISE — HOW EXPERTS LOOK</div></div>
+      <div class="cards">
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.trailofbits.com" target="_blank">Trail of Bits</a></h4><span class="url">trailofbits.com</span></div>
+          <div class="tags"><span class="tg hot">same business</span><span class="tg">proof surface</span></div>
+          <p class="why">Elite security consultancy — the closest model to Cykoai that exists. Leads with published reports, research, and tools as the homepage's proof, not product shots.</p>
+          <p class="steal">The consultancy trust pattern: publish thinking. One real methodology note beats ten testimonials.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://material.security" target="_blank">Material Security</a></h4><span class="url">material.security</span></div>
+          <div class="tags"><span class="tg">single motif</span></div>
+          <p class="why">Deep navy, editorial restraint, and one recurring abstract cube as the entire illustration system.</p>
+          <p class="steal">One-motif discipline — their cube is your diagonal.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.anduril.com" target="_blank">Anduril</a></h4><span class="url">anduril.com</span></div>
+          <div class="tags"><span class="tg">dark cinematic</span><span class="tg">chaptered scroll</span></div>
+          <p class="why">The archetype of dark cinematic enterprise: chaptered, pinned scroll storytelling with serif/mono pairing over full-bleed film.</p>
+          <p class="steal">Chaptered dark bands — numbered pinned moments with mono captions.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://scale.com" target="_blank">Scale AI</a></h4><span class="url">scale.com</span></div>
+          <div class="tags"><span class="tg">pinned statement</span></div>
+          <p class="why">Strict black/white with giant statement headlines resolving over slow, pinned scroll moments.</p>
+          <p class="steal">The pinned "one sentence resolves as you scroll" hero rhythm — your Philosophy section's model.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.mckinsey.com/capabilities/quantumblack/how-we-help-clients" target="_blank">QuantumBlack</a></h4><span class="url">mckinsey.com/quantumblack</span></div>
+          <div class="tags"><span class="tg">abstract motif</span></div>
+          <p class="why">McKinsey's AI arm: flowing abstract thread-forms as the only imagery on blue-black grounds — consulting gravitas with a technical edge.</p>
+          <p class="steal">Abstract line-forms as sole imagery on dark bands (yours are rings + diagonals, not threads).</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.appliedintuition.com" target="_blank">Applied Intuition</a></h4><span class="url">appliedintuition.com</span></div>
+          <div class="tags"><span class="tg">glyph punctuation</span></div>
+          <p class="why">Dark industrial cinema with a tiny repeated glyph (■) as section punctuation and mono technical overlays.</p>
+          <p class="steal">Your monogram as recurring section punctuation stitching light and dark bands together.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://evervault.com" target="_blank">Evervault</a></h4><span class="url">evervault.com</span></div>
+          <div class="tags"><span class="tg">mono annotations</span></div>
+          <p class="why">Long-admired engineering brand: charcoal ground, monospace micro-annotations over an asymmetric editorial grid.</p>
+          <p class="steal">Mono annotation layer — tiny technical captions that make a page feel engineered.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://tailscale.com" target="_blank">Tailscale</a></h4><span class="url">tailscale.com</span></div>
+          <div class="tags"><span class="tg">voice only</span></div>
+          <p class="why">Visually plain, but the strongest "calm quiet authority" copy in security — plain language, humble diagrams, zero fear-selling.</p>
+          <p class="steal">The no-jargon, no-fear voice for your security services copy.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><h3>D — Scroll &amp; parallax technique</h3><div class="g-note">STUDY THE MOVE, NOT THE WHOLE SITE</div></div>
+      <div class="cards">
+        <div class="card">
+          <div class="t-row"><h4><a href="https://lenis.dev" target="_blank">Lenis</a></h4><span class="url">lenis.dev</span></div>
+          <div class="tags"><span class="tg hot">your backbone</span><span class="tg">no WebGL</span></div>
+          <p class="why">The smooth-scroll library already in your package.json, by darkroom.engineering. Its own site is the demo of the feel you want: silky, frame-synced, weightless.</p>
+          <p class="steal">Keep it as the foundation under GSAP ScrollTrigger — the exact recommended stack.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://locomotive.ca" target="_blank">Locomotive</a></h4><span class="url">locomotive.ca</span></div>
+          <div class="tags"><span class="tg">data-speed pattern</span><span class="tg">no WebGL</span></div>
+          <p class="why">The agency behind Locomotive Scroll — per-element <code style="font-family:var(--mono);font-size:.85em">data-scroll-speed</code> attributes creating effortless multi-layer drift.</p>
+          <p class="steal">The attribute pattern: declare a speed per element, let one rAF loop drive everything.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.cappen.com" target="_blank">Cappen</a></h4><span class="url">cappen.com</span></div>
+          <div class="tags"><span class="tg">band handoffs</span><span class="tg">no WebGL</span></div>
+          <p class="why">GSAP-heavy cinematic narratives with seamless light-to-dark section transitions via scroll-tweened background color.</p>
+          <p class="steal">The light↔dark handoff tween — your page's core rhythm, made fluid.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://obys.agency" target="_blank">Obys</a></h4><span class="url">obys.agency</span></div>
+          <div class="tags"><span class="tg">numbered index</span><span class="tg">no WebGL</span></div>
+          <p class="why">Typography-first storytelling: numbered indexes (01–19), text mask reveals, grid systems as the aesthetic.</p>
+          <p class="steal">The numbered-index treatment for your Services list (01–07).</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://basement.studio" target="_blank">basement.studio</a></h4><span class="url">basement.studio</span></div>
+          <div class="tags"><span class="tg">grid borders</span></div>
+          <p class="why">Brutalist black/white with grid lines that draw themselves in on scroll — cheap, high-impact structure. (They built Daylight's site.)</p>
+          <p class="steal">Section borders animating in — hairlines that draw as you arrive.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://zentry.com" target="_blank">Zentry</a></h4><span class="url">zentry.com</span></div>
+          <div class="tags"><span class="tg">clip-path hero</span><span class="tg">no WebGL</span></div>
+          <p class="why">The famous GSAP clip-path hero — media masked in a polygon that expands to full-bleed on scroll. Wrong brand vibe, right technique.</p>
+          <p class="steal">The polygon reveal, rotated to your 45° — a diagonal wipe as section transition.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://op.al" target="_blank">Opal</a></h4><span class="url">op.al</span></div>
+          <div class="tags"><span class="tg">scrubbed video</span><span class="tg">no WebGL</span></div>
+          <p class="why">Apple-grade pinned product storytelling: video scrubbed by scroll position, one metaphor carried through.</p>
+          <p class="steal">Scroll-scrubbed video for a future case-study band — cinema without 3D.</p>
+        </div>
+        <div class="card">
+          <div class="t-row"><h4><a href="https://www.antimetal.com" target="_blank">Antimetal</a></h4><span class="url">antimetal.com</span></div>
+          <div class="tags"><span class="tg">diagram build-up</span><span class="tg">no WebGL</span></div>
+          <p class="why">2025 community favorite: its "layer of the stack" metaphor drawn literally — diagram layers stacking as you scroll.</p>
+          <p class="steal">Staged diagram assembly for explaining the AI + security stack — your What-we-do, animated.</p>
+        </div>
+      </div>
+      <p class="intro" style="margin-top:22px;font-size:.9rem">Also worth a visit for <em>pacing</em>, not stack:
+        <a href="https://igloo.inc" target="_blank" style="color:var(--driftwood-deep)">igloo.inc</a> (Awwwards SOTY — one continuous descent, chaptered text),
+        <a href="https://lusion.co" target="_blank" style="color:var(--driftwood-deep)">lusion.co</a> (velocity-reactive motion),
+        <a href="https://unseen.co" target="_blank" style="color:var(--driftwood-deep)">unseen.co</a> (kinetic type) — all WebGL at the core, so admire the rhythm and leave the tech.</p>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><h3>E — Galleries for ongoing browsing</h3><div class="g-note">WHEN YOU WANT MORE</div></div>
+      <div class="gal-table">
+        <div class="gal-row"><a href="https://recent.design" target="_blank">Recent (ex-Godly)</a><span>Daily best-of-web; the high-craft animation benchmark. godly.website now redirects here.</span></div>
+        <div class="gal-row"><a href="https://www.awwwards.com/websites/parallax/" target="_blank">Awwwards — parallax collection</a><span>The ceiling for scroll choreography; filter by parallax/GSAP.</span></div>
+        <div class="gal-row"><a href="https://www.siteinspire.com" target="_blank">Siteinspire</a><span>Tagged editorial/corporate restraint — closest to your register.</span></div>
+        <div class="gal-row"><a href="https://minimal.gallery" target="_blank">Minimal Gallery</a><span>Strictly minimal sites; whitespace and type reference.</span></div>
+        <div class="gal-row"><a href="https://land-book.com" target="_blank">Land-book</a><span>Daily landing pages; broad B2B coverage.</span></div>
+        <div class="gal-row"><a href="https://saaspo.com" target="_blank">Saaspo</a><span>SaaS pages organized by section type (pricing, about, contact).</span></div>
+        <div class="gal-row"><a href="https://craftwork.design/curated/websites" target="_blank">Curated (Craftwork)</a><span>Filterable clean/minimal inspiration; curated.design's new home.</span></div>
+        <div class="gal-row"><a href="https://www.darkmodedesign.com" target="_blank">Dark Mode Design</a><span>Dark-theme palettes — study before styling the Windsor bands.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 SECTION NOTES ============ -->
+<section class="part" id="sections">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num">PART 05</span><h2>Section-by-section redesign notes</h2></div>
+    <p class="intro">Your current page order, kept — each section diagnosed and redirected.</p>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">NAV</span><h3>Navigation</h3></div>
+      <div class="sec-body">
+        <div class="now">Glass sticky bar with backdrop blur and a theme toggle.</div>
+        <div class="redo">Solid <b>Windsor band, 64px, hairline bottom border</b> — the DS's "permanent dark inverse band." Monogram + wordmark left, three links + one bordered CTA right. No blur, no shrink-on-scroll tricks.</div>
+      </div>
+      <div class="sec-refs"><a href="https://www.palantir.com" target="_blank">Palantir</a> · <a href="https://linear.app" target="_blank">Linear</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">01</span><h3>Hero</h3></div>
+      <div class="sec-body">
+        <div class="now">3D crystal + particles, gradient headline, pill badge, magnetic buttons, looping scroll cue.</div>
+        <div class="redo">Pick from the three mockups: <b>A — The Memo</b> (light, engagement-note artifact), <b>B — The Dark Band</b> (Windsor cinema, layered diagonal planes), or <b>C — Depth &amp; Rings</b> (light field, concentric parallax). All three: headline copy stays, diagonal draws in, one solid CTA + one text link, three parallax speeds max.</div>
+      </div>
+      <div class="sec-refs"><a href="https://daylightcomputer.com" target="_blank">Daylight</a> · <a href="https://scale.com" target="_blank">Scale</a> · <a href="https://column.com" target="_blank">Column</a> · <a href="https://www.exoape.com" target="_blank">Exo Ape</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">02</span><h3>What we do</h3></div>
+      <div class="sec-body">
+        <div class="now">Four glass tilt-cards with generic glyphs and colored glows.</div>
+        <div class="redo"><b>Editorial split:</b> sticky statement left ("One firm across the full stack…"), four hairline rows right — no cards, no icons. Hover: the row's rule turns Driftwood and the title shifts 4px. Optionally an Antimetal-style stack diagram assembling on scroll.</div>
+      </div>
+      <div class="sec-refs"><a href="https://www.exoape.com" target="_blank">Exo Ape</a> · <a href="https://attio.com" target="_blank">Attio</a> · <a href="https://www.antimetal.com" target="_blank">Antimetal</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">03</span><h3>Services</h3></div>
+      <div class="sec-body">
+        <div class="now">Seven tilt-glow cards in a grid — reads as a template's pricing page.</div>
+        <div class="redo"><b>Numbered index list, full-width rows</b> (01–07): mono number, Space Grotesk title large, one-line description, whole row a link. Expand on hover/click for detail. Seven disciplines as a table of contents — an Obys move that instantly reads "firm," not "SaaS."</div>
+      </div>
+      <div class="sec-refs"><a href="https://obys.agency" target="_blank">Obys</a> · <a href="https://mercury.com" target="_blank">Mercury</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">04</span><h3>Why Cykoai</h3></div>
+      <div class="sec-body">
+        <div class="now">Alternating rows of oversized abstract glyphs + text.</div>
+        <div class="redo"><b>Proof over pitch:</b> replace glyphs with artifacts — a redacted engagement note, a stat strip (people deployed, days to production, systems handed off), a methodology excerpt. Blunt Ramp-style headers. This is where consulting is actually bought.</div>
+      </div>
+      <div class="sec-refs"><a href="https://column.com" target="_blank">Column</a> · <a href="https://www.trailofbits.com" target="_blank">Trail of Bits</a> · <a href="https://ramp.com" target="_blank">Ramp</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">05</span><h3>Philosophy</h3></div>
+      <div class="sec-body">
+        <div class="now">Pinned scroll-scrubbed lines — good mechanics, but gradient text + glow blob styling.</div>
+        <div class="redo"><b>Keep the pin.</b> Flat Windsor band, lines in white, final line underlined in Driftwood (no gradient text). One ring set drifting slowly behind at 0.9× — the section becomes the page's cinematic center. Fix the 03/04 numbering swap.</div>
+      </div>
+      <div class="sec-refs"><a href="https://scale.com" target="_blank">Scale</a> · <a href="https://igloo.inc" target="_blank">Igloo (pacing)</a> · <a href="https://www.cappen.com" target="_blank">Cappen</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">06</span><h3>Process</h3></div>
+      <div class="sec-body">
+        <div class="now">Horizontal pinned scroll — right pattern, glass-gradient cards.</div>
+        <div class="redo"><b>Keep the horizontal pin.</b> Cards become flat: white on light (or Windsor-2 on dark), 1px border, 4px radius, mono step numbers, Driftwood progress rule tracking scroll. Five steps read like a numbered methodology, not a carousel.</div>
+      </div>
+      <div class="sec-refs"><a href="https://daylightcomputer.com" target="_blank">Daylight</a> · <a href="https://basement.studio" target="_blank">basement.studio</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">07</span><h3>Contact</h3></div>
+      <div class="sec-body">
+        <div class="now">Glass form panel, rounded-2xl inputs, gradient glow backdrop.</div>
+        <div class="redo"><b>Flat white card, hairline inputs, 2px radii, Driftwood focus ring</b> — your design system's own Input/Button components, used verbatim. Keep the response-time promise line; it's the most persuasive sentence on the page.</div>
+      </div>
+      <div class="sec-refs"><a href="https://column.com" target="_blank">Column</a> · <a href="https://mercury.com" target="_blank">Mercury</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">+</span><h3>The name story</h3><span class="new">NEW SECTION</span></div>
+      <div class="sec-body">
+        <div class="now">The koi/sequoia story — your most distinctive asset — appears nowhere.</div>
+        <div class="redo">A designed moment: <b>cy · ko · ai</b> split across three columns on a Windsor band (see mockup C's second section). Rings + diagonal behind. This is the section visitors will remember and repeat.</div>
+      </div>
+      <div class="sec-refs"><a href="https://www.sequoiacap.com" target="_blank">Sequoia</a> · mockup C</div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">+</span><h3>Proof strip</h3><span class="new">WHEN REAL</span></div>
+      <div class="sec-body">
+        <div class="now">Testimonials/CaseStudies components exist but sit unused (rightly — they'd be empty).</div>
+        <div class="redo">Until clients are public: a <b>published-thinking row</b> (Trail of Bits pattern) — two or three short notes on your methodology. Swap in logos/case studies only when they're real. Never fake proof.</div>
+      </div>
+      <div class="sec-refs"><a href="https://www.trailofbits.com" target="_blank">Trail of Bits</a> · <a href="https://www.sequoiacap.com" target="_blank">Sequoia</a></div>
+    </div>
+
+    <div class="sec-note">
+      <div class="head"><span class="n">FTR</span><h3>Footer</h3></div>
+      <div class="sec-body">
+        <div class="now">Standard link columns.</div>
+        <div class="redo">Windsor band, oversized wordmark, diagonal divider entering from the corner, mono legal line. One quiet marquee of the wordmark at most — basement.studio energy at 10% volume.</div>
+      </div>
+      <div class="sec-refs"><a href="https://basement.studio" target="_blank">basement.studio</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 TECHNIQUES ============ -->
+<section class="part dark" id="techniques">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num">PART 06</span><h2>Motion technique cheat sheet</h2></div>
+    <p class="intro">Everything below is DOM + CSS + GSAP — no WebGL anywhere.</p>
+    <div class="cheat">
+      <div class="ch"><div class="k">T1 — FOUNDATION</div><h3>Lenis + ScrollTrigger</h3><p>Lenis drives scroll; <code>lenis.on('scroll', ScrollTrigger.update)</code> syncs GSAP. Everything else hangs off this. Already in your dependencies.</p></div>
+      <div class="ch"><div class="k">T2 — DEPTH</div><h3>Layered speed planes</h3><p>Elements carry <code>data-speed="0.85–1.0"</code>; one rAF loop translates them. Three planes max per viewport (Locomotive pattern, demoed in all three mockups).</p></div>
+      <div class="ch"><div class="k">T3 — REVEALS</div><h3>Masked lines &amp; drawn rules</h3><p>Headlines reveal line-by-line from <code>overflow:hidden</code> wrappers; hairlines and diagonals draw in via <code>stroke-dashoffset</code> / <code>scaleX</code> (Exo Ape / basement).</p></div>
+      <div class="ch"><div class="k">T4 — TRANSITIONS</div><h3>The diagonal wipe</h3><p>Zentry's clip-path move at your 45°: <code>clip-path: polygon(…)</code> scrubbed by scroll to hand off light→dark bands. Use once or twice, not everywhere.</p></div>
+      <div class="ch"><div class="k">T5 — PINNED MOMENTS</div><h3>Philosophy &amp; Process only</h3><p>Two pins per page maximum. Philosophy: text scrub (keep yours). Process: horizontal track with a Driftwood progress rule. Every pin needs a reduced-motion static fallback.</p></div>
+      <div class="ch"><div class="k">T6 — PERFORMANCE</div><h3>The calm contract</h3><p>Transforms/opacity only; <code>will-change</code> sparingly; IntersectionObserver gates everything offscreen; 60fps or the effect gets cut. A janky calm site is a contradiction.</p></div>
+    </div>
+    <div class="dep">
+      <span><b class="ok">KEEP</b> — next · lenis · gsap · framer-motion (or fold into GSAP) · tailwind</span>
+      <span><b class="no">DROP</b> — three · @react-three/fiber · @react-three/drei · @react-three/postprocessing · postprocessing</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 NEXT ============ -->
+<section class="part" id="next">
+  <div class="wrap">
+    <div class="part-head"><span class="part-num">PART 07</span><h2>Next steps</h2></div>
+    <div class="steps">
+      <div class="step"><div><h3>React to the three hero mockups</h3><p>A — The Memo, B — The Dark Band, C — Depth &amp; Rings. They share one system (your tokens, the diagonal, mono instrumentation) and can be blended — e.g. B's hero with C's name-story band and A's engagement-note artifact.</p></div></div>
+      <div class="step"><div><h3>Lock the direction, then rebuild section by section</h3><p>I work directly in the repo: strip the slop layer, keep the copy and the two good pins, apply the recipe. Dropping the three.js stack alone meaningfully cuts bundle weight. One section per pass, reviewed as we go.</p></div></div>
+      <div class="step"><div><h3>Fold the patterns back into the design system</h3><p>New primitives that emerge (diagonal divider, ring figure, numbered index row, engagement-note card) get written into <b>incorporation/Cykoai Design System</b> so decks, reports, and the site stay one brand.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="board-foot">
+  <div class="wrap">
+    <span>CYKOAI CONSULTING — DESIGN PHASE 01</span>
+    <span>ALL LINKS VERIFIED AUG 2026 · BOARD FOLLOWS ITS OWN RULES</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cykoai — Direction C: Depth &amp; Rings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --windsor:#0B1527; --white:#FFFFFF; --driftwood:#AD8752; --spruce:#2C5530;
+    --n700:#3A4356; --n500:#6B7385; --n300:#B4B9C4; --n150:#E4E6EA; --n100:#F2F3F5; --n50:#F9F9FA;
+    --display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--n50);color:var(--windsor);-webkit-font-smoothing:antialiased;overflow-x:clip}
+
+  .tag{position:fixed;right:20px;bottom:20px;z-index:50;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+    color:var(--n500);background:var(--white);border:1px solid var(--n150);padding:7px 12px;border-radius:2px}
+  .tag b{color:var(--driftwood);font-weight:500}
+
+  nav{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+    background:var(--windsor);color:var(--white);padding:0 clamp(20px,4vw,56px);height:64px}
+  .wordmark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--white)}
+  .wordmark .mark{width:26px;height:26px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.9);align-self:center}
+  .wordmark .mark::after{content:"";position:absolute;left:-40%;top:50%;width:180%;height:2px;background:var(--white);transform:rotate(-45deg)}
+  .wordmark span{font-family:var(--display);font-weight:700;letter-spacing:.02em;font-size:17px}
+  .wordmark small{font-family:var(--mono);font-size:9px;letter-spacing:.32em;color:var(--n300)}
+  .nav-right{display:flex;align-items:center;gap:clamp(16px,3vw,36px)}
+  .nav-right a{font-size:13.5px;color:var(--n300);text-decoration:none;transition:color .25s var(--ease)}
+  .nav-right a:hover{color:var(--white)}
+  .nav-cta{border:1px solid rgba(255,255,255,.35);padding:9px 18px;border-radius:2px;color:var(--white) !important;font-weight:500}
+  .nav-cta:hover{background:var(--white);color:var(--windsor) !important}
+
+  /* ---------- hero with growth rings ---------- */
+  .hero{position:relative;min-height:calc(100svh - 64px);display:flex;align-items:center;overflow:hidden}
+  .rings{position:absolute;top:50%;right:-24vw;width:70vw;max-width:980px;aspect-ratio:1;transform:translateY(-50%);pointer-events:none}
+  .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(11,21,39,.14);will-change:transform}
+  .ring.r2{inset:9%}  .ring.r3{inset:19%} .ring.r4{inset:30%;border-color:rgba(173,135,82,.85);border-width:1.5px}
+  .ring.r5{inset:38%} .ring.r6{inset:43%;border-color:rgba(11,21,39,.22)}
+  .ring.r7{inset:46.5%;background:var(--windsor);border:0}
+  /* the diagonal intersecting the rings — the mark meeting the rings */
+  .cut{position:absolute;inset:0;pointer-events:none}
+  .cut line{stroke:var(--windsor);stroke-width:1.5;stroke-dasharray:2600;stroke-dashoffset:2600;animation:draw 1.8s var(--ease) .4s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .ring-note{position:absolute;right:clamp(20px,4vw,56px);bottom:92px;text-align:right;
+    font-family:var(--mono);font-size:10.5px;line-height:2;letter-spacing:.14em;color:var(--n500)}
+  .ring-note b{color:var(--windsor);font-weight:500}
+  .ring-note em{color:var(--driftwood);font-style:normal}
+
+  .hero-inner{position:relative;width:100%;max-width:1320px;margin:0 auto;padding:clamp(64px,9vh,120px) clamp(20px,4vw,56px)}
+  .eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--n500)}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--driftwood)}
+  h1{font-family:var(--display);font-weight:600;letter-spacing:-0.03em;line-height:1.02;
+    font-size:clamp(2.9rem,6.6vw,5.8rem);margin-top:26px;max-width:13ch}
+  .lede{margin-top:30px;font-size:1.125rem;line-height:1.65;color:var(--n500);max-width:42ch}
+  .cta-row{margin-top:44px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+  .btn{font-weight:500;font-size:15px;background:var(--windsor);color:var(--white);text-decoration:none;
+    padding:15px 28px;border-radius:2px;transition:background .25s var(--ease)}
+  .btn:hover{background:#1A2A47}
+  .link{font-size:15px;font-weight:500;color:var(--windsor);text-decoration:none;border-bottom:1px solid var(--driftwood);padding-bottom:3px}
+  .link:hover{color:var(--driftwood)}
+
+  /* ---------- name-story band ---------- */
+  .band{background:var(--windsor);color:var(--white);position:relative;overflow:hidden}
+  .band-inner{max-width:1320px;margin:0 auto;padding:clamp(88px,14vh,150px) clamp(20px,4vw,56px)}
+  .band .kicker{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--n300)}
+  .band .kicker::before{content:"02";color:var(--driftwood)}
+  .name-grid{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(255,255,255,.14)}
+  .name-cell{padding:30px 26px 6px 0}
+  .name-cell + .name-cell{padding-left:26px;border-left:1px solid rgba(255,255,255,.14)}
+  .name-cell .syll{font-family:var(--display);font-weight:600;font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.02em}
+  .name-cell .syll i{font-style:normal;color:var(--driftwood)}
+  .name-cell p{margin-top:14px;color:var(--n300);font-size:.95rem;line-height:1.65;max-width:30ch}
+  .band .ring-echo{position:absolute;left:-18%;bottom:-55%;width:52vw;max-width:700px;aspect-ratio:1;pointer-events:none;will-change:transform}
+  .band .ring-echo div{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.07)}
+  .band .ring-echo .a{inset:0}.band .ring-echo .b{inset:12%}.band .ring-echo .c{inset:26%;border-color:rgba(173,135,82,.3)}
+
+  footer{background:var(--windsor);border-top:1px solid rgba(255,255,255,.1);color:var(--n300);
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;padding:22px clamp(20px,4vw,56px);
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  footer span:last-child{margin-right:180px}
+
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:900px){
+    .rings{opacity:.35;right:-50vw;width:110vw}
+    .ring-note{display:none}
+    .name-grid{grid-template-columns:1fr}
+    .name-cell + .name-cell{padding-left:0;border-left:0;border-top:1px solid rgba(255,255,255,.14)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+    .rv{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="tag">EXPLORATION <b>C / 3</b> — DEPTH &amp; RINGS</div>
+
+<nav>
+  <a class="wordmark" href="#">
+    <span class="mark"></span>
+    <span>CYKOAI</span>
+    <small>CONSULTING</small>
+  </a>
+  <div class="nav-right">
+    <a href="#">Approach</a>
+    <a href="#">Services</a>
+    <a href="#">About</a>
+    <a class="nav-cta" href="#">Talk to us</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="rings" aria-hidden="true">
+    <div class="ring r1" data-speed="0.96"></div>
+    <div class="ring r2" data-speed="0.93"></div>
+    <div class="ring r3" data-speed="0.90"></div>
+    <div class="ring r4" data-speed="0.86"></div>
+    <div class="ring r5" data-speed="0.82"></div>
+    <div class="ring r6" data-speed="0.78"></div>
+    <div class="ring r7" data-speed="0.74"></div>
+  </div>
+  <svg class="cut" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1400 900">
+    <line x1="480" y1="980" x2="1480" y2="120"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="eyebrow">FORWARD-DEPLOYED CONSULTING — AI · CYBERSECURITY</div>
+    <h1 data-speed="0.97">Built for flux.<br>Made to last.</h1>
+    <p class="lede">Technology moves in waves. We help organizations ride each one —
+      adopting AI and securing what it touches — without losing the structure
+      that took years to grow.</p>
+    <div class="cta-row">
+      <a class="btn" href="#name">Talk to us</a>
+      <a class="link" href="#name">Why &ldquo;Cykoai&rdquo;</a>
+    </div>
+  </div>
+
+  <div class="ring-note">
+    <b>THE RINGS</b> — GROWTH, READ IN CROSS-SECTION<br>
+    AGILE AS WATER · <em>OLD AS THE SEQUOIA</em>
+  </div>
+</section>
+
+<section class="band" id="name">
+  <div class="ring-echo" data-speed="0.88" aria-hidden="true"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+  <div class="band-inner">
+    <div class="kicker rv">THE NAME IS THE OPERATING MODEL</div>
+    <div class="name-grid">
+      <div class="name-cell rv">
+        <div class="syll">cy<i>·</i></div>
+        <p>From cyber-security. Defense is never bolted on — it is where every engagement begins.</p>
+      </div>
+      <div class="name-cell rv">
+        <div class="syll">ko<i>·</i></div>
+        <p>The sound of the koi and the heart of the sequoia — agility against constant flux, resilience against the test of time.</p>
+      </div>
+      <div class="name-cell rv">
+        <div class="syll">ai</div>
+        <p>Applied intelligence — deployed inside your organization, owned by your teams.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>CYKOAI CONSULTING</span>
+  <span>DIRECTION C — LIGHT FIELD · CONCENTRIC DEPTH · THE DIAGONAL CUTS THROUGH</span>
+</footer>
+
+<script>
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = [...document.querySelectorAll('[data-speed]')];
+  if (!rm && els.length){
+    let ticking = false;
+    const update = () => {
+      const y = scrollY;
+      for (const el of els){
+        const s = parseFloat(el.dataset.speed);
+        el.style.transform = `translateY(${(y * (s - 1)).toFixed(1)}px)`;
+      }
+      ticking = false;
+    };
+    addEventListener('scroll', () => { if(!ticking){ requestAnimationFrame(update); ticking = true; } }, {passive:true});
+  }
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.2});
+  document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = `${i*90}ms`; io.observe(el); });
+</script>
+</body>
+</html>

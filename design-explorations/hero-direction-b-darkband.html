@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cykoai — Direction B: The Dark Band</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --windsor:#0B1527; --windsor-2:#101C33; --white:#FFFFFF; --driftwood:#AD8752;
+    --n700:#3A4356; --n500:#6B7385; --n300:#B4B9C4; --n150:#E4E6EA; --n50:#F9F9FA;
+    --display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--windsor);color:var(--white);-webkit-font-smoothing:antialiased;overflow-x:clip}
+
+  .tag{position:fixed;right:20px;bottom:20px;z-index:50;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+    color:var(--n300);background:var(--windsor);border:1px solid rgba(255,255,255,.16);padding:7px 12px;border-radius:2px}
+  .tag b{color:var(--driftwood);font-weight:500}
+
+  nav{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+    background:var(--windsor);border-bottom:1px solid rgba(255,255,255,.08);padding:0 clamp(20px,4vw,56px);height:64px}
+  .wordmark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--white)}
+  .wordmark .mark{width:26px;height:26px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.9);align-self:center}
+  .wordmark .mark::after{content:"";position:absolute;left:-40%;top:50%;width:180%;height:2px;background:var(--white);transform:rotate(-45deg)}
+  .wordmark span{font-family:var(--display);font-weight:700;letter-spacing:.02em;font-size:17px}
+  .wordmark small{font-family:var(--mono);font-size:9px;letter-spacing:.32em;color:var(--n500)}
+  .nav-right{display:flex;align-items:center;gap:clamp(16px,3vw,36px)}
+  .nav-right a{font-size:13.5px;color:var(--n300);text-decoration:none;transition:color .25s var(--ease)}
+  .nav-right a:hover{color:var(--white)}
+  .nav-cta{border:1px solid rgba(255,255,255,.35);padding:9px 18px;border-radius:2px;color:var(--white) !important;font-weight:500}
+  .nav-cta:hover{background:var(--white);color:var(--windsor) !important}
+
+  /* ---------- cinematic hero ---------- */
+  .hero{position:relative;min-height:calc(100svh - 64px);display:flex;align-items:center;overflow:hidden}
+  /* layered diagonals — the mark at architectural scale, three parallax planes */
+  .plane{position:absolute;inset:-20% -10%;pointer-events:none;will-change:transform}
+  .plane svg{width:100%;height:100%}
+  .p1 line{stroke:rgba(255,255,255,.045);stroke-width:170}
+  .p2 line{stroke:rgba(255,255,255,.08);stroke-width:2}
+  .p3 line{stroke:var(--driftwood);stroke-width:2;opacity:.55}
+  .hero-inner{position:relative;width:100%;max-width:1320px;margin:0 auto;padding:clamp(72px,10vh,130px) clamp(20px,4vw,56px)}
+  .corner{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--n500)}
+  .c-tl{top:34px;left:clamp(20px,4vw,56px)}
+  .c-tr{top:34px;right:clamp(20px,4vw,56px);text-align:right}
+  .c-bl{bottom:34px;left:clamp(20px,4vw,56px)}
+  .corner b{color:var(--n300);font-weight:400}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--n300)}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--driftwood)}
+  h1{font-family:var(--display);font-weight:600;letter-spacing:-0.03em;line-height:1.0;
+    font-size:clamp(3.2rem,8vw,7rem);margin-top:28px;max-width:12ch}
+  h1 .dim{color:var(--n500)}
+  .lede{margin-top:30px;font-size:1.1rem;line-height:1.7;color:var(--n300);max-width:46ch}
+  .cta-row{margin-top:48px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+  .btn{font-weight:500;font-size:15px;background:var(--white);color:var(--windsor);text-decoration:none;
+    padding:15px 28px;border-radius:2px;transition:background .25s var(--ease)}
+  .btn:hover{background:var(--n150)}
+  .link{font-size:15px;font-weight:500;color:var(--white);text-decoration:none;border-bottom:1px solid var(--driftwood);padding-bottom:3px}
+  .link:hover{color:var(--driftwood)}
+
+  .scroll-cue{position:absolute;bottom:96px;right:clamp(20px,4vw,56px);display:flex;align-items:center;gap:12px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:var(--n500)}
+  .scroll-cue::after{content:"";width:1px;height:36px;background:linear-gradient(to bottom,var(--n500),transparent)}
+
+  /* ---------- light handoff ---------- */
+  .paper{background:var(--white);color:var(--windsor);position:relative}
+  .paper-inner{max-width:1320px;margin:0 auto;padding:clamp(88px,14vh,150px) clamp(20px,4vw,56px);
+    display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,4vw,72px)}
+  .paper .kicker{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--n500)}
+  .paper .kicker::before{content:"01";color:var(--driftwood)}
+  .paper h2{font-family:var(--display);font-weight:600;letter-spacing:-0.025em;line-height:1.08;font-size:clamp(1.9rem,3.8vw,3rem);margin-top:20px}
+  .paper .col p{color:var(--n500);font-size:1.05rem;line-height:1.7}
+  .paper .col p + p{margin-top:1em}
+  .paper .col strong{color:var(--windsor);font-weight:600}
+  .stat-row{margin-top:40px;display:flex;gap:0;border-top:1px solid var(--n150)}
+  .stat{flex:1;padding:22px 18px 0 0}
+  .stat + .stat{padding-left:18px;border-left:1px solid var(--n150)}
+  .stat .n{font-family:var(--display);font-weight:600;font-size:1.9rem;letter-spacing:-.02em}
+  .stat .l{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--n500);margin-top:6px}
+
+  footer{background:var(--windsor);border-top:1px solid rgba(255,255,255,.1);color:var(--n300);
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;padding:22px clamp(20px,4vw,56px);
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  footer span:last-child{margin-right:180px}
+
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:900px){ .paper-inner{grid-template-columns:1fr} .corner{display:none} }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+    .rv{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="tag">EXPLORATION <b>B / 3</b> — THE DARK BAND</div>
+
+<nav>
+  <a class="wordmark" href="#">
+    <span class="mark"></span>
+    <span>CYKOAI</span>
+    <small>CONSULTING</small>
+  </a>
+  <div class="nav-right">
+    <a href="#">Approach</a>
+    <a href="#">Services</a>
+    <a href="#">About</a>
+    <a class="nav-cta" href="#">Talk to us</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="plane p1" data-speed="0.90"><svg viewBox="0 0 1600 1000" preserveAspectRatio="none"><line x1="200" y1="1100" x2="1700" y2="-100"/></svg></div>
+  <div class="plane p2" data-speed="0.80"><svg viewBox="0 0 1600 1000" preserveAspectRatio="none"><line x1="-100" y1="1050" x2="1500" y2="-50"/></svg></div>
+  <div class="plane p3" data-speed="0.70"><svg viewBox="0 0 1600 1000" preserveAspectRatio="none"><line x1="640" y1="1100" x2="1750" y2="240"/></svg></div>
+
+  <div class="corner c-tl">FORWARD-DEPLOYED</div>
+  <div class="corner c-tr">AI × CYBERSECURITY<br><b>CONSULTING</b></div>
+  <div class="corner c-bl">N 23.5859° — <b>STEADY</b></div>
+
+  <div class="hero-inner">
+    <div class="eyebrow">CYKOAI — FORWARD-DEPLOYED CONSULTING</div>
+    <h1>The future favors <span class="dim">the steady.</span></h1>
+    <p class="lede">Disruptive technology rewards the organizations that adopt it deliberately.
+      We deploy inside your teams — engineers and strategists together — and build until it holds.</p>
+    <div class="cta-row">
+      <a class="btn" href="#paper">See how we work</a>
+      <a class="link" href="#">Talk to us</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue">SCROLL</div>
+</section>
+
+<section class="paper" id="paper">
+  <div class="paper-inner">
+    <div>
+      <div class="kicker rv">WHY CYKOAI</div>
+      <h2 class="rv">Anxious organizations make poor decisions.</h2>
+    </div>
+    <div class="col">
+      <p class="rv">The speed of change creates and destroys threats and opportunities faster than
+        most businesses can metabolize. The result is a constant fight-or-flight posture — and
+        <strong>anxious businesses are not productive businesses.</strong></p>
+      <p class="rv">Our work is to absorb that volatility: think ahead of it, build inside your
+        organization, and hand off systems your own teams run with confidence.</p>
+      <div class="stat-row rv">
+        <div class="stat"><div class="n">2 – 4</div><div class="l">PEOPLE, DEPLOYED INSIDE</div></div>
+        <div class="stat"><div class="n">&lt; 90</div><div class="l">DAYS TO PRODUCTION</div></div>
+        <div class="stat"><div class="n">100%</div><div class="l">OWNED BY YOUR TEAM</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>CYKOAI CONSULTING</span>
+  <span>DIRECTION B — CINEMATIC DARK · LAYERED DIAGONAL PLANES · MONO INSTRUMENTATION</span>
+</footer>
+
+<script>
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = [...document.querySelectorAll('[data-speed]')];
+  if (!rm && els.length){
+    let ticking = false;
+    const update = () => {
+      const y = scrollY;
+      for (const el of els){
+        const s = parseFloat(el.dataset.speed);
+        el.style.transform = `translateY(${(y * (s - 1)).toFixed(1)}px)`;
+      }
+      ticking = false;
+    };
+    addEventListener('scroll', () => { if(!ticking){ requestAnimationFrame(update); ticking = true; } }, {passive:true});
+  }
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.2});
+  document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = `${i*90}ms`; io.observe(el); });
+</script>
+</body>
+</html>

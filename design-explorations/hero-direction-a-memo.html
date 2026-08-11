@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cykoai — Direction A: The Memo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --windsor:#0B1527; --white:#FFFFFF; --driftwood:#AD8752; --spruce:#2C5530; --rose:#912F40;
+    --n700:#3A4356; --n500:#6B7385; --n300:#B4B9C4; --n150:#E4E6EA; --n100:#F2F3F5; --n50:#F9F9FA;
+    --display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --body:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(0.16,1,0.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);background:var(--white);color:var(--windsor);-webkit-font-smoothing:antialiased;overflow-x:clip}
+
+  /* ---------- exploration tag ---------- */
+  .tag{position:fixed;right:20px;bottom:20px;z-index:50;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+    color:var(--n500);background:var(--white);border:1px solid var(--n150);padding:7px 12px;border-radius:2px}
+  .tag b{color:var(--driftwood);font-weight:500}
+
+  /* ---------- nav (permanent dark inverse band, per DS) ---------- */
+  nav{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+    background:var(--windsor);color:var(--white);padding:0 clamp(20px,4vw,56px);height:64px}
+  .wordmark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--white)}
+  .wordmark .mark{width:26px;height:26px;background:var(--windsor);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.9);align-self:center}
+  .wordmark .mark::after{content:"";position:absolute;left:-40%;top:50%;width:180%;height:2px;background:var(--white);transform:rotate(-45deg)}
+  .wordmark span{font-family:var(--display);font-weight:700;letter-spacing:.02em;font-size:17px}
+  .wordmark small{font-family:var(--mono);font-size:9px;letter-spacing:.32em;color:var(--n300)}
+  .nav-right{display:flex;align-items:center;gap:clamp(16px,3vw,36px)}
+  .nav-right a{font-size:13.5px;color:var(--n300);text-decoration:none;transition:color .25s var(--ease)}
+  .nav-right a:hover{color:var(--white)}
+  .nav-cta{border:1px solid rgba(255,255,255,.35);padding:9px 18px;border-radius:2px;color:var(--white) !important;font-weight:500}
+  .nav-cta:hover{background:var(--white);color:var(--windsor) !important}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:calc(100svh - 64px);display:flex;align-items:center;overflow:hidden;background:var(--white)}
+  .hero-inner{position:relative;width:100%;max-width:1320px;margin:0 auto;padding:clamp(64px,9vh,120px) clamp(20px,4vw,56px);
+    display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:clamp(32px,5vw,88px);align-items:center}
+  /* the diagonal — single brand stroke, draws in on load */
+  .diag{position:absolute;inset:0;pointer-events:none;overflow:visible}
+  .diag line{stroke:var(--n150);stroke-width:1.5;stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 1.6s var(--ease) .3s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  .eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--n500)}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--driftwood)}
+  h1{font-family:var(--display);font-weight:600;letter-spacing:-0.03em;line-height:1.02;
+    font-size:clamp(2.9rem,6.4vw,5.6rem);margin-top:26px;max-width:14ch}
+  .foot-word{position:relative;white-space:nowrap}
+  .foot-word::after{content:"";position:absolute;left:1%;bottom:-0.06em;width:98%;height:.07em;background:var(--driftwood);
+    transform:skewX(-32deg) scaleX(0);transform-origin:left;animation:rule .7s var(--ease) 1.5s forwards}
+  @keyframes rule{to{transform:skewX(-32deg) scaleX(1)}}
+  .lede{margin-top:30px;font-size:1.125rem;line-height:1.65;color:var(--n500);max-width:44ch}
+  .cta-row{margin-top:44px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+  .btn{font-family:var(--body);font-weight:500;font-size:15px;background:var(--windsor);color:var(--white);
+    text-decoration:none;padding:15px 28px;border-radius:2px;transition:background .25s var(--ease)}
+  .btn:hover{background:#1A2A47}
+  .link{font-size:15px;font-weight:500;color:var(--windsor);text-decoration:none;border-bottom:1px solid var(--driftwood);padding-bottom:3px}
+  .link:hover{color:var(--driftwood)}
+
+  /* memo card — proof over pitch */
+  .memo{background:var(--white);border:1px solid var(--n150);border-radius:4px;padding:26px 26px 22px;
+    box-shadow:0 1px 2px rgba(11,21,39,.04),0 8px 24px rgba(11,21,39,.05);will-change:transform}
+  .memo-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;
+    letter-spacing:.14em;color:var(--n500);border-bottom:1px solid var(--n150);padding-bottom:14px}
+  .memo-head b{color:var(--windsor);font-weight:500}
+  .memo ul{list-style:none;margin-top:16px;display:flex;flex-direction:column}
+  .memo li{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--n100);font-size:13px;line-height:1.5;color:var(--n700)}
+  .memo li:last-child{border-bottom:0}
+  .memo li .wk{font-family:var(--mono);font-size:10.5px;color:var(--n300);letter-spacing:.06em;padding-top:2px;min-width:38px}
+  .memo li em{font-style:normal;color:var(--windsor);font-weight:500}
+  .memo-foot{margin-top:10px;padding-top:14px;border-top:1px solid var(--n150);font-family:var(--mono);font-size:10px;color:var(--driftwood);letter-spacing:.12em}
+
+  /* ---------- dark band preview ---------- */
+  .band{background:var(--windsor);color:var(--white);position:relative;overflow:hidden}
+  .band-inner{max-width:1320px;margin:0 auto;padding:clamp(88px,14vh,150px) clamp(20px,4vw,56px)}
+  .band .kicker{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--n300)}
+  .band .kicker::before{content:"01";color:var(--driftwood);letter-spacing:.1em}
+  .band h2{font-family:var(--display);font-weight:600;letter-spacing:-0.025em;line-height:1.08;
+    font-size:clamp(2rem,4.4vw,3.4rem);max-width:22ch;margin-top:22px}
+  .band p{margin-top:22px;max-width:52ch;color:var(--n300);font-size:1.05rem;line-height:1.65}
+  .band .diag2{position:absolute;right:-12%;top:-30%;width:60%;height:160%;pointer-events:none;will-change:transform}
+  .band .diag2 line{stroke:rgba(255,255,255,.07);stroke-width:120}
+
+  footer{background:var(--windsor);border-top:1px solid rgba(255,255,255,.1);color:var(--n300);
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;padding:22px clamp(20px,4vw,56px);
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  footer span:last-child{margin-right:180px}
+
+  /* reveal on scroll */
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:900px){
+    .hero-inner{grid-template-columns:1fr;gap:48px}
+    .memo{max-width:440px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+    .rv{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="tag">EXPLORATION <b>A / 3</b> — THE MEMO</div>
+
+<nav>
+  <a class="wordmark" href="#">
+    <span class="mark"></span>
+    <span>CYKOAI</span>
+    <small>CONSULTING</small>
+  </a>
+  <div class="nav-right">
+    <a href="#">Approach</a>
+    <a href="#">Services</a>
+    <a href="#">About</a>
+    <a class="nav-cta" href="#">Talk to us</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <svg class="diag" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1400 900">
+    <line x1="-60" y1="880" x2="1460" y2="20"/>
+  </svg>
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">FORWARD-DEPLOYED CONSULTING — AI · CYBERSECURITY</div>
+      <h1 data-speed="0.94">Adopt what&rsquo;s next. Keep your <span class="foot-word">footing</span>.</h1>
+      <p class="lede" data-speed="0.97">The world is changing faster than most businesses can absorb.
+        We deploy inside your organization and help you adopt it — without losing yours.</p>
+      <div class="cta-row">
+        <a class="btn" href="#">Talk to us</a>
+        <a class="link" href="#band">See how we work</a>
+      </div>
+    </div>
+    <aside class="memo" data-speed="0.88" aria-label="Sample engagement note">
+      <div class="memo-head"><b>ENGAGEMENT NOTE</b><span>N–014</span></div>
+      <ul>
+        <li><span class="wk">W01</span><span>Deployed: <em>two engineers, one strategist</em>, inside the client&rsquo;s risk team.</span></li>
+        <li><span class="wk">W06</span><span>Fraud-triage agent <em>in production</em>. Review time down 63%.</span></li>
+        <li><span class="wk">W11</span><span>Security review passed. <em>Zero critical findings.</em></span></li>
+        <li><span class="wk">W14</span><span>Handoff complete — <em>their team runs it now</em>.</span></li>
+      </ul>
+      <div class="memo-foot">OUTCOME — OWNED BY THE CLIENT</div>
+    </aside>
+  </div>
+</section>
+
+<section class="band" id="band">
+  <svg class="diag2" data-speed="0.85" aria-hidden="true" viewBox="0 0 600 900" preserveAspectRatio="none">
+    <line x1="0" y1="900" x2="600" y2="0"/>
+  </svg>
+  <div class="band-inner">
+    <div class="kicker rv">WHAT WE DO</div>
+    <h2 class="rv">One firm across the full stack of technological change.</h2>
+    <p class="rv">Most firms specialize in a single layer — a model, a network, an audit.
+      We operate across all of them at once, because adoption fails at the seams.
+      <br><br><em style="color:var(--driftwood);font-style:normal;font-family:var(--mono);font-size:12px;letter-spacing:.1em">↓ LIGHT BODY · DARK BANDS · ONE DIAGONAL</em></p>
+  </div>
+</section>
+
+<footer>
+  <span>CYKOAI CONSULTING</span>
+  <span>DIRECTION A — EDITORIAL MEMO · FLAT FIELDS · HAIRLINES · ONE ACCENT</span>
+</footer>
+
+<script>
+  // Subtle multi-speed parallax — transform-only, rAF-throttled, reduced-motion aware.
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = [...document.querySelectorAll('[data-speed]')];
+  if (!rm && els.length){
+    let ticking = false;
+    const update = () => {
+      const y = scrollY;
+      for (const el of els){
+        const s = parseFloat(el.dataset.speed);
+        el.style.transform = `translateY(${(y * (s - 1)).toFixed(1)}px)`;
+      }
+      ticking = false;
+    };
+    addEventListener('scroll', () => { if(!ticking){ requestAnimationFrame(update); ticking = true; } }, {passive:true});
+  }
+  // Reveal-in on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.2});
+  document.querySelectorAll('.rv').forEach((el,i) => { el.style.transitionDelay = `${i*90}ms`; io.observe(el); });
+</script>
+</body>
+</html>
