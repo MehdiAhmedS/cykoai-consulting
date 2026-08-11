@@ -23,7 +23,10 @@ const COLUMNS = [
  */
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-windsor pt-16 text-white md:pt-20">
+    <footer
+      data-band-fade="#FFFFFF"
+      className="relative overflow-hidden border-t border-white/10 bg-windsor pt-16 text-white md:pt-20"
+    >
       {/* the diagonal — one clean 45° line from the bottom-right corner */}
       <div
         aria-hidden="true"

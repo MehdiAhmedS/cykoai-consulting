@@ -27,7 +27,11 @@ const CELLS = [
  */
 export default function NameStory() {
   return (
-    <section id="name" className="relative overflow-hidden bg-windsor text-white">
+    <section
+      id="name"
+      data-band-fade="#F9F9FA"
+      className="relative overflow-hidden bg-windsor text-white"
+    >
       <div
         data-speed="0.88"
         className="pointer-events-none absolute -bottom-[55%] -left-[18%] aspect-square w-[52vw] max-w-[700px] will-change-transform"

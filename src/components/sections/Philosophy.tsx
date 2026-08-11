@@ -93,6 +93,7 @@ export default function Philosophy() {
       <section
         id="philosophy"
         ref={wrapperRef}
+        data-band-fade="#F9F9FA"
         className="relative overflow-hidden bg-windsor text-white motion-safe:h-screen"
       >
         {/* AM-1 monolith — invisible-but-felt texture, drifting at 0.92 */}

@@ -40,8 +40,50 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // sections' layers are in the DOM).
     const cleanupParallax = initParallax();
 
+    // Route same-page anchors through Lenis so nav clicks glide instead
+    // of jumping (native jump remains for reduced-motion users, who have
+    // no Lenis at all). Offset clears the sticky 64px nav band.
+    const onAnchorClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+        'a[href^="#"]'
+      );
+      if (!anchor) return;
+      const target = document.querySelector(anchor.hash || "#");
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: -64 });
+    };
+    document.addEventListener("click", onAnchorClick);
+
+    // Band color handoffs (Cappen move): a dark band fades up from the
+    // preceding light field across 0.4 viewport as it enters.
+    const fadeTweens = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-band-fade]")
+    ).map((band) =>
+      gsap.fromTo(
+        band,
+        { backgroundColor: band.dataset.bandFade },
+        {
+          backgroundColor: getComputedStyle(band).backgroundColor,
+          ease: "none",
+          immediateRender: true,
+          scrollTrigger: {
+            trigger: band,
+            start: "top 90%",
+            end: "top 50%",
+            scrub: true,
+          },
+        }
+      )
+    );
+
     return () => {
       cleanupParallax();
+      document.removeEventListener("click", onAnchorClick);
+      fadeTweens.forEach((t) => {
+        t.scrollTrigger?.kill();
+        t.kill();
+      });
       gsap.ticker.remove(tickerCallback);
       lenis.destroy();
       delete (window as typeof window & { __lenis?: Lenis }).__lenis;
