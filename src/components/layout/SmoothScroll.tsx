@@ -66,7 +66,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         {
           backgroundColor: getComputedStyle(band).backgroundColor,
           ease: "none",
-          immediateRender: true,
+          // Never pre-paint the light "from" color at load — bands keep
+          // their own background until the scrub actually reaches them.
+          immediateRender: false,
           scrollTrigger: {
             trigger: band,
             start: "top 90%",

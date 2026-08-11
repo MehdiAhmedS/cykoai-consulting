@@ -273,7 +273,19 @@ export default function WorldCanvas({
 
     let io: IntersectionObserver | null = null;
 
-    fetch("/assets/land-points.json")
+    // Fetch after the browser is idle: the 40KB land file must not
+    // compete with fonts and hydration for the LCP-critical window —
+    // the hero reads complete before the globe fades in.
+    const whenIdle = new Promise<void>((resolve) => {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => resolve(), { timeout: 1600 });
+      } else {
+        setTimeout(resolve, 350);
+      }
+    });
+
+    whenIdle
+      .then(() => fetch("/assets/land-points.json"))
       .then((r) => r.json())
       .then((land: [number, number][]) => {
         if (disposed) return;

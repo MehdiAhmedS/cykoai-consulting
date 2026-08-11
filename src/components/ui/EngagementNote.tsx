@@ -46,7 +46,7 @@ export default function EngagementNote({ className }: { className?: string }) {
       className={`rounded-sm border border-n150 bg-white p-6 pb-5 [&_em]:font-medium [&_em]:not-italic [&_em]:text-windsor ${className ?? ""}`}
     >
       <div className="flex items-center justify-between border-b border-n150 pb-3.5 font-mono text-[10px] tracking-[0.14em] text-n500">
-        <b className="font-medium text-windsor">ENGAGEMENT NOTE</b>
+        <b className="font-normal text-windsor">ENGAGEMENT NOTE</b>
         <span>
           <span className="text-driftwood-deep">ILLUSTRATIVE</span> · N–014
         </span>
@@ -57,7 +57,7 @@ export default function EngagementNote({ className }: { className?: string }) {
             key={item.week}
             className="flex gap-3.5 border-b border-n100 py-3 text-[13px] leading-normal text-n700 last:border-b-0"
           >
-            <span className="min-w-[38px] pt-0.5 font-mono text-[10.5px] tracking-[0.06em] text-n300">
+            <span className="min-w-[38px] pt-0.5 font-mono text-[10.5px] tracking-[0.06em] text-n500">
               {item.week}
             </span>
             <span>{item.body}</span>

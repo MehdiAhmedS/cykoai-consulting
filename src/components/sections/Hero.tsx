@@ -57,8 +57,8 @@ export default function Hero() {
       </div>
 
       {/* mono caption — instrumentation voice, bottom right */}
-      <div className="absolute bottom-24 right-[clamp(20px,4vw,56px)] text-right font-mono text-[10px] leading-loose tracking-[0.22em] text-n500 max-[899px]:hidden">
-        <span className="text-n300">DEPLOYED WHERE CHANGE HAPPENS</span>
+      <div className="absolute bottom-24 right-[clamp(20px,4vw,56px)] text-right font-mono text-[10px] leading-loose tracking-[0.22em] text-n300 max-[899px]:hidden">
+        <span className="text-white/90">DEPLOYED WHERE CHANGE HAPPENS</span>
         <br />
         ORIGIN — MUSCAT ·{" "}
         <span className="text-driftwood">23.59° N, 58.38° E</span>

@@ -51,7 +51,7 @@ export default function Footer() {
           <div className="max-w-md">
             <div className="flex items-center gap-3">
               <LogoMark className="h-8 w-8" />
-              <span className="font-display text-[1.3rem] font-medium tracking-tight">
+              <span className="font-display text-[1.3rem] font-semibold tracking-tight">
                 Cykoai
               </span>
             </div>
@@ -72,9 +72,9 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-12 sm:gap-20">
             {COLUMNS.map((col) => (
               <div key={col.heading}>
-                <h4 className="font-mono text-[10px] font-medium uppercase tracking-[0.22em] text-n500">
+                <h3 className="font-mono text-[10px] font-normal uppercase tracking-[0.22em] text-n300">
                   {col.heading}
-                </h4>
+                </h3>
                 <ul className="mt-5 flex flex-col gap-3">
                   {col.links.map((link) => (
                     <li key={link.label}>
@@ -99,7 +99,7 @@ export default function Footer() {
           </span>
         </div>
 
-        <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 py-8 font-mono text-[10.5px] tracking-[0.14em] text-n500 sm:flex-row sm:items-center">
+        <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 py-8 font-mono text-[10.5px] tracking-[0.14em] text-n300 sm:flex-row sm:items-center">
           <span>&copy; {new Date().getFullYear()} CYKOAI CONSULTING. ALL RIGHTS RESERVED.</span>
           <span>DESIGNED AND BUILT IN-HOUSE.</span>
         </div>

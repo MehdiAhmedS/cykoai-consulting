@@ -35,6 +35,10 @@ export default function SplitText({
       type: "lines",
       mask: "lines",
       autoSplit: true,
+      // The animated copy is aria-hidden below and a plain sr-only copy
+      // carries the text — SplitText's own aria-label would sit on a
+      // bare span, which ARIA prohibits.
+      aria: "none",
       onSplit: (self) =>
         gsap.from(self.lines, {
           yPercent: 110,
@@ -58,8 +62,11 @@ export default function SplitText({
   }, [delay, once]);
 
   return (
-    <span ref={ref} className={cn("inline-block", className)}>
-      {children}
-    </span>
+    <>
+      <span className="sr-only">{children}</span>
+      <span ref={ref} aria-hidden className={cn("inline-block", className)}>
+        {children}
+      </span>
+    </>
   );
 }

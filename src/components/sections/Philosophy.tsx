@@ -138,7 +138,7 @@ export default function Philosophy() {
                     </span>
                   </p>
                 ) : (
-                  <p className="font-display text-[clamp(1.6rem,3.6vw,2.9rem)] font-medium leading-[1.15] tracking-[-0.02em] text-n300">
+                  <p className="font-display text-[clamp(1.6rem,3.6vw,2.9rem)] font-semibold leading-[1.15] tracking-[-0.02em] text-n300">
                     {line.text}
                   </p>
                 )}

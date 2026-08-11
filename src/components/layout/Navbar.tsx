@@ -89,7 +89,7 @@ export default function Navbar() {
           <span className="font-display text-[17px] font-bold tracking-[0.02em]">
             CYKOAI
           </span>
-          <span className="font-mono text-[9px] tracking-[0.32em] text-n500">
+          <span className="font-mono text-[9px] tracking-[0.32em] text-n300">
             CONSULTING
           </span>
         </a>
@@ -153,7 +153,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 tabIndex={menuOpen ? 0 : -1}
-                className="border-b border-white/8 py-5 font-display text-[2rem] font-medium tracking-[-0.02em] text-white"
+                className="border-b border-white/8 py-5 font-display text-[2rem] font-semibold tracking-[-0.02em] text-white"
               >
                 <span className="mr-4 font-mono text-[11px] tracking-[0.1em] text-driftwood">
                   {String(i + 1).padStart(2, "0")}
