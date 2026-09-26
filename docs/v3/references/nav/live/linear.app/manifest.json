@@ -1,0 +1,96 @@
+{
+  "url": "https://linear.app",
+  "section": "nav",
+  "capturedAt": "2026-09-26T17:34:37.606Z",
+  "options": {
+    "probe": true,
+    "flow": "3"
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/linear.app/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/linear.app/desktop-flow-01.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/linear.app/desktop-flow-02.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/linear.app/desktop-flow-03.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "\"Inter Variable\", \"SF Pro Display\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(247, 248, 248)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "backdrop-filter": "blur(20px)",
+          "border-bottom": "1px solid rgba(255, 255, 255, 0.08)",
+          "border-radius": "0px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "73px",
+          "transition": "border-color 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "text": "ProductResourcesCustomersPricingNowContactDocsOpen appLog inSign up"
+        },
+        "nav": {
+          "font-family": "\"Inter Variable\", \"SF Pro Display\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(247, 248, 248)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(247, 248, 248)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "72px",
+          "transition": "all",
+          "text": "ProductResourcesCustomersPricingNowContactDocsOpen appLog inSign up"
+        },
+        "h1": {
+          "font-family": "\"Inter Variable\", \"SF Pro Display\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif",
+          "font-weight": "510",
+          "font-size": "64px",
+          "letter-spacing": "-1.408px",
+          "line-height": "64px",
+          "font-stretch": "100%",
+          "color": "rgb(247, 248, 248)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(247, 248, 248)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "128px",
+          "transition": "all",
+          "text": "The product development system for teams and agentsThe product developmentsystem"
+        },
+        "h2": {
+          "font-family": "\"Inter Variable\", \"SF Pro Display\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif",
+          "font-weight": "510",
+          "font-size": "48px",
+          "letter-spacing": "-1.056px",
+          "line-height": "48px",
+          "font-stretch": "100%",
+          "color": "rgb(138, 143, 152)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(138, 143, 152)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "144px",
+          "transition": "all",
+          "text": "A new species of product tool. Purpose-built for modern teams with AI workflows "
+        }
+      },
+      "fonts": [
+        "Inter Variable 100 900 normal",
+        "Berkeley Mono 100 900 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none"
+}

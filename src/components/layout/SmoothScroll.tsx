@@ -42,7 +42,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     // Route same-page anchors through Lenis so nav clicks glide instead
     // of jumping (native jump remains for reduced-motion users, who have
-    // no Lenis at all). Offset clears the sticky 64px nav band.
+    // no Lenis at all). The fixed glass bar is cleared by section[id]
+    // scroll-margin-top: 80px in globals.css, which Lenis 1.3 reads itself,
+    // so no extra offset here (an offset of -80 would land at 160px).
     const onAnchorClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>(
         'a[href^="#"]'
@@ -54,7 +56,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       // Wait a frame: a mobile-menu link closes the menu, which restarts
       // Lenis, and a stopped Lenis ignores scrollTo.
       requestAnimationFrame(() =>
-        lenis.scrollTo(target as HTMLElement, { offset: -64 })
+        lenis.scrollTo(target as HTMLElement)
       );
     };
     document.addEventListener("click", onAnchorClick);

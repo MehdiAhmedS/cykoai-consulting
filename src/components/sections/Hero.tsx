@@ -17,7 +17,7 @@ export default function Hero() {
     <section
       id="top"
       data-tone="dark"
-      className="relative flex min-h-[calc(100svh-64px)] w-full items-center overflow-hidden bg-windsor text-white"
+      className="relative flex min-h-svh w-full items-center overflow-hidden bg-windsor pt-[60px] text-white min-[900px]:pt-[68px]"
     >
       {/* globe — decorative, parallax on the inner wrapper */}
       <div

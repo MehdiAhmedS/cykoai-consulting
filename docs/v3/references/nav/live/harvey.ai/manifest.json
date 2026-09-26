@@ -1,0 +1,97 @@
+{
+  "url": "https://www.harvey.ai",
+  "section": "nav",
+  "capturedAt": "2026-09-26T17:34:49.269Z",
+  "options": {
+    "probe": true,
+    "flow": "4"
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/harvey.ai/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/harvey.ai/desktop-flow-01.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/harvey.ai/desktop-flow-02.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/harvey.ai/desktop-flow-03.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/harvey.ai/desktop-flow-04.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "HarveySansFont, \"HarveySansFont Fallback\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(15, 14, 13)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(15, 14, 13)",
+          "border-radius": "0px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "106.188px",
+          "transition": "color 0.3s cubic-bezier(0.3, 0.3, 0.3, 1), background-color 0.3s cubic-bezier(0.3, 0.3, 0.3, 1), border-color 0.3s cubic-bezier(0.3, 0.3, 0.3, 1), fill 0.3s cubic-bezier(0.3, 0.3, 0.3, 1), stroke 0.3s cubic-bezier(0.3, 0.3, 0.3, 1)",
+          "text": "We Raised $550M at a $15.5B Valuation to Help Legal Teams Own Their Intelligence"
+        },
+        "nav": {
+          "font-family": "HarveySansFont, \"HarveySansFont Fallback\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(15, 14, 13)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(15, 14, 13)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "72px",
+          "transition": "all",
+          "text": "PlatformSolutionsCustomersSecurityResourcesCompany"
+        },
+        "h1": {
+          "font-family": "HarveySerifFont, \"HarveySerifFont Fallback\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif, sans-serif",
+          "font-weight": "400",
+          "font-size": "72px",
+          "letter-spacing": "-0.9px",
+          "line-height": "75.6px",
+          "font-stretch": "100%",
+          "color": "rgb(15, 14, 13)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(15, 14, 13)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "151.188px",
+          "transition": "all",
+          "text": "Build a Frontier Legal Organization"
+        },
+        "h2": {
+          "font-family": "HarveySerifFont, \"HarveySerifFont Fallback\", -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif, sans-serif",
+          "font-weight": "400",
+          "font-size": "32px",
+          "letter-spacing": "-0.32px",
+          "line-height": "33.6px",
+          "font-stretch": "100%",
+          "color": "rgb(15, 14, 13)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(15, 14, 13)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "33.5938px",
+          "transition": "all",
+          "text": "2,400+ Legal Organizations Build on :Harvey:"
+        }
+      },
+      "fonts": [
+        "HarveySerifFont 400 normal",
+        "HarveySansFont normal normal"
+      ],
+      "tech": {
+        "canvas": 1,
+        "webgl": true,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none"
+}

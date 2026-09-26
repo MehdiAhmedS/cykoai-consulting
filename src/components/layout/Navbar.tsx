@@ -9,16 +9,65 @@ import { site } from "@/content/site";
 const { wordmark, tag, links: LINKS, cta } = site.nav;
 const linksStatus = LINKS.some((l) => l.status === "draft") ? "draft" : "confirmed";
 
+type Tone = "dark" | "light";
+
+/** The bar's vertical centre: a section "is under the bar" when it crosses it. */
+const BAR_LINE = 40;
+
 /**
- * The DS's "permanent dark inverse band": solid Windsor, 64px, hairline
- * bottom border. No blur, no hide-on-scroll, no shrink tricks.
- * <900px: hamburger → full-screen Windsor overlay, links stacked in
- * type-h2, focus trapped, Lenis paused while open.
+ * Inset glass bar (v3 step 03): Palantir's silhouette, Linear's glass over
+ * dark sections, Harvey's over light. One IntersectionObserver reads the
+ * data-tone of whatever crosses the bar's centre line and sets
+ * data-nav-tone (globals.css does the rest) and the active link.
+ * <900px: logo + menu button; the full-screen Windsor overlay keeps v1's
+ * focus trap, Escape and paused Lenis.
  */
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tone, setTone] = useState<Tone>("dark");
+  const [active, setActive] = useState<string | null>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("section[data-tone], footer[data-tone]")
+    );
+    let observer: IntersectionObserver | null = null;
+
+    const observe = () => {
+      observer?.disconnect();
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            setTone(el.dataset.tone === "light" ? "light" : "dark");
+            setActive(el.id ? `#${el.id}` : null);
+          }
+        },
+        {
+          // Only a 1px line at the bar's centre counts.
+          rootMargin: `-${BAR_LINE}px 0px -${Math.max(window.innerHeight - BAR_LINE - 1, 0)}px 0px`,
+        }
+      );
+      targets.forEach((t) => observer?.observe(t));
+    };
+
+    observe();
+    let frame = 0;
+    const onResize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(observe);
+    };
+    addEventListener("resize", onResize);
+
+    return () => {
+      observer?.disconnect();
+      cancelAnimationFrame(frame);
+      removeEventListener("resize", onResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -77,68 +126,79 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/8 bg-windsor">
-      <div className="flex h-16 items-center justify-between px-[clamp(20px,4vw,56px)]">
-        <a
-          href="#top"
-          className="flex items-center gap-2.5 text-white"
-          onClick={() => setMenuOpen(false)}
-        >
-          <LogoMark className="h-[26px] w-[26px] rounded-none" />
-          <span className="font-display text-[17px] font-bold tracking-[0.02em] [font-stretch:112%]">
-            {wordmark.text}
-          </span>
-          <span className="type-label text-n300">
-            {tag.text}
-          </span>
-        </a>
-
-        <nav aria-label="Main" className="hidden items-center gap-[clamp(16px,3vw,36px)] min-[900px]:flex">
-          {LINKS.map((link) => (
+    <header
+      data-nav-tone={tone}
+      className="site-nav fixed inset-x-2 top-2 z-50 min-[900px]:inset-x-3 min-[900px]:top-3"
+    >
+      <div className="nav-bar h-[52px] rounded-md min-[900px]:h-14">
+        {/* back out to viewport width (12px inset + 1px border) so the
+            contents line up with the page's 1320px container */}
+        <div className="h-full px-4 min-[900px]:mx-[-13px] min-[900px]:px-0">
+          <div className="flex h-full items-center justify-between min-[900px]:mx-auto min-[900px]:max-w-[1320px] min-[900px]:px-[clamp(20px,4vw,56px)]">
             <a
-              key={link.href}
-              href={link.href}
-              className="type-small text-n300 transition-colors duration-250 ease-out-expo hover:text-white"
+              href="#top"
+              className="flex items-center gap-2.5"
+              onClick={() => setMenuOpen(false)}
             >
-              {link.label}
+              <LogoMark className="h-[26px] w-[26px] rounded-none" />
+              <span className="font-display text-[17px] font-bold tracking-[0.02em] [font-stretch:112%]">
+                {wordmark.text}
+              </span>
+              <span className="type-label nav-link">{tag.text}</span>
             </a>
-          ))}
-          <DraftMark status={linksStatus} className="-ml-2" />
-          <a
-            href={cta.href}
-            className="type-small rounded-xs border border-white/35 px-[18px] py-[9px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
-          >
-            {cta.label}
-          </a>
-        </nav>
 
-        <button
-          ref={burgerRef}
-          type="button"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex flex-col gap-1.5 p-2 min-[900px]:hidden"
-        >
-          <span
-            className={`h-px w-6 bg-white transition-transform duration-300 ${
-              menuOpen ? "translate-y-[3.5px] rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-px w-6 bg-white transition-transform duration-300 ${
-              menuOpen ? "-translate-y-[3.5px] -rotate-45" : ""
-            }`}
-          />
-        </button>
+            <nav aria-label="Main" className="hidden items-center gap-[clamp(16px,3vw,36px)] min-[900px]:flex">
+              {LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active === link.href ? "true" : undefined}
+                  className="type-small nav-link"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <DraftMark status={linksStatus} className="-ml-2" />
+              <a
+                href={cta.href}
+                className="type-small nav-cta rounded-xs px-[18px] py-[9px] font-medium"
+              >
+                {cta.label}
+              </a>
+            </nav>
+
+            <button
+              ref={burgerRef}
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              className="flex flex-col gap-1.5 p-2 min-[900px]:hidden"
+            >
+              <span
+                className={`h-px w-6 bg-current transition-transform duration-300 ${
+                  menuOpen ? "translate-y-[3.5px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`h-px w-6 bg-current transition-transform duration-300 ${
+                  menuOpen ? "-translate-y-[3.5px] -rotate-45" : ""
+                }`}
+              />
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Mobile: full-screen Windsor overlay, links stacked in type-h2 */}
+      {/* Mobile: full-screen Windsor overlay below the bar, links stacked in
+          type-h2. A sibling of the glass bar: backdrop-filter would make the
+          bar the containing block for this fixed layer. */}
       <div
         id="mobile-menu"
         ref={overlayRef}
-        className={`fixed inset-x-0 bottom-0 top-16 z-40 bg-windsor transition-opacity duration-300 ease-out-expo min-[900px]:hidden ${
+        data-tone="dark"
+        className={`fixed inset-x-0 bottom-0 top-[68px] z-40 bg-windsor transition-opacity duration-300 ease-out-expo min-[900px]:hidden ${
           menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >

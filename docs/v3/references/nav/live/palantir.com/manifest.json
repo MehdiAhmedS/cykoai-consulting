@@ -1,0 +1,184 @@
+{
+  "url": "https://www.palantir.com",
+  "section": "nav",
+  "capturedAt": "2026-09-26T17:35:08.464Z",
+  "options": {
+    "probe": true,
+    "flow": "4",
+    "mobile": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/desktop-flow-01.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/desktop-flow-02.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/desktop-flow-03.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/desktop-flow-04.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/mobile-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/mobile-flow-01.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/nav/live/palantir.com/mobile-flow-02.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "\"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "line-height": "25px",
+          "font-stretch": "100%",
+          "color": "rgb(30, 31, 43)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(30, 31, 43)",
+          "border-radius": "0px",
+          "position": "sticky",
+          "top": "0px",
+          "height": "0px",
+          "mix-blend-mode": "difference",
+          "transition": "all",
+          "text": "Palantir"
+        },
+        "nav": {
+          "font-family": "\"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "line-height": "25px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "absolute",
+          "top": "0px",
+          "height": "1px",
+          "transition": "all",
+          "text": "NavigationSovereign AI↳ AIP↳ Foundry↳ Gotham↳ Ontology↳ ApolloOfferingsImpact St"
+        },
+        "h1": {
+          "font-family": "\"Alliance No.2\", \"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "80px",
+          "letter-spacing": "-3.4px",
+          "line-height": "78px",
+          "font-stretch": "100%",
+          "color": "rgb(239, 239, 239)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(239, 239, 239)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "786px",
+          "transition": "all",
+          "text": "Sovereign AI Systems for Every Decision"
+        },
+        "h2": {
+          "font-family": "\"Alliance No.2\", \"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "10px",
+          "letter-spacing": "0.5px",
+          "line-height": "16px",
+          "font-stretch": "100%",
+          "text-transform": "uppercase",
+          "color": "rgb(185, 185, 185)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(185, 185, 185)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "16px",
+          "transition": "all",
+          "text": "Navigation"
+        }
+      },
+      "fonts": [
+        "Alliance No.1 400 normal",
+        "Alliance No.2 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "\"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "line-height": "25px",
+          "font-stretch": "100%",
+          "color": "rgb(30, 31, 43)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(30, 31, 43)",
+          "border-radius": "0px",
+          "position": "sticky",
+          "top": "0px",
+          "height": "0px",
+          "mix-blend-mode": "difference",
+          "transition": "all",
+          "text": "Palantir"
+        },
+        "nav": {
+          "font-family": "\"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "line-height": "25px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "absolute",
+          "top": "0px",
+          "height": "1px",
+          "transition": "all",
+          "text": "NavigationSovereign AI↳ AIP↳ Foundry↳ Gotham↳ Ontology↳ ApolloOfferingsImpact St"
+        },
+        "h1": {
+          "font-family": "\"Alliance No.2\", \"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "30px",
+          "line-height": "36px",
+          "font-stretch": "100%",
+          "color": "rgb(239, 239, 239)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(239, 239, 239)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "234.578px",
+          "transition": "all",
+          "text": "Sovereign AI Systems for Every Decision"
+        },
+        "h2": {
+          "font-family": "\"Alliance No.2\", \"Alliance No.1\", system-ui, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "10px",
+          "letter-spacing": "0.5px",
+          "line-height": "16px",
+          "font-stretch": "100%",
+          "text-transform": "uppercase",
+          "color": "rgb(185, 185, 185)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(185, 185, 185)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "16px",
+          "transition": "all",
+          "text": "Navigation"
+        }
+      },
+      "fonts": [
+        "Alliance No.1 400 normal",
+        "Alliance No.2 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "closed",
+  "consent-mobile": "closed"
+}
