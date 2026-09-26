@@ -38,7 +38,7 @@ The whole sequence finishes within about 2.1s. The globe (step 05) fades in afte
 
 - **Component:** create `src/components/sections/HeroHeadline.tsx` (client). It runs on load, not on scroll. The existing `SplitText` component deliberately skips above-the-fold elements, so don't use it here.
   - Use GSAP's `SplitText` (registered in `src/lib/gsap.ts`) with `type: "lines", mask: "lines", autoSplit: true`.
-  - Keep the dim span ("your organization.") as its own colour through the split.
+  - Keep the dim span ("your organization.") as its own colour through the split, and keep step 02's `whitespace-nowrap` on it, so the headline still breaks into the same three lines.
   - Accessibility: a visually hidden plain copy of the headline carries the text, and the animated copy is `aria-hidden`, as in v1's `SplitText`.
 - **No flash, no stuck text:**
   - Add a tiny inline script in `layout.tsx` `<head>`: `document.documentElement.classList.add("js")`.
@@ -58,9 +58,9 @@ The whole sequence finishes within about 2.1s. The globe (step 05) fades in afte
 Run the brief's check list (verify-shots into `docs/v3/after/04-hero-headline`). Then:
 
 - **Record the sequence** with `npm run refs -- _self http://localhost:3000 --frames --mobile`. Compare the frames with Linear's and Exo Ape's, and put the comparison in NOTES.md. Delete the `_self` capture afterwards.
-- **Measure timing and layout:** check total time to settle (≤ 2.1s), layout shift (0), and LCP (the headline should still be the LCP element, painted within 2.5s on a production build: `npm run build && npm run start`, then Lighthouse).
+- **Measure timing and layout:** check total time to settle (≤ 2.1s), layout shift (0), and LCP (the headline should still be the LCP element, painted within 2.5s on a production build, served and measured as the brief's check list describes).
 - **Reduced motion:** with `prefers-reduced-motion: reduce`, it's static and complete.
-- **Script failure:** with JavaScript disabled, the headline shows (no `js` class). With the component's effect removed (simulating a failure), the failsafe reveals it at 2.5s.
+- **Script failure:** with JavaScript disabled (a Playwright context with `javaScriptEnabled: false`), the headline shows (no `js` class). With the component's effect removed (simulating a failure), the failsafe reveals it at 2.5s.
 
 Commit: `v3(04): hero headline load sequence with mono data line`.
 

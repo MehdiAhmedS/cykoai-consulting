@@ -43,6 +43,7 @@ Add `globe.locations: { name, lat, lng, role: "origin" | "client", status: "conf
 
 - **Install:** `npm i cobe`. Read the README and source in `node_modules/cobe` for the API of the installed version. The options below exist in 0.6.x; adapt the names if the major version differs, and note that in NOTES.md.
 - **Component:** create `src/components/ui/HeroGlobe.tsx` (client) to replace `WorldCanvas` in the hero. Keep the same wrapper, placement and parallax (`data-speed="0.93"`, right-side crop on desktop, centred at 40% opacity on mobile).
+- **Composition:** step 02's wider type pushed the headline across: at 1440, "your organization." now ends around x=960, over the globe's left edge. Adjust the globe wrapper's size and right offset so the headline stays clearly legible. Either the sphere's lit area sits clear of the headline, or, where they overlap, the globe is dim enough that the text keeps AA contrast. Check at 1280, 1440 and 1920, keep the right-edge crop, and record the positions in NOTES.md.
   - Two stacked canvases, both `aria-hidden`: cobe underneath, the 2D overlay on top.
   - One `onRender` loop drives both, so they share phi and theta exactly.
 - **cobe settings:**
@@ -70,7 +71,7 @@ Add `globe.locations: { name, lat, lng, role: "origin" | "client", status: "conf
   - The sphere's edge: 1px, `rgba(255,255,255,0.10)`.
   - Muscat's pulse ring: the Driftwood ring from v1, every 4s.
   - Arcs from Muscat to each confirmed client location, one at a time, with v1's lifecycle: draw 3.2s, hold 0.9s, fade 1.2s, gap 1.4s. The arc is `rgba(173,135,82,.7)` with a small head dot.
-  - When an arc lands, a one-line mono caption with the city name (`type-data`, n300) fades in beside the destination and leaves with the fade. No counts or claims unless `site.ts` has them confirmed.
+  - When an arc lands, a one-line mono caption with the location's name from `site.ts` (the country, never a city; `type-data`, n300) fades in beside the destination and leaves with the fade. No counts or claims unless `site.ts` has them confirmed.
 - **Performance:**
   - Import cobe dynamically after idle (`requestIdleCallback` with a 1.6s timeout, as v1 does for its land data), so it never competes with the headline.
   - Fade the globe in over 0.8s once the first frame is drawn, after the step 04 sequence.
@@ -87,7 +88,7 @@ Add `globe.locations: { name, lat, lng, role: "origin" | "client", status: "conf
 Run the brief's check list (verify-shots into `docs/v3/after/05-globe`). Also:
 
 - Put `--frames` captures of the hero next to Cloudflare's globe in NOTES.md: dot density, graticule, calm.
-- Record the alignment debug screenshots, the frame rate on desktop (the Performance panel, which should show a steady 60fps), the size of the cobe chunk, and that nothing renders while off screen.
+- Record the alignment debug screenshots, the frame rate on desktop (in Chrome, count `requestAnimationFrame` callbacks over 5 seconds with the JavaScript tool; it should hold the display's refresh rate, 60fps or more), the size of the cobe chunk, and that nothing renders while off screen.
 - Check reduced motion (static frame), the no-WebGL fallback (you can force it with a query flag) and the canvas-removed hero.
 
 Commit: `v3(05): cobe globe with graticule overlay; real locations only`.

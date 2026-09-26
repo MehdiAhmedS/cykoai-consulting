@@ -64,7 +64,7 @@ The header is `position: fixed` with `z-index: 50`. There's no spacer: the hero 
 **Mobile (<900px):**
 
 - The bar shows the logo and a menu button.
-- The menu opens v1's full-screen Windsor overlay: links stacked in `type-h2`, no numbers, the CTA at the bottom.
+- The menu opens v1's full-screen Windsor overlay: links stacked in `type-h2`, no numbers, the CTA at the bottom. Give the overlay `data-tone="dark"` so its links take the dark-surface weights (step 02 found them at 740, not 720). It isn't a `<section>`, so the tone observer won't pick it up.
 - Keep v1's focus trap, Escape to close, and Lenis paused while it's open.
 - The overlay starts below the bar (top 68px).
 
@@ -82,7 +82,7 @@ Run the brief's check list (lint, build, verify-shots into `docs/v3/after/03-nav
 - **Blur** is visible over text scrolling beneath the bar.
 - **Anchors** land with the heading clear of the bar.
 - **Keyboard:** Tab reaches every link, focus rings are visible, and the mobile menu can be opened, navigated and closed with the keyboard.
-- **Fallback:** with `backdrop-filter` disabled in devtools, the solid fallback shows.
+- **Fallback:** the `@supports not` block can't be switched on at runtime, so confirm it's in the built CSS. Then, in Chrome, set `backdrop-filter: none` on the bar with the JavaScript tool and check the bar stays readable over busy content in both tones.
 - **Reduced motion:** no transitions.
 
 Commit: `v3(03): inset glass navbar, tone-switched`.

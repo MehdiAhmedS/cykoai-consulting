@@ -67,6 +67,7 @@ Every section carries `data-tone="dark"` or `data-tone="light"` on its `<section
 - **Text:** Archivo 400 at normal width, 17px on 1.6.
 - **Labels and data:** Chivo Mono 500, 11px, capitals, +0.1em. Numbers in tabular figures.
 - Use the `type-*` utilities from step 02 everywhere. No ad-hoc font sizes, weights or tracking in components after step 02.
+- **Heading wraps.** A section heading may run to two balanced lines, but no break may strand a short fragment, as in "How an / engagement runs." at 1440. Widen the heading's container (about 22–24ch) or adjust the wrap, and check 390, 768 and 1440.
 
 ### One home per claim
 
@@ -199,7 +200,7 @@ Each step runs as two passes in one session: the study, then the build.
 2. **Study (first pass).** Mehdi asks for part 1 of the prompt on its own: go through the references in Chrome, save the captures and write NOTES.md, as "How to study a reference" describes. Change no code in this pass. End with a short summary of what you learned and anything that should change how the rest of the prompt is built.
 3. **Plan (second pass).** Mehdi then switches to plan mode and asks for the build. Plan the rest of the prompt using what's in NOTES.md. Once the plan is approved, add it to the top of NOTES.md in a few lines.
 4. **Implement.** After step 01, all copy comes from `src/content/site.ts`.
-5. **Check the build:** run `npm run lint` and `npm run build`.
+5. **Check the build:** run `npm run lint` and `npm run build`. For checks on the production build, the dev server keeps port 3000, so start production on another port (`npm run start -- -p 3100`) and point the checks at `http://localhost:3100`. Run Lighthouse from the command line: `npx lighthouse <url>` for mobile, adding `--preset=desktop` for desktop.
 6. **Screenshot.** With `npm run dev` running, run `node scripts/verify-shots.mjs --full --out=docs/v3/after/<step>`, plus `--section=#<id>` for the sections you touched. Any console error fails the step.
 7. **Self-review in Chrome.** Open `http://localhost:3000` in a new tab and go through what you built the way you went through the references: scroll, hover, open things, and time the motion with the sampler. Compare it with NOTES.md, the v3 rules and the step's acceptance list, put your screenshots next to the references, and fix what's off.
 8. **Commit** on `redesign/v1` as `v3(<step>): <summary>`. Screenshots under `docs/v3/` are gitignored.

@@ -27,7 +27,7 @@ List every `status: "draft"` and every "TBC" in `src/content/site.ts` in `docs/v
 
 - The branch can't merge while any draft or TBC would render in production.
 - Unconfirmed items must be hidden in production (already the rule), and any section left empty because of that must still read well.
-- Screenshot the production build, `npm run build && npm run start`, to prove it.
+- Screenshot the production build (served on port 3100, as the brief's check list describes) to prove it.
 
 Also update `layout.tsx` metadata. The title and description still describe "enterprise AI … digital transformation". Write a draft title and description that match the real offers, and mark them for Mehdi's approval in FINAL.md. Don't ship them silently.
 
