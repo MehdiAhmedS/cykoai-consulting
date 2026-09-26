@@ -50,6 +50,17 @@ Check every diff against this list. If a change needs a banned item, the change 
 - Motion: ≤3 parallax speeds/viewport (≈0.85/0.92/1.0), ≤2 pins/page, reveals 500–800ms `expo.out`, staggers ≤90ms, hovers 200–300ms color/rule shifts, transforms+opacity only, full `prefers-reduced-motion` static fallback.
 - Voice: sentence case, short declaratives, numbers over adjectives.
 
+## 1.v3 · Amendments (September 2026)
+
+The v3 rules live in `docs/v3/BRIEF.md`, which wins where it conflicts with this plan. These rules from §1 are amended:
+
+- **Glass on the navbar only.** Backdrop blur 16–20px, tint at least 72% opaque, a 1px hairline, and an `@supports not (backdrop-filter: blur(1px))` solid fallback. No inset highlight, no `saturate()`, no shadow, no `mix-blend-mode`.
+- **WebGL in the hero globe only.** Use cobe (about 6KB); arcs and graticule may be drawn on a 2D canvas overlay that shares the rotation. The globe shows real locations only, and the hero must read completely with the canvas removed.
+- **Numbers only as data:** dates, weeks, counts, coordinates, time zones. No ordinal section indices, numbered rows or numbered menus.
+- **Typography:** Archivo + Chivo Mono (see Type system), built in step 02. Until then, leave the fonts alone.
+- **Reveal timing:** the hero headline reveal may run up to 1200ms; other reveals stay at 500–800ms.
+- **SVG line drawing:** a stroke draw-in of up to 600ms is allowed for line glyphs.
+
 ---
 
 ## AM · Asset manifest & generation protocol (Higgsfield MCP)

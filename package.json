@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "refs": "node scripts/ref-shots.mjs",
+    "shots": "node scripts/verify-shots.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
