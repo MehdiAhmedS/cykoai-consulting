@@ -12,7 +12,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
  * for elements near the top of the page).
  *
  * Document positions are re-measured on every ScrollTrigger refresh:
- * pin spacers (Philosophy, Process) grow the document after load, and
+ * pin spacers (Engagement) grow the document after load, and
  * stale centers would strand layers hundreds of px off target.
  *
  * Offscreen gating is arithmetic on the stored centers — never an

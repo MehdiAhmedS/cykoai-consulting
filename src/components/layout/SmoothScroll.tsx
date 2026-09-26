@@ -7,8 +7,8 @@ import { initParallax } from "@/lib/parallax";
 
 /**
  * Drives the whole page's smooth scroll via Lenis, synced to GSAP's ticker
- * so ScrollTrigger-based sections (Philosophy pin, Process horizontal
- * scroll) stay perfectly in step with the virtual scroll position.
+ * so ScrollTrigger-based sections (the Engagement horizontal pin) stay
+ * perfectly in step with the virtual scroll position.
  */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
@@ -51,7 +51,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       const target = document.querySelector(anchor.hash || "#");
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: -64 });
+      // Wait a frame: a mobile-menu link closes the menu, which restarts
+      // Lenis, and a stopped Lenis ignores scrollTo.
+      requestAnimationFrame(() =>
+        lenis.scrollTo(target as HTMLElement, { offset: -64 })
+      );
     };
     document.addEventListener("click", onAnchorClick);
 

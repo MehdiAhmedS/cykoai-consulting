@@ -1,21 +1,10 @@
 import LogoMark from "@/components/ui/LogoMark";
 import GenImage from "@/components/ui/GenImage";
+import DraftMark from "@/components/ui/DraftMark";
+import { site } from "@/content/site";
 
-const COLUMNS = [
-  {
-    heading: "Company",
-    links: [
-      { label: "What we do", href: "#what-we-do" },
-      { label: "Services", href: "#services" },
-      { label: "Philosophy", href: "#philosophy" },
-      { label: "Process", href: "#process" },
-    ],
-  },
-  {
-    heading: "Connect",
-    links: [{ label: "info@cykoai.com", href: "mailto:info@cykoai.com" }],
-  },
-];
+const { wordmark, cta, columns, bigWordmark, legal } = site.footer;
+const COLUMNS = [columns.company, columns.connect];
 
 /**
  * Footer — Windsor band, oversized wordmark, one 45° diagonal entering
@@ -24,6 +13,7 @@ const COLUMNS = [
 export default function Footer() {
   return (
     <footer
+      data-tone="dark"
       data-band-fade="#FFFFFF"
       className="relative overflow-hidden border-t border-white/10 bg-windsor pt-16 text-white md:pt-20"
     >
@@ -52,19 +42,15 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <LogoMark className="h-8 w-8" />
               <span className="font-display text-[1.3rem] font-semibold tracking-tight">
-                Cykoai
+                {wordmark.text}
               </span>
             </div>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-n300">
-              Forward deployed AI and cybersecurity consulting for
-              organizations shaping the future instead of reacting to it.
-            </p>
             <div className="mt-8">
               <a
-                href="#contact"
+                href={cta.href}
                 className="inline-block rounded-xs border border-white/35 px-[18px] py-[9px] text-[13.5px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
               >
-                Talk to us
+                {cta.label}
               </a>
             </div>
           </div>
@@ -87,6 +73,9 @@ export default function Footer() {
                     </li>
                   ))}
                 </ul>
+                {col.links.some((l) => l.status === "draft") && (
+                  <DraftMark className="ml-0 mt-3" />
+                )}
               </div>
             ))}
           </div>
@@ -95,13 +84,13 @@ export default function Footer() {
         {/* oversized wordmark — the band signs its name */}
         <div aria-hidden="true" className="mt-16 select-none md:mt-20">
           <span className="block font-display text-[clamp(3.5rem,11.5vw,10.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-white/95">
-            CYKOAI
+            {bigWordmark}
           </span>
         </div>
 
         <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 py-8 font-mono text-[10.5px] tracking-[0.14em] text-n300 sm:flex-row sm:items-center">
-          <span>&copy; {new Date().getFullYear()} CYKOAI CONSULTING. ALL RIGHTS RESERVED.</span>
-          <span>DESIGNED AND BUILT IN-HOUSE.</span>
+          <span>&copy; {new Date().getFullYear()} {legal.rights}</span>
+          <span>{legal.credit}</span>
         </div>
       </div>
     </footer>

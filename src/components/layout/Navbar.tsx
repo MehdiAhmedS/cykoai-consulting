@@ -3,12 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import type Lenis from "lenis";
 import LogoMark from "@/components/ui/LogoMark";
+import DraftMark from "@/components/ui/DraftMark";
+import { site } from "@/content/site";
 
-const LINKS = [
-  { href: "#what-we-do", label: "What we do" },
-  { href: "#services", label: "Services" },
-  { href: "#process", label: "How we work" },
-];
+const { wordmark, tag, links: LINKS, cta } = site.nav;
+const linksStatus = LINKS.some((l) => l.status === "draft") ? "draft" : "confirmed";
 
 /**
  * The DS's "permanent dark inverse band": solid Windsor, 64px, hairline
@@ -87,10 +86,10 @@ export default function Navbar() {
         >
           <LogoMark className="h-[26px] w-[26px] rounded-none" />
           <span className="font-display text-[17px] font-bold tracking-[0.02em]">
-            CYKOAI
+            {wordmark.text}
           </span>
           <span className="font-mono text-[9px] tracking-[0.32em] text-n300">
-            CONSULTING
+            {tag.text}
           </span>
         </a>
 
@@ -104,11 +103,12 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <DraftMark status={linksStatus} className="-ml-2" />
           <a
-            href="#contact"
+            href={cta.href}
             className="rounded-xs border border-white/35 px-[18px] py-[9px] text-[13.5px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
           >
-            Talk to us
+            {cta.label}
           </a>
         </nav>
 
@@ -147,7 +147,7 @@ export default function Navbar() {
           className="flex h-full flex-col justify-between px-[clamp(20px,4vw,56px)] py-10"
         >
           <div className="flex flex-col">
-            {LINKS.map((link, i) => (
+            {LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -155,20 +155,18 @@ export default function Navbar() {
                 tabIndex={menuOpen ? 0 : -1}
                 className="border-b border-white/8 py-5 font-display text-[2rem] font-semibold tracking-[-0.02em] text-white"
               >
-                <span className="mr-4 font-mono text-[11px] tracking-[0.1em] text-driftwood">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
                 {link.label}
               </a>
             ))}
+            <DraftMark status={linksStatus} className="ml-0 mt-4 self-start" />
           </div>
           <a
-            href="#contact"
+            href={cta.href}
             onClick={() => setMenuOpen(false)}
             tabIndex={menuOpen ? 0 : -1}
             className="rounded-xs bg-white px-7 py-[15px] text-center text-[15px] font-medium text-windsor"
           >
-            Talk to us
+            {cta.label}
           </a>
         </nav>
       </div>

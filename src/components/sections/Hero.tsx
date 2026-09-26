@@ -1,5 +1,9 @@
 import Button from "@/components/ui/Button";
 import WorldCanvas from "@/components/ui/WorldCanvas";
+import DraftMark from "@/components/ui/DraftMark";
+import { site } from "@/content/site";
+
+const { eyebrow, headline, lede, caption, primaryCta, secondaryCta } = site.hero;
 
 /**
  * Hero — Direction D "The World" (mockup: hero-direction-d-world.html).
@@ -12,6 +16,7 @@ export default function Hero() {
   return (
     <section
       id="top"
+      data-tone="dark"
       className="relative flex min-h-[calc(100svh-64px)] w-full items-center overflow-hidden bg-windsor text-white"
     >
       {/* globe — decorative, parallax on the inner wrapper */}
@@ -25,43 +30,43 @@ export default function Hero() {
       </div>
 
       <div className="relative z-[2] mx-auto w-full max-w-[1320px] px-[clamp(20px,4vw,56px)] py-[clamp(72px,10vh,130px)]">
-        <div className="inline-flex items-center gap-3.5 font-mono text-[11px] tracking-[0.22em] text-n300">
+        <div className="inline-flex items-center gap-3.5 font-mono text-[11px] uppercase tracking-[0.22em] text-n300">
           <span aria-hidden className="h-px w-7 bg-driftwood" />
-          FORWARD-DEPLOYED CONSULTING — AI · CYBERSECURITY
+          {eyebrow.text}
+          <DraftMark status={eyebrow.status} className="ml-0" />
         </div>
 
         <h1
           data-speed="0.97"
           className="mt-7 max-w-[15ch] font-display text-[clamp(2.9rem,6.2vw,5.4rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
         >
-          The future moves faster than{" "}
-          <span className="text-n500">your organization.</span>
+          {headline.text}{" "}
+          <span className="text-n500">{headline.dim}</span>
         </h1>
 
         <p className="mt-7 max-w-[42ch] text-[1.1rem] leading-[1.7] text-n300">
-          We deploy inside organizations anywhere change is outpacing them —
-          engineers and strategists together, building until it holds.
+          {lede.text}
+          <DraftMark status={lede.status} />
         </p>
 
         <div className="mt-11 flex flex-wrap items-center gap-7">
-          <Button href="#contact" variant="inverse">
-            Talk to us
+          <Button href={primaryCta.href} variant="inverse">
+            {primaryCta.label}
           </Button>
           <a
-            href="#what-we-do"
+            href={secondaryCta.href}
             className="border-b border-driftwood pb-[3px] text-[15px] font-medium text-white transition-colors duration-250 ease-out-expo hover:text-driftwood"
           >
-            See how we work
+            {secondaryCta.label}
           </a>
+          <DraftMark status={secondaryCta.status} className="-ml-5" />
         </div>
       </div>
 
       {/* mono caption — instrumentation voice, bottom right */}
-      <div className="absolute bottom-24 right-[clamp(20px,4vw,56px)] text-right font-mono text-[10px] leading-loose tracking-[0.22em] text-n300 max-[899px]:hidden">
-        <span className="text-white/90">DEPLOYED WHERE CHANGE HAPPENS</span>
-        <br />
-        ORIGIN — MUSCAT ·{" "}
-        <span className="text-driftwood">23.59° N, 58.38° E</span>
+      <div className="absolute bottom-24 right-[clamp(20px,4vw,56px)] text-right font-mono text-[10px] uppercase leading-loose tracking-[0.22em] text-n300 max-[899px]:hidden">
+        {caption.origin} ·{" "}
+        <span className="text-driftwood">{caption.coordinates}</span>
       </div>
     </section>
   );

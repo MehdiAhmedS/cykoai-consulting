@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import SectionLabel from "@/components/ui/SectionLabel";
+import MonoLabel from "@/components/ui/MonoLabel";
 import SplitText from "@/components/ui/SplitText";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
+import { site } from "@/content/site";
+
+const { label, heading, body, email, note, form: copy } = site.contact;
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -31,43 +34,46 @@ export default function Contact() {
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
-        throw new Error(json.error ?? "Something went wrong.");
+        throw new Error(json.error ?? copy.error);
       }
       setStatus("success");
       form.reset();
     } catch (err) {
       setStatus("error");
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(err instanceof Error ? err.message : copy.error);
     }
   }
 
   return (
-    <section id="contact" className="relative bg-white py-[clamp(88px,14vh,150px)]">
+    <section
+      id="contact"
+      data-tone="light"
+      className="relative bg-white py-[clamp(88px,14vh,150px)]"
+    >
       <div className="relative mx-auto grid max-w-[1320px] grid-cols-1 gap-16 px-[clamp(20px,4vw,56px)] lg:grid-cols-2">
         <div>
           <Reveal>
-            <SectionLabel index="07">Get in touch</SectionLabel>
+            <MonoLabel tick>{label.text}</MonoLabel>
           </Reveal>
           <h2 className="mt-8 font-display text-[clamp(2.2rem,4.6vw,3.6rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-windsor">
-            <SplitText>Let&rsquo;s shape what&rsquo;s next.</SplitText>
+            <SplitText>{heading.text}</SplitText>
           </h2>
           <Reveal delay={0.2}>
             <p className="mt-8 max-w-md text-[1.05rem] leading-[1.7] text-n500">
-              Tell us where your organization is headed, and where it feels
-              stuck. We typically respond within one business day.
+              {body.text}
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
             <div className="mt-12 flex flex-col gap-1">
               <a
-                href="mailto:info@cykoai.com"
+                href={`mailto:${email}`}
                 className="w-fit text-[1.1rem] text-windsor underline decoration-driftwood underline-offset-4 transition-colors duration-250 hover:text-driftwood-deep"
               >
-                info@cykoai.com
+                {email}
               </a>
               <span className="text-[0.85rem] text-n500">
-                For press and partnerships, same address.
+                {note.text}
               </span>
             </div>
           </Reveal>
@@ -82,13 +88,13 @@ export default function Contact() {
               <input
                 name="name"
                 required
-                placeholder="Full name"
+                placeholder={copy.name}
                 className={FIELD_CLASS}
               />
               <input
                 name="company"
                 required
-                placeholder="Company"
+                placeholder={copy.company}
                 className={FIELD_CLASS}
               />
             </div>
@@ -96,14 +102,14 @@ export default function Contact() {
               type="email"
               name="email"
               required
-              placeholder="Work email"
+              placeholder={copy.email}
               className={FIELD_CLASS}
             />
             <textarea
               name="message"
               required
               rows={4}
-              placeholder="What are you trying to solve?"
+              placeholder={copy.message}
               className={`${FIELD_CLASS} resize-none`}
             />
 
@@ -114,7 +120,7 @@ export default function Contact() {
                 variant="solid"
                 className="w-fit"
               >
-                {status === "submitting" ? "Sending…" : "Send message"}
+                {status === "submitting" ? copy.sending : copy.submit}
               </Button>
 
               <span
@@ -125,7 +131,7 @@ export default function Contact() {
                     : "opacity-0"
                 } ${status === "error" ? "text-rose" : "text-driftwood-deep"}`}
               >
-                {status === "success" && "Thanks — we'll be in touch shortly."}
+                {status === "success" && copy.success}
                 {status === "error" && error}
               </span>
             </div>

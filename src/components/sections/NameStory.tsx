@@ -1,34 +1,21 @@
 import MonoLabel from "@/components/ui/MonoLabel";
 import Reveal from "@/components/ui/Reveal";
 import RingField from "@/components/ui/RingField";
+import DraftMark from "@/components/ui/DraftMark";
+import { site } from "@/content/site";
 
-const CELLS = [
-  {
-    syllable: "cy",
-    dot: true,
-    body: "From cyber-security. Defense is never bolted on — it is where every engagement begins.",
-  },
-  {
-    syllable: "ko",
-    dot: true,
-    body: "The sound of the koi and the heart of the sequoia — agility against constant flux, resilience against the test of time.",
-  },
-  {
-    syllable: "ai",
-    dot: false,
-    body: "Applied intelligence — deployed inside your organization, owned by your teams.",
-  },
-];
+const { label, word, pronunciation, parts, closing } = site.name;
 
 /**
- * The name story (mockup C's band): cy · ko · ai split across three
- * columns on the Windsor field, a drawn ring echo drifting behind at
- * 0.88 — the rings carry this band alone (the ring-disc cutout was cut).
+ * The name (mockup C's band): the word and how it's said, cy · ko · ai
+ * split across three columns on the Windsor field, then the closing
+ * line. A drawn ring echo drifts behind at 0.88.
  */
-export default function NameStory() {
+export default function TheName() {
   return (
     <section
       id="name"
+      data-tone="dark"
       data-band-fade="#F9F9FA"
       className="relative overflow-hidden bg-windsor text-white"
     >
@@ -41,32 +28,51 @@ export default function NameStory() {
 
       <div className="relative mx-auto max-w-[1320px] px-[clamp(20px,4vw,56px)] py-[clamp(88px,14vh,150px)]">
         <Reveal>
-          <MonoLabel index="04" tone="inverse">
-            The name is the operating model
+          <MonoLabel tick tone="inverse">
+            {label.text}
+            <DraftMark status={label.status} />
           </MonoLabel>
         </Reveal>
 
+        <Reveal delay={0.06}>
+          <p className="mt-8 flex flex-wrap items-baseline gap-x-5 gap-y-2">
+            <span className="font-display text-[clamp(2rem,4.4vw,3.4rem)] font-semibold tracking-[-0.02em]">
+              {word.text}
+            </span>
+            <span className="font-mono text-[12px] tracking-[0.14em] text-n300">
+              {pronunciation.text}
+            </span>
+          </p>
+        </Reveal>
+
         <div className="mt-11 grid grid-cols-1 border-t border-white/14 min-[900px]:grid-cols-3">
-          {CELLS.map((cell, i) => (
-            <Reveal key={cell.syllable} delay={i * 0.09}>
+          {parts.map((part, i) => (
+            <Reveal key={part.syllable} delay={i * 0.09}>
               <div
                 className={`h-full pb-1.5 pt-7 ${
                   i > 0
                     ? "border-t border-white/14 min-[900px]:border-l min-[900px]:border-t-0 min-[900px]:pl-6"
                     : ""
-                } ${i < CELLS.length - 1 ? "min-[900px]:pr-6" : ""}`}
+                } ${i < parts.length - 1 ? "min-[900px]:pr-6" : ""}`}
               >
                 <div className="font-display text-[clamp(2rem,4.4vw,3.4rem)] font-semibold tracking-[-0.02em]">
-                  {cell.syllable}
-                  {cell.dot && <span className="text-driftwood">·</span>}
+                  {part.syllable}
+                  {i < parts.length - 1 && <span className="text-driftwood">·</span>}
+                  <DraftMark status={part.status} />
                 </div>
                 <p className="mt-3.5 max-w-[30ch] text-[0.95rem] leading-[1.65] text-n300">
-                  {cell.body}
+                  {part.text}
                 </p>
               </div>
             </Reveal>
           ))}
         </div>
+
+        <Reveal delay={0.1}>
+          <p className="mt-16 font-display text-[clamp(1.6rem,3.2vw,2.4rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-white">
+            {closing.text}
+          </p>
+        </Reveal>
       </div>
     </section>
   );
