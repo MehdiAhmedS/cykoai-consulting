@@ -11,8 +11,8 @@ interface MonoLabelProps {
 }
 
 /**
- * The instrumentation voice: JetBrains Mono caps, .22em tracking,
- * optional driftwood tick (mockups' .eyebrow / .kicker).
+ * The instrumentation voice: type-label (Chivo Mono caps), optional
+ * driftwood tick (mockups' .eyebrow / .kicker).
  */
 export default function MonoLabel({
   children,
@@ -24,7 +24,7 @@ export default function MonoLabel({
   return (
     <Tag
       className={cn(
-        "flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.22em]",
+        "type-label flex items-center gap-4",
         tone === "inverse" ? "text-n300" : "text-n500",
         className
       )}

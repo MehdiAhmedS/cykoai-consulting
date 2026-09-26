@@ -30,7 +30,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-[2] mx-auto w-full max-w-[1320px] px-[clamp(20px,4vw,56px)] py-[clamp(72px,10vh,130px)]">
-        <div className="inline-flex items-center gap-3.5 font-mono text-[11px] uppercase tracking-[0.22em] text-n300">
+        <div className="type-label inline-flex items-center gap-3.5 text-n300">
           <span aria-hidden className="h-px w-7 bg-driftwood" />
           {eyebrow.text}
           <DraftMark status={eyebrow.status} className="ml-0" />
@@ -38,13 +38,13 @@ export default function Hero() {
 
         <h1
           data-speed="0.97"
-          className="mt-7 max-w-[15ch] font-display text-[clamp(2.9rem,6.2vw,5.4rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+          className="type-hero mt-7 max-w-[15ch]"
         >
           {headline.text}{" "}
-          <span className="text-n500">{headline.dim}</span>
+          <span className="whitespace-nowrap text-n500">{headline.dim}</span>
         </h1>
 
-        <p className="mt-7 max-w-[42ch] text-[1.1rem] leading-[1.7] text-n300">
+        <p className="type-lead mt-7 max-w-[42ch] text-n300">
           {lede.text}
           <DraftMark status={lede.status} />
         </p>
@@ -55,7 +55,7 @@ export default function Hero() {
           </Button>
           <a
             href={secondaryCta.href}
-            className="border-b border-driftwood pb-[3px] text-[15px] font-medium text-white transition-colors duration-250 ease-out-expo hover:text-driftwood"
+            className="type-small border-b border-driftwood pb-[3px] font-medium text-white transition-colors duration-250 ease-out-expo hover:text-driftwood"
           >
             {secondaryCta.label}
           </a>
@@ -64,9 +64,9 @@ export default function Hero() {
       </div>
 
       {/* mono caption — instrumentation voice, bottom right */}
-      <div className="absolute bottom-24 right-[clamp(20px,4vw,56px)] text-right font-mono text-[10px] uppercase leading-loose tracking-[0.22em] text-n300 max-[899px]:hidden">
-        {caption.origin} ·{" "}
-        <span className="text-driftwood">{caption.coordinates}</span>
+      <div className="absolute bottom-24 right-[clamp(20px,4vw,56px)] flex items-baseline gap-2 text-right text-n300 max-[899px]:hidden">
+        <span className="type-label">{caption.origin} ·</span>
+        <span className="type-data text-driftwood">{caption.coordinates}</span>
       </div>
     </section>
   );

@@ -28,13 +28,13 @@ export default function Offers() {
                 <DraftMark status={label.status} />
               </MonoLabel>
             </Reveal>
-            <h2 className="mt-8 max-w-2xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-semibold leading-[1.08] tracking-[-0.025em] text-windsor">
+            <h2 className="type-h2 mt-8 max-w-2xl text-windsor">
               <SplitText>{heading.text}</SplitText>
               <DraftMark status={heading.status} />
             </h2>
           </div>
           <Reveal delay={0.15}>
-            <p className="max-w-sm text-[0.95rem] leading-[1.65] text-n500">
+            <p className="type-small max-w-sm text-n500">
               {intro.text}
               <DraftMark status={intro.status} />
             </p>
@@ -53,12 +53,12 @@ export default function Offers() {
                 }
                 meta={offer.practice}
               >
-                <dl className="grid max-w-[64ch] grid-cols-[88px_1fr] gap-x-6 gap-y-3 text-[0.98rem] leading-[1.7] md:grid-cols-[112px_1fr]">
-                  <dt className="pt-[5px] font-mono text-[11px] uppercase tracking-[0.1em] text-n500">
+                <dl className="type-body grid max-w-[64ch] grid-cols-[88px_1fr] gap-x-6 gap-y-3 md:grid-cols-[112px_1fr]">
+                  <dt className="type-label pt-[3px] text-n500">
                     {fields.for}
                   </dt>
                   <dd className="text-n700">{offer.for}</dd>
-                  <dt className="pt-[5px] font-mono text-[11px] uppercase tracking-[0.1em] text-n500">
+                  <dt className="type-label pt-[3px] text-n500">
                     {fields.youGet}
                     {i === 0 && <DraftMark status={fields.status} className="ml-1" />}
                   </dt>

@@ -1,0 +1,144 @@
+{
+  "url": "https://www.hadrian.co",
+  "section": "type",
+  "capturedAt": "2026-09-26T17:06:38.076Z",
+  "options": {
+    "probe": true,
+    "mobile": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/type/live/hadrian.co/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/type/live/hadrian.co/mobile-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "soehneMono, \"soehneMono Fallback\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(229, 231, 235)",
+          "border-radius": "0px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "100px",
+          "transition": "background-color 0.2s ease-in-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+          "text": "CA10:06AM PDTAZ10:06AM MSTAL12:06PM CDTDC01:06PM EDT Menu"
+        },
+        "h1": {
+          "font-family": "soehne, \"soehne Fallback\"",
+          "font-weight": "400",
+          "font-size": "72px",
+          "letter-spacing": "-2.16px",
+          "line-height": "72px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(229, 231, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "144px",
+          "transition": "all",
+          "text": "The Future of American Production"
+        },
+        "h2": {
+          "font-family": "soehne, \"soehne Fallback\"",
+          "font-weight": "400",
+          "font-size": "64px",
+          "letter-spacing": "-1.92px",
+          "line-height": "64px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(229, 231, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "64px",
+          "transition": "all",
+          "text": "Production On-Demand"
+        }
+      },
+      "fonts": [
+        "soehneBreit normal normal",
+        "soehne 400 normal",
+        "soehneMono 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "soehneMono, \"soehneMono Fallback\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(229, 231, 235)",
+          "border-radius": "0px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "76px",
+          "transition": "background-color 0.2s ease-in-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+          "text": "CA10:07AM PDTAZ10:07AM MSTAL12:07PM CDTDC01:07PM EDT Menu"
+        },
+        "h1": {
+          "font-family": "soehne, \"soehne Fallback\"",
+          "font-weight": "400",
+          "font-size": "30px",
+          "letter-spacing": "-0.9px",
+          "line-height": "30px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(229, 231, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "60px",
+          "transition": "all",
+          "text": "The Future of American Production"
+        },
+        "h2": {
+          "font-family": "soehne, \"soehne Fallback\"",
+          "font-weight": "400",
+          "font-size": "30px",
+          "letter-spacing": "-0.9px",
+          "line-height": "30px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(229, 231, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "30px",
+          "transition": "all",
+          "text": "Production On-Demand"
+        }
+      },
+      "fonts": [
+        "soehneBreit normal normal",
+        "soehne 400 normal",
+        "soehne 500 normal",
+        "soehne Fallback normal normal",
+        "soehneMono 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}

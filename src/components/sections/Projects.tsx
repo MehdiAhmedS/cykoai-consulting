@@ -14,16 +14,16 @@ const showSince = SHOW_DRAFTS || items.some((p) => !isTBC(p.since));
 
 function State({ project }: { project: Project }) {
   return (
-    <span className="inline-flex items-center gap-2.5 whitespace-nowrap">
+    <span className="type-data inline-flex items-center gap-2.5 whitespace-nowrap">
       <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-driftwood" />
       {project.state}
     </span>
   );
 }
 
-const HEAD = "pb-4 pr-6 text-left align-bottom font-mono text-[11px] font-normal uppercase tracking-[0.1em] text-n300 last:pr-0";
-const CELL = "py-5 pr-6 align-top text-[0.92rem] leading-[1.55] text-n300 last:pr-0";
-const TERM = "font-mono text-[11px] uppercase tracking-[0.1em] text-n300";
+const HEAD = "type-label pb-4 pr-6 text-left align-bottom text-n300 last:pr-0";
+const CELL = "type-small py-5 pr-6 align-top text-n300 last:pr-0";
+const TERM = "type-label text-n300";
 
 /**
  * Projects (v3 step 01): a plain register of current engagements on the
@@ -48,14 +48,14 @@ export default function Projects() {
             </Reveal>
             <h2
               id="projects-heading"
-              className="mt-8 max-w-2xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-semibold leading-[1.08] tracking-[-0.025em] text-white"
+              className="type-h2 mt-8 max-w-2xl text-white"
             >
               <SplitText>{heading.text}</SplitText>
               <DraftMark status={heading.status} />
             </h2>
           </div>
           <Reveal delay={0.15}>
-            <p className="max-w-sm text-[0.95rem] leading-[1.65] text-n300">
+            <p className="type-small max-w-sm text-n300">
               {intro.text}
               <DraftMark status={intro.status} />
             </p>
@@ -81,14 +81,14 @@ export default function Projects() {
             <tbody>
               {items.map((project) => (
                 <tr key={project.title} className="border-b border-white/14">
-                  <th scope="row" className={`${CELL} w-[30%] text-left font-normal text-white`}>
+                  <th scope="row" className={`${CELL} w-[30%] text-left text-white`}>
                     {project.title}
                     <DraftMark status={project.status} />
                   </th>
                   <td className={CELL}>{project.client}</td>
                   <td className={CELL}>{project.practice}</td>
                   <td className={CELL}>{shown(project.stack)}</td>
-                  {showSince && <td className={`${CELL} whitespace-nowrap`}>{shown(project.since)}</td>}
+                  {showSince && <td className={`${CELL} whitespace-nowrap`}><span className="type-data">{shown(project.since)}</span></td>}
                   <td className={CELL}>
                     <State project={project} />
                   </td>
@@ -102,11 +102,11 @@ export default function Projects() {
         <ul className="mt-12 border-b border-white/14 md:hidden">
           {items.map((project, i) => (
             <li key={project.title} className="border-t border-white/14 py-6">
-              <h3 className="text-[1.05rem] font-medium leading-[1.4] text-white">
+              <h3 className="type-h3 text-white">
                 {project.title}
                 <DraftMark status={project.status} />
               </h3>
-              <dl className="mt-4 grid grid-cols-[112px_1fr] gap-x-4 gap-y-2.5 text-[0.92rem] leading-[1.5] text-n300">
+              <dl className="type-small mt-4 grid grid-cols-[112px_1fr] gap-x-4 gap-y-2.5 text-n300">
                 <dt className={`${TERM} pt-[3px]`}>
                   {columns.client}
                   {i === 0 && <DraftMark status={columns.status} className="ml-1" />}
@@ -119,7 +119,7 @@ export default function Projects() {
                 {showSince && (
                   <>
                     <dt className={`${TERM} pt-[3px]`}>{columns.since}</dt>
-                    <dd>{shown(project.since)}</dd>
+                    <dd className="type-data">{shown(project.since)}</dd>
                   </>
                 )}
                 <dt className={`${TERM} pt-[3px]`}>{columns.state}</dt>

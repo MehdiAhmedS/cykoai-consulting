@@ -1,0 +1,174 @@
+{
+  "url": "https://replicate.com",
+  "section": "type",
+  "capturedAt": "2026-09-26T17:08:06.558Z",
+  "options": {
+    "probe": true,
+    "mobile": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/type/live/replicate.com/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/type/live/replicate.com/mobile-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "basier-square, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "72px",
+          "transition": "all",
+          "text": "Replicate glyphReplicate wordmarkcmd+kExplorePricingEnterpriseDocsBlogSign inTry"
+        },
+        "nav": {
+          "font-family": "basier-square, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(0, 0, 0)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(0, 0, 0)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": "ExplorePricingEnterpriseDocsBlogSign inTry for freeCompare models in the Playgro"
+        },
+        "h1": {
+          "font-family": "basier-square, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "400",
+          "font-size": "24px",
+          "line-height": "32px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "64px",
+          "transition": "all",
+          "text": "Run and fine-tune models. Deploy custom models. All with one line of code."
+        },
+        "h2": {
+          "font-family": "rb-freigeist-neue, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "700",
+          "font-size": "72px",
+          "letter-spacing": "-1.8px",
+          "line-height": "72px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "144px",
+          "transition": "all",
+          "text": "Run AIwith an API."
+        }
+      },
+      "fonts": [
+        "basier-square 400 normal",
+        "basier-square 600 normal",
+        "jetbrains-mono 400 normal",
+        "rb-freigeist-neue 600 normal",
+        "rb-freigeist-neue 700 normal",
+        "rb-freigeist-neue 400 normal"
+      ],
+      "tech": {
+        "canvas": 2,
+        "webgl": true,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "basier-square, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(32, 32, 32)",
+          "background-color": "rgb(255, 255, 255)",
+          "border-bottom": "0px solid rgb(32, 32, 32)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "72px",
+          "transition": "all",
+          "text": "Replicate glyphReplicate wordmarkctrl+kExplorePricingEnterpriseDocsBlogSign inTr"
+        },
+        "nav": {
+          "font-family": "basier-square, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(0, 0, 0)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(0, 0, 0)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": "ExplorePricingEnterpriseDocsBlogSign inTry for freeCompare models in the Playgro"
+        },
+        "h1": {
+          "font-family": "basier-square, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "400",
+          "font-size": "20px",
+          "line-height": "28px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "84px",
+          "transition": "all",
+          "text": "Run and fine-tune models. Deploy custom models. All with one line of code."
+        },
+        "h2": {
+          "font-family": "rb-freigeist-neue, ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "font-weight": "700",
+          "font-size": "48px",
+          "letter-spacing": "-1.2px",
+          "line-height": "48px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "96px",
+          "transition": "all",
+          "text": "Run AIwith an API."
+        }
+      },
+      "fonts": [
+        "basier-square 400 normal",
+        "basier-square 600 normal",
+        "jetbrains-mono 400 normal",
+        "rb-freigeist-neue 600 normal",
+        "rb-freigeist-neue 700 normal",
+        "rb-freigeist-neue 400 normal"
+      ],
+      "tech": {
+        "canvas": 2,
+        "webgl": true,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}

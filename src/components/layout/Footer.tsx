@@ -41,14 +41,14 @@ export default function Footer() {
           <div className="max-w-md">
             <div className="flex items-center gap-3">
               <LogoMark className="h-8 w-8" />
-              <span className="font-display text-[1.3rem] font-semibold tracking-tight">
+              <span className="type-h3">
                 {wordmark.text}
               </span>
             </div>
             <div className="mt-8">
               <a
                 href={cta.href}
-                className="inline-block rounded-xs border border-white/35 px-[18px] py-[9px] text-[13.5px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
+                className="type-small inline-block rounded-xs border border-white/35 px-[18px] py-[9px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
               >
                 {cta.label}
               </a>
@@ -58,7 +58,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-12 sm:gap-20">
             {COLUMNS.map((col) => (
               <div key={col.heading}>
-                <h3 className="font-mono text-[10px] font-normal uppercase tracking-[0.22em] text-n300">
+                <h3 className="type-label text-n300">
                   {col.heading}
                 </h3>
                 <ul className="mt-5 flex flex-col gap-3">
@@ -66,7 +66,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <a
                         href={link.href}
-                        className="text-[0.9rem] text-n300 transition-colors duration-250 ease-out-expo hover:text-white"
+                        className="type-small text-n300 transition-colors duration-250 ease-out-expo hover:text-white"
                       >
                         {link.label}
                       </a>
@@ -83,12 +83,12 @@ export default function Footer() {
 
         {/* oversized wordmark — the band signs its name */}
         <div aria-hidden="true" className="mt-16 select-none md:mt-20">
-          <span className="block font-display text-[clamp(3.5rem,11.5vw,10.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-white/95">
+          <span className="block font-display text-[clamp(3.5rem,11.5vw,10.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-white/95 [font-stretch:112%]">
             {bigWordmark}
           </span>
         </div>
 
-        <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 py-8 font-mono text-[10.5px] tracking-[0.14em] text-n300 sm:flex-row sm:items-center">
+        <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 py-8 type-label text-n300 sm:flex-row sm:items-center">
           <span>&copy; {new Date().getFullYear()} {legal.rights}</span>
           <span>{legal.credit}</span>
         </div>

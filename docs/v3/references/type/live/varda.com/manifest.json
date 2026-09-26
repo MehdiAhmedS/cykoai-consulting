@@ -1,0 +1,189 @@
+{
+  "url": "https://www.varda.com",
+  "section": "type",
+  "capturedAt": "2026-09-26T17:06:25.721Z",
+  "options": {
+    "probe": true,
+    "mobile": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/type/live/varda.com/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/type/live/varda.com/mobile-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "17.2632px",
+          "line-height": "25.8947px",
+          "font-stretch": "100%",
+          "color": "rgb(250, 252, 255)",
+          "background-color": "rgb(10, 48, 101)",
+          "border-bottom": "0px none rgb(250, 252, 255)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "741.031px",
+          "transition": "all",
+          "text": "Space born,Earth boundVarda is a microgravity-enabled life sciences company that"
+        },
+        "nav": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "17.2632px",
+          "line-height": "25.8947px",
+          "font-stretch": "100%",
+          "color": "rgb(234, 236, 238)",
+          "background-color": "rgb(10, 48, 101)",
+          "border-bottom": "0px none rgb(234, 236, 238)",
+          "border-radius": "0px",
+          "box-shadow": "rgb(234, 236, 238) 0px 0px 0px 1px inset",
+          "position": "fixed",
+          "top": "93.0526px",
+          "height": "807.947px",
+          "transition": "0.3s",
+          "text": "Varda Space IndustriesPlatformExplore W-SeriesSolutionsGovernmentBiopharmaMicrog"
+        },
+        "h1": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "700",
+          "font-size": "107.453px",
+          "letter-spacing": "-3.22358px",
+          "line-height": "107.453px",
+          "font-stretch": "100%",
+          "color": "rgb(230, 129, 59)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(230, 129, 59)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "214.906px",
+          "transition": "all",
+          "text": "Space born,Earth bound"
+        },
+        "h2": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "500",
+          "font-size": "35.5789px",
+          "line-height": "42.6947px",
+          "font-stretch": "100%",
+          "color": "rgb(230, 129, 59)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(230, 129, 59)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": "Connect with our team"
+        }
+      },
+      "fonts": [
+        "MT Everyday Sans 400 normal",
+        "MT Everyday Sans 500 normal",
+        "MT Everyday Sans 700 normal",
+        "Phosphor normal normal",
+        "Phosphor-Bold normal normal",
+        "Material Design Icons normal normal",
+        "remixicon normal normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": [
+          "https://cdn.prod.website-files.com/gsap/3.15.0/gsap.min.js",
+          "https://cdn.prod.website-files.com/gsap/3.15.0/ScrambleTextPlugin.min.js",
+          "https://cdn.prod.website-files.com/gsap/3.15.0/ScrollTrigger.min.js",
+          "https://cdn.prod.website-files.com/gsap/3.15.0/Observer.min.js"
+        ]
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(250, 252, 255)",
+          "background-color": "rgb(10, 48, 101)",
+          "border-bottom": "0px none rgb(250, 252, 255)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "597.984px",
+          "transition": "all",
+          "text": "Space born,Earth boundVarda is a microgravity-enabled life sciences company that"
+        },
+        "nav": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(234, 236, 238)",
+          "background-color": "rgb(10, 48, 101)",
+          "border-bottom": "0px none rgb(234, 236, 238)",
+          "border-radius": "0px",
+          "box-shadow": "rgb(234, 236, 238) 0px 0px 0px 1px inset",
+          "position": "fixed",
+          "top": "0%",
+          "height": "844px",
+          "transition": "0.3s",
+          "text": "Varda Space IndustriesPlatformExplore W-SeriesSolutionsGovernmentBiopharmaMicrog"
+        },
+        "h1": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "700",
+          "font-size": "44.8px",
+          "letter-spacing": "-1.344px",
+          "line-height": "44.8px",
+          "font-stretch": "100%",
+          "color": "rgb(230, 129, 59)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(230, 129, 59)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "179.188px",
+          "transition": "all",
+          "text": "Space born,Earth bound"
+        },
+        "h2": {
+          "font-family": "\"MT Everyday Sans\", Arial, sans-serif",
+          "font-weight": "500",
+          "font-size": "32px",
+          "line-height": "38.4px",
+          "font-stretch": "100%",
+          "color": "rgb(230, 129, 59)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(230, 129, 59)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": "Connect with our team"
+        }
+      },
+      "fonts": [
+        "MT Everyday Sans 400 normal",
+        "MT Everyday Sans 500 normal",
+        "MT Everyday Sans 700 normal",
+        "Phosphor-Bold normal normal",
+        "Material Design Icons normal normal",
+        "remixicon normal normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": [
+          "https://cdn.prod.website-files.com/gsap/3.15.0/gsap.min.js",
+          "https://cdn.prod.website-files.com/gsap/3.15.0/ScrambleTextPlugin.min.js",
+          "https://cdn.prod.website-files.com/gsap/3.15.0/ScrollTrigger.min.js",
+          "https://cdn.prod.website-files.com/gsap/3.15.0/Observer.min.js"
+        ]
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}

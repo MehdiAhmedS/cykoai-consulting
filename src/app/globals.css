@@ -50,9 +50,9 @@
   --color-n100: var(--color-n100);
   --color-n50: var(--color-n50);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-chivo-mono), ui-monospace, "SFMono-Regular", monospace;
 
   --ease-out-expo: var(--ease-out-expo);
 }
@@ -65,10 +65,104 @@ html {
 body {
   background: var(--color-white);
   color: var(--color-windsor);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  /* type-body values, so plain paragraphs are right without classes */
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+}
+
+/* Type system (v3 step 02): Archivo for display and text, Chivo Mono for
+   labels and data. Width uses font-stretch: next/font declares the wdth
+   range (62–125%) on Archivo's @font-face. */
+@utility type-hero {
+  font-family: var(--font-display);
+  font-weight: 780;
+  font-stretch: 112%;
+  /* min 2.25rem, not the prompt's 3rem: at 390px 3rem cannot fit the
+     headline in 2–3 lines without a one-word last line (Mehdi, 26 Sep) */
+  font-size: clamp(2.25rem, 6.4vw, 5.75rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-weight: 740;
+  font-stretch: 110%;
+  font-size: clamp(2.1rem, 4.2vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 104%;
+  font-size: clamp(1.3rem, 1.9vw, 1.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+@utility type-lead {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-stretch: 100%;
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+@utility type-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-stretch: 100%;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+@utility type-small {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-stretch: 100%;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+@utility type-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility type-data {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Light text on navy reads heavier: display weights drop by 20 on dark. */
+[data-tone="dark"] :is(.type-hero) {
+  font-weight: 760;
+}
+[data-tone="dark"] :is(.type-h2) {
+  font-weight: 720;
+}
+[data-tone="dark"] :is(.type-h3) {
+  font-weight: 680;
 }
 
 ::selection {

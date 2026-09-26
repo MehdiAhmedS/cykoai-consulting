@@ -26,8 +26,8 @@ const variantClasses: Record<Variant, string> = {
 };
 
 const sizeClasses: Record<Size, string> = {
-  md: "px-7 py-[15px] text-[15px]",
-  sm: "px-[18px] py-[9px] text-[13.5px]",
+  md: "px-7 py-[15px]",
+  sm: "px-[18px] py-[9px]",
 };
 
 /**
@@ -45,7 +45,7 @@ export default function Button({
   onClick,
 }: ButtonProps) {
   const classes = cn(
-    "inline-flex items-center justify-center rounded-xs font-medium",
+    "type-small inline-flex items-center justify-center rounded-xs font-medium",
     "transition-colors duration-250 ease-out-expo",
     "disabled:cursor-not-allowed disabled:opacity-45",
     variantClasses[variant],

@@ -57,7 +57,7 @@ The v3 rules live in `docs/v3/BRIEF.md`, which wins where it conflicts with this
 - **Glass on the navbar only.** Backdrop blur 16–20px, tint at least 72% opaque, a 1px hairline, and an `@supports not (backdrop-filter: blur(1px))` solid fallback. No inset highlight, no `saturate()`, no shadow, no `mix-blend-mode`.
 - **WebGL in the hero globe only.** Use cobe (about 6KB); arcs and graticule may be drawn on a 2D canvas overlay that shares the rotation. The globe shows real locations only, and the hero must read completely with the canvas removed.
 - **Numbers only as data:** dates, weeks, counts, coordinates, time zones. No ordinal section indices, numbered rows or numbered menus.
-- **Typography:** Archivo + Chivo Mono (see Type system), built in step 02. Until then, leave the fonts alone.
+- **Typography:** Archivo (display 104–112% width, text 100%) + Chivo Mono (labels, data). Use the type-* utilities; no ad-hoc font sizes, weights or tracking.
 - **Reveal timing:** the hero headline reveal may run up to 1200ms; other reveals stay at 500–800ms.
 - **SVG line drawing:** a stroke draw-in of up to 600ms is allowed for line glyphs.
 

@@ -14,10 +14,10 @@ export default function StatStrip({ className }: { className?: string }) {
           key={stat.label}
           className={`flex-1 pt-5 ${i > 0 ? "border-l border-n150 pl-4" : "pr-4"}`}
         >
-          <div className="font-display text-[1.9rem] font-semibold tracking-[-0.02em] text-windsor">
+          <div className="type-h3 text-windsor">
             {stat.n}
           </div>
-          <div className="mt-1.5 font-mono text-[10px] tracking-[0.14em] text-n500">
+          <div className="type-label mt-1.5 text-n500">
             {stat.label}
           </div>
         </div>

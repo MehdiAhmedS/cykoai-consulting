@@ -36,10 +36,10 @@ export default function TheName() {
 
         <Reveal delay={0.06}>
           <p className="mt-8 flex flex-wrap items-baseline gap-x-5 gap-y-2">
-            <span className="font-display text-[clamp(2rem,4.4vw,3.4rem)] font-semibold tracking-[-0.02em]">
+            <span className="type-h2">
               {word.text}
             </span>
-            <span className="font-mono text-[12px] tracking-[0.14em] text-n300">
+            <span className="type-data text-n300">
               {pronunciation.text}
             </span>
           </p>
@@ -55,12 +55,12 @@ export default function TheName() {
                     : ""
                 } ${i < parts.length - 1 ? "min-[900px]:pr-6" : ""}`}
               >
-                <div className="font-display text-[clamp(2rem,4.4vw,3.4rem)] font-semibold tracking-[-0.02em]">
+                <div className="type-h2">
                   {part.syllable}
                   {i < parts.length - 1 && <span className="text-driftwood">·</span>}
                   <DraftMark status={part.status} />
                 </div>
-                <p className="mt-3.5 max-w-[30ch] text-[0.95rem] leading-[1.65] text-n300">
+                <p className="type-small mt-3.5 max-w-[30ch] text-n300">
                   {part.text}
                 </p>
               </div>
@@ -69,7 +69,7 @@ export default function TheName() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-16 font-display text-[clamp(1.6rem,3.2vw,2.4rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-white">
+          <p className="type-h2 mt-16 text-white">
             {closing.text}
           </p>
         </Reveal>

@@ -28,12 +28,12 @@ export default function Standards() {
               <DraftMark status={label.status} />
             </MonoLabel>
           </Reveal>
-          <h2 className="mt-5 max-w-[20ch] font-display text-[clamp(1.9rem,3.8vw,3rem)] font-semibold leading-[1.08] tracking-[-0.025em] text-windsor">
+          <h2 className="type-h2 mt-5 max-w-[20ch] text-windsor">
             <SplitText>{heading.text}</SplitText>
             <DraftMark status={heading.status} />
           </h2>
           <Reveal delay={0.1}>
-            <p className="mt-6 max-w-[46ch] text-[1.05rem] leading-[1.7] text-n500">
+            <p className="type-body mt-6 max-w-[46ch] text-n500">
               {intro.text}
               <DraftMark status={intro.status} />
             </p>
@@ -43,11 +43,11 @@ export default function Standards() {
             {rules.map((rule, i) => (
               <Reveal key={rule.title} delay={i * 0.05}>
                 <div className="border-t border-n150 py-7">
-                  <h3 className="font-display text-[1.3rem] font-semibold tracking-tight text-windsor">
+                  <h3 className="type-h3 text-windsor">
                     {rule.title}
                     <DraftMark status={rule.status} />
                   </h3>
-                  <p className="mt-2.5 max-w-[52ch] text-[0.95rem] leading-[1.65] text-n500">
+                  <p className="type-small mt-2.5 max-w-[52ch] text-n500">
                     {rule.text}
                   </p>
                 </div>
@@ -62,7 +62,7 @@ export default function Standards() {
               {frameworks.items.map((framework, i) => (
                 <li
                   key={framework}
-                  className="border-t border-n150 py-4 font-mono text-[11px] uppercase tracking-[0.14em] text-windsor"
+                  className="type-label border-t border-n150 py-4 text-windsor"
                 >
                   {framework}
                   {i === 0 && <DraftMark status={frameworks.status} />}

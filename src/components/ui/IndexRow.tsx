@@ -11,7 +11,7 @@ interface IndexRowProps {
 }
 
 /**
- * Expandable list row (board §05/03, Obys pattern): Space Grotesk title,
+ * Expandable list row (board §05/03, Obys pattern): type-h3 title,
  * optional mono tag and a chevron, whole row a button. Click/Enter
  * expands the detail at 300ms expo.out; top rule turns driftwood on
  * hover/focus/open.
@@ -34,12 +34,12 @@ export default function IndexRow({ title, meta, children }: IndexRowProps) {
           onClick={() => setOpen((v) => !v)}
           className="grid w-full grid-cols-[1fr_auto] items-baseline gap-4 py-7 text-left md:gap-8"
         >
-          <span className="font-display text-[clamp(1.3rem,2.4vw,1.75rem)] font-semibold tracking-tight text-windsor transition-transform duration-300 ease-out-expo group-hover:translate-x-1">
+          <span className="type-h3 text-windsor transition-transform duration-300 ease-out-expo group-hover:translate-x-1">
             {title}
           </span>
           <span className="flex items-center gap-4 self-center md:gap-6">
             {meta && (
-              <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-n500">
+              <span className="type-label text-n500">
                 {meta}
               </span>
             )}

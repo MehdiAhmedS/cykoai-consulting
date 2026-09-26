@@ -12,7 +12,7 @@ const { label, heading, body, email, note, form: copy } = site.contact;
 type Status = "idle" | "submitting" | "success" | "error";
 
 const FIELD_CLASS =
-  "w-full rounded-xs border border-n300 bg-white px-4 py-3 text-[0.95rem] text-windsor placeholder:text-n500 outline-none transition-[border-color,box-shadow] duration-200 focus:border-driftwood focus:shadow-[0_0_0_3px_rgba(173,135,82,0.25)]";
+  "type-small w-full rounded-xs border border-n300 bg-white px-4 py-3 text-windsor placeholder:text-n500 outline-none transition-[border-color,box-shadow] duration-200 focus:border-driftwood focus:shadow-[0_0_0_3px_rgba(173,135,82,0.25)]";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -55,11 +55,11 @@ export default function Contact() {
           <Reveal>
             <MonoLabel tick>{label.text}</MonoLabel>
           </Reveal>
-          <h2 className="mt-8 font-display text-[clamp(2.2rem,4.6vw,3.6rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-windsor">
+          <h2 className="type-h2 mt-8 text-windsor">
             <SplitText>{heading.text}</SplitText>
           </h2>
           <Reveal delay={0.2}>
-            <p className="mt-8 max-w-md text-[1.05rem] leading-[1.7] text-n500">
+            <p className="type-body mt-8 max-w-md text-n500">
               {body.text}
             </p>
           </Reveal>
@@ -68,11 +68,11 @@ export default function Contact() {
             <div className="mt-12 flex flex-col gap-1">
               <a
                 href={`mailto:${email}`}
-                className="w-fit text-[1.1rem] text-windsor underline decoration-driftwood underline-offset-4 transition-colors duration-250 hover:text-driftwood-deep"
+                className="type-lead w-fit text-windsor underline decoration-driftwood underline-offset-4 transition-colors duration-250 hover:text-driftwood-deep"
               >
                 {email}
               </a>
-              <span className="text-[0.85rem] text-n500">
+              <span className="type-small text-n500">
                 {note.text}
               </span>
             </div>
@@ -125,7 +125,7 @@ export default function Contact() {
 
               <span
                 role="status"
-                className={`text-[0.85rem] transition-opacity duration-200 ${
+                className={`type-small transition-opacity duration-200 ${
                   status === "success" || status === "error"
                     ? "opacity-100"
                     : "opacity-0"

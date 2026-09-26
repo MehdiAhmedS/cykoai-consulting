@@ -83,11 +83,11 @@ export default function Engagement() {
               {label.text}
               <DraftMark status={label.status} />
             </MonoLabel>
-            <h2 className="mt-6 max-w-2xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-semibold leading-[1.08] tracking-[-0.025em] text-windsor">
+            <h2 className="type-h2 mt-6 max-w-2xl text-windsor">
               {heading.text}
               <DraftMark status={heading.status} />
             </h2>
-            <p className="mt-4 max-w-md text-[0.95rem] leading-[1.65] text-n500">
+            <p className="type-small mt-4 max-w-md text-n500">
               {intro.text}
               <DraftMark status={intro.status} />
             </p>
@@ -106,11 +106,11 @@ export default function Engagement() {
               key={step.title}
               className="relative flex w-full shrink-0 flex-col justify-end rounded-sm border border-n150 bg-white p-9 motion-safe:min-[900px]:h-[420px] motion-safe:min-[900px]:w-[380px]"
             >
-              <h3 className="font-display text-[1.6rem] font-semibold tracking-tight text-windsor">
+              <h3 className="type-h3 text-windsor">
                 {step.title}
                 <DraftMark status={step.status} />
               </h3>
-              <p className="mt-3 text-[0.95rem] leading-[1.65] text-n500">
+              <p className="type-small mt-3 text-n500">
                 {step.text}
               </p>
             </div>

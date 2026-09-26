@@ -17,7 +17,7 @@ export default function DraftMark({
   return (
     <span
       className={cn(
-        "ml-2 inline-block rounded-xs border border-driftwood px-1 py-px align-middle font-mono text-[9px] font-normal not-italic leading-none tracking-[0.12em] text-driftwood",
+        "type-label ml-2 inline-block rounded-xs border border-driftwood px-1 align-middle not-italic leading-none text-driftwood",
         className
       )}
     >

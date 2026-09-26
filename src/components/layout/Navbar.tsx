@@ -13,7 +13,7 @@ const linksStatus = LINKS.some((l) => l.status === "draft") ? "draft" : "confirm
  * The DS's "permanent dark inverse band": solid Windsor, 64px, hairline
  * bottom border. No blur, no hide-on-scroll, no shrink tricks.
  * <900px: hamburger → full-screen Windsor overlay, links stacked in
- * Space Grotesk, focus trapped, Lenis paused while open.
+ * type-h2, focus trapped, Lenis paused while open.
  */
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -85,10 +85,10 @@ export default function Navbar() {
           onClick={() => setMenuOpen(false)}
         >
           <LogoMark className="h-[26px] w-[26px] rounded-none" />
-          <span className="font-display text-[17px] font-bold tracking-[0.02em]">
+          <span className="font-display text-[17px] font-bold tracking-[0.02em] [font-stretch:112%]">
             {wordmark.text}
           </span>
-          <span className="font-mono text-[9px] tracking-[0.32em] text-n300">
+          <span className="type-label text-n300">
             {tag.text}
           </span>
         </a>
@@ -98,7 +98,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-[13.5px] text-n300 transition-colors duration-250 ease-out-expo hover:text-white"
+              className="type-small text-n300 transition-colors duration-250 ease-out-expo hover:text-white"
             >
               {link.label}
             </a>
@@ -106,7 +106,7 @@ export default function Navbar() {
           <DraftMark status={linksStatus} className="-ml-2" />
           <a
             href={cta.href}
-            className="rounded-xs border border-white/35 px-[18px] py-[9px] text-[13.5px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
+            className="type-small rounded-xs border border-white/35 px-[18px] py-[9px] font-medium text-white transition-colors duration-250 ease-out-expo hover:bg-white hover:text-windsor"
           >
             {cta.label}
           </a>
@@ -134,7 +134,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile: full-screen Windsor overlay, links stacked in Space Grotesk */}
+      {/* Mobile: full-screen Windsor overlay, links stacked in type-h2 */}
       <div
         id="mobile-menu"
         ref={overlayRef}
@@ -153,7 +153,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 tabIndex={menuOpen ? 0 : -1}
-                className="border-b border-white/8 py-5 font-display text-[2rem] font-semibold tracking-[-0.02em] text-white"
+                className="type-h2 border-b border-white/8 py-5 text-white"
               >
                 {link.label}
               </a>
@@ -164,7 +164,7 @@ export default function Navbar() {
             href={cta.href}
             onClick={() => setMenuOpen(false)}
             tabIndex={menuOpen ? 0 : -1}
-            className="rounded-xs bg-white px-7 py-[15px] text-center text-[15px] font-medium text-windsor"
+            className="type-small rounded-xs bg-white px-7 py-[15px] text-center font-medium text-windsor"
           >
             {cta.label}
           </a>
