@@ -4,14 +4,14 @@ Read `docs/v3/BRIEF.md` first, especially "Type system". This step replaces Spac
 
 ## 1. Study the references
 
-Look at the board captures in `docs/v3/references/type/board/` first. INDEX.md lists the measured values: Hadrian, Varda, SpaceX, Replicate, Oxide. Then go through each site live in Chrome, as the brief describes: measure the computed type of the headline, section headings, body text and mono labels with the JavaScript tool, and see how the headline wraps at 390px. Save a record with:
+Look at the board captures in `docs/v3/references/type/board/` first. INDEX.md lists the measured values: Hadrian, Varda, SpaceX, Replicate, Oxide. Then go through each site live in Chrome, as the brief describes: measure the computed type of the headline, section headings, body text and mono labels with the JavaScript tool. Save a record with the commands below; their `--mobile` captures show how each headline wraps at 390px.
 
 ```bash
 npm run refs -- type https://www.varda.com --probe --mobile
 npm run refs -- type https://www.hadrian.co --probe --mobile
-npm run refs -- type https://oxide.computer --probe
-npm run refs -- type https://www.spacex.com --probe
-npm run refs -- type https://replicate.com --probe
+npm run refs -- type https://oxide.computer --probe --mobile
+npm run refs -- type https://www.spacex.com --probe --mobile
+npm run refs -- type https://replicate.com --probe --mobile
 ```
 
 In `docs/v3/references/type/NOTES.md`, record for each site:
@@ -33,7 +33,7 @@ What to take: weight of 700 or more in sentence case, tight leading, hairlines, 
   - `--font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;`
   - `--font-mono: var(--font-chivo-mono), ui-monospace, "SFMono-Regular", monospace;`
 
-**Check the width axis works.** Render a test string at `font-stretch: 112%` and at `100%`, and compare their measured widths in the browser (`getBoundingClientRect`). If they're equal, `next/font`'s `@font-face` has no `font-stretch` range. In that case, set width with `font-variation-settings: "wdth" 112` inside the utilities below instead. Note which approach works in NOTES.md.
+**Check the width axis works.** In Chrome at `localhost:3000`, use the JavaScript tool to render a test string at `font-stretch: 112%` and at `100%`, and compare their measured widths (`getBoundingClientRect`). If they're equal, `next/font`'s `@font-face` has no `font-stretch` range. In that case, set width with `font-variation-settings: "wdth" 112` inside the utilities below instead. Note which approach works in NOTES.md.
 
 ## 3. The type utilities (`src/app/globals.css`)
 
@@ -75,7 +75,7 @@ Run the brief's check list (lint, build, verify-shots into `docs/v3/after/02-typ
 - **The hero headline** at 390, 768 and 1440. It must break into two or three lines, with no widow on its own line.
 - **Section headings** on dark and light sections, side by side with the Varda and Hadrian captures.
 - **Mono labels:** consistent size and tracking everywhere.
-- **Layout shift from font loading.** Reload with cache disabled and watch the hero; the fallback metrics from `next/font` should keep it still.
+- **Layout shift from font loading.** Measure it on a cold load: a fresh headless Playwright page has an empty cache. Sum the buffered `layout-shift` entries from a `PerformanceObserver` (`{ type: "layout-shift", buffered: true }`). The total should stay under 0.05, and the hero shouldn't move as the fonts swap in; `next/font`'s fallback metrics should see to that.
 - **Contrast:** body text on white and `n300` text on Windsor still pass AA.
 
 Commit: `v3(02): type system, Archivo + Chivo Mono with shared type utilities`. In the report, include before/after crops of the hero and one section heading.
