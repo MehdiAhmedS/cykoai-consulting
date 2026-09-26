@@ -56,7 +56,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${archivo.variable} ${chivoMono.variable} h-full`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Marks JS as available before first paint, so the hero can hide
+            its reveal elements without a flash (globals.css has a 2.5s
+            failsafe). Without JS the class never lands and text shows. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: 'document.documentElement.classList.add("js")',
+          }}
+        />
+      </head>
       <body className="min-h-full bg-white text-windsor antialiased">
         <SmoothScroll>
           <Navbar />

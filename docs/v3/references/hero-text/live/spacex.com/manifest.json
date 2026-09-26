@@ -1,0 +1,76 @@
+{
+  "url": "https://www.spacex.com",
+  "section": "hero-text",
+  "capturedAt": "2026-09-26T18:04:35.364Z",
+  "options": {
+    "probe": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/hero-text/live/spacex.com/desktop-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "D-DIN, Arial, Verdana, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(240, 240, 250)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(240, 240, 250)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "0px",
+          "transition": "all",
+          "text": "VehiclesStarshipDragonFalcon 9Falcon HeavyHuman SpaceflightOverviewSpace Station"
+        },
+        "nav": {
+          "font-family": "D-DIN, Arial, Verdana, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(240, 240, 250)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(240, 240, 250)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "26px",
+          "transition": "all",
+          "text": "VehiclesStarshipDragonFalcon 9Falcon HeavyHuman SpaceflightOverviewSpace Station"
+        },
+        "h2": {
+          "font-family": "D-DIN-Bold",
+          "font-weight": "400",
+          "font-size": "60px",
+          "letter-spacing": "-1px",
+          "line-height": "54px",
+          "font-stretch": "100%",
+          "text-transform": "uppercase",
+          "color": "rgb(240, 240, 250)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(240, 240, 250)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "54px",
+          "transition": "all",
+          "text": "Starship Flight 14"
+        }
+      },
+      "fonts": [
+        "D-DIN 400 normal",
+        "D-DIN-Bold 400 normal",
+        "Roboto Mono 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none"
+}

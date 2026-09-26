@@ -109,6 +109,7 @@ export const site = {
     caption: {
       origin: "Origin Muscat",
       coordinates: "23.59° N, 58.38° E",
+      timezone: "GST UTC+4",
       status: "confirmed" as Status,
     },
     primaryCta: TALK_TO_US,

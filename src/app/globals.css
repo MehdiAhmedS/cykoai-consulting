@@ -234,6 +234,40 @@ body {
   color: var(--nav-cta-hover-fg);
 }
 
+/* Hero load sequence (v3 step 04). With JS, reveal elements start hidden
+   and HeroHeadline shows them once the split is ready; if that never
+   happens, the failsafe shows them at 2.5s. Without JS there is no .js
+   class, so nothing is hidden. */
+.js [data-hero-reveal] {
+  visibility: hidden;
+  animation: hero-failsafe 0s 2.5s forwards;
+}
+@keyframes hero-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-hero-reveal] {
+    visibility: visible;
+    animation: none;
+  }
+}
+/* type-hero's 0.94 leading makes the line box shorter than the glyphs:
+   pad each split line so its clip mask reaches below the descenders,
+   and pull the mask back so the layout doesn't move. yPercent is
+   relative to the padded line, so 108% still starts fully hidden. */
+.hero-line,
+.hero-line-mask {
+  display: block;
+}
+.hero-line {
+  padding-bottom: 0.15em;
+}
+.hero-line-mask {
+  margin-bottom: -0.15em;
+}
+
 /* Anchored sections land below the fixed bar, also for native jumps. */
 section[id] {
   scroll-margin-top: 80px;
