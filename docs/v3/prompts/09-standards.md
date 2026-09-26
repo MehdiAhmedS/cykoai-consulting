@@ -4,7 +4,7 @@ Read `docs/v3/BRIEF.md` first. This section answers *why trust you with access t
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/standards/board/`. Then capture them live:
+Board captures are in `docs/v3/references/standards/board/`. Then go through each site live in Chrome, as the brief describes: scroll through each principles or values section and note its rhythm, spacing and how entries are labelled. Save a record with:
 
 ```bash
 npm run refs -- standards https://oxide.computer/principles --flow=4

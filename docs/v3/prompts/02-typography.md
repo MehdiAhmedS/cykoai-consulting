@@ -4,7 +4,7 @@ Read `docs/v3/BRIEF.md` first, especially "Type system". This step replaces Spac
 
 ## 1. Study the references
 
-Look at the board captures in `docs/v3/references/type/board/` first. INDEX.md lists the measured values: Hadrian, Varda, SpaceX, Replicate, Oxide. Then capture them live with measurements:
+Look at the board captures in `docs/v3/references/type/board/` first. INDEX.md lists the measured values: Hadrian, Varda, SpaceX, Replicate, Oxide. Then go through each site live in Chrome, as the brief describes: measure the computed type of the headline, section headings, body text and mono labels with the JavaScript tool, and see how the headline wraps at 390px. Save a record with:
 
 ```bash
 npm run refs -- type https://www.varda.com --probe --mobile
@@ -16,7 +16,7 @@ npm run refs -- type https://replicate.com --probe
 
 In `docs/v3/references/type/NOTES.md`, record for each site:
 
-- the display size, weight, width, tracking and leading from `manifest.json`
+- the display size, weight, width, tracking and leading you measured, checked against `manifest.json`
 - how its mono layer carries real data (clocks, coordinates, countdowns, figure labels)
 - how the headline wraps at 390px
 

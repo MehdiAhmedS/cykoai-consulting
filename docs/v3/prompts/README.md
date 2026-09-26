@@ -1,27 +1,33 @@
 # v3 build: how to run the prompts
 
-Twelve steps, one prompt each, one fresh Claude Code session per step, run in order. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A), so every prompt is ready.
+Twelve steps, one prompt each, run in order, with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A), so every prompt is ready.
 
-## Before step 00 (once)
+## Before each working session
 
 1. Open Terminal in the repo: `cd ~/Documents/Personal/cykoai-consulting`, and check that `git branch --show-current` prints `redesign/v1`.
 2. Open a second terminal tab in the same folder and run `npm run dev`. Leave it running for the whole build: every step's screenshot check uses it. If it starts misbehaving after a step's production build, stop it with Ctrl+C and start it again.
-3. In the first tab, start Claude Code with `claude`.
-4. Choose the model with `/model`: Fable 5.1 if your plan lists it, otherwise Opus 5.5.
-5. Set the effort with `/effort xhigh`.
+3. Make sure Chrome is open, with the Claude in Chrome extension signed in to the same account as Claude Code.
+4. In the first tab, start Claude Code with Chrome connected: `claude --chrome`. In a session that's already running, `/chrome` connects it instead.
+5. Choose the model with `/model`: Fable 5.1 if your plan lists it, otherwise Opus 5.5.
+6. Set the effort with `/effort xhigh`.
 
 ## How to run a step
 
-1. **Fresh context.** Type `/clear` (not needed for the first step of a new session), then `/effort` to check it still says xhigh.
-2. **Plan mode.** Press Shift+Tab until the footer reads "plan mode on".
-3. **Paste** this, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/00-groundwork.md, then carry out the prompt exactly. Stop and ask if anything doesn't match what the prompt describes.`
+Each step is two passes in one session. First Claude Code goes through the reference sites in Chrome and writes down how they look and move; then it plans and builds from what it found.
+
+1. **Fresh context.** Type `/clear`, then `/effort` to check it still says xhigh. Plan mode stays off for the study.
+2. **Study.** Paste this, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/01-structure.md. Do only the reference study in part 1, in Chrome as the brief describes: save the captures, write NOTES.md and summarise what you found. Don't change any code yet.`
+   - Chrome may come to the front and open tabs in their own group while it works. Let it run, and don't type in other windows meanwhile.
+   - Approve its Chrome actions on the reference sites. It may ask more than once for the same thing; that's a known issue.
+   - If it reaches a login page or a CAPTCHA, it should stop there. Don't sign in for it.
+3. **Plan.** Press Shift+Tab until the footer reads "plan mode on", then paste, changing the file name: `Now plan the rest of docs/v3/prompts/01-structure.md, using what the study found, then carry it out exactly. Stop and ask if anything doesn't match what the prompt describes.`
 4. **Check the plan** before approving it. It should:
-   - cover every part of the prompt, starting with the reference captures;
+   - use what the study found;
    - touch only the files the prompt names;
-   - end with lint, build, screenshots into `docs/v3/after/<step>/` and one commit;
+   - end with lint, build, screenshots into `docs/v3/after/<step>/`, a check of the result in Chrome, and one commit;
    - include no push, no merge and nothing in `src/app/api/contact`.
 
-   For step 00, also check that it moves only the five leftover files (`Hero.tsx`, `Philosophy.tsx`, `Process.tsx`, `LedgerEntry.tsx`, `WorldCanvas.tsx`) to `wip/taste-leftovers`. If the plan is off, say what to change before approving.
+   If the plan is off, say what to change before approving.
 5. **Approve** with the option that accepts edits automatically. Commands still ask first: approve the `npm`, `node`, `npx playwright` and `git` ones. "Don't ask again" is fine for `npm run` and `node scripts/`. Don't use bypass-permissions mode.
 6. **Review.** When it reports back, look at the screenshots in `docs/v3/after/<step>/`, or click around `localhost:3000`.
 7. **Checkpoints.** After steps 01, 02 and 05, tell Claude in Cowork "step NN done" and wait for the review before starting the next step. Between the other steps, carry on unless something looks wrong.
@@ -34,7 +40,7 @@ Twelve steps, one prompt each, one fresh Claude Code session per step, run in or
 
 | Step | What it does | Needs from you first |
 |---|---|---|
-| 00 · Groundwork | Parks the taste-pass leftovers, sets up reference capture, takes "before" screenshots, updates the rules, maps the code. Nothing visible changes. | nothing |
+| 00 · Groundwork | Parks the taste-pass leftovers, sets up reference capture, takes "before" screenshots, updates the rules, maps the code. Nothing visible changes. Done 26 September. | nothing |
 | 01 · Structure | Seven sections with one job each, one content file, light/dark tones, no 01–07 numbering. | nothing |
 | 02 · Typography | Archivo + Chivo Mono as shared `type-*` utilities across the page. | nothing |
 | 03 · Navbar | Inset glass bar, switched by section, new links, fixed anchor offsets. | nothing |
@@ -45,7 +51,7 @@ Twelve steps, one prompt each, one fresh Claude Code session per step, run in or
 | 08 · Engagement | Sticky "cover" with length, team, effort; five parts with what you receive. | typical length and effort (hidden until then) |
 | 09 · Standards | Rules as constraints, frameworks strip, team slot. | credentials (optional) |
 | 10 · Name + Contact | Dictionary entry for "cykoai" [see·ko·ya]; what to send per offer. | what clients should send (optional) |
-| 11 · Final pass | Consistency, dead code, content gate, Lighthouse, release note for the merge. | approve the new page title and description |
+| 11 · Final pass | Consistency, dead code, content gate, Lighthouse, release note for the merge. No references, so skip the study pass. | approve the new page title and description |
 
 Nothing blocks on your answers: unconfirmed content stays TBC, shows a DRAFT chip in dev and is hidden in production. Answering before the step just means the section ships complete.
 

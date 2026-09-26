@@ -10,7 +10,7 @@ It switches from the `data-tone` of whichever section sits under it. Nothing els
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/nav/board/`. INDEX.md has the measured values. Then capture them live, measuring the header:
+Board captures are in `docs/v3/references/nav/board/`. INDEX.md has the measured values. Then go through each site live in Chrome, as the brief describes. Scroll each from the top through two or three sections and watch the header: whether it changes as you scroll, what changes (tint, blur, border, height) and how fast. Measure its computed values at the top of the page and again after scrolling. Save a record with:
 
 ```bash
 npm run refs -- nav https://linear.app --probe --flow=3

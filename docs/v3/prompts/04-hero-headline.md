@@ -4,7 +4,7 @@ Read `docs/v3/BRIEF.md` first. This step gives the hero a load sequence: the hea
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/hero-text/board/`. The t0/mid/end frames show each reveal in progress, with measured timings in INDEX.md. Then capture the load animations live:
+Board captures are in `docs/v3/references/hero-text/board/`. The t0/mid/end frames show each reveal in progress, with measured timings in INDEX.md. Then go through each site live in Chrome, as the brief describes. Load animations start before the sampler can attach, so their timing comes from the `--frames` captures below. In Chrome, look at how each headline is built once it has loaded (line wrappers, masks, the styles the moving parts are left with), whether the motion is CSS or script, and time anything that replays on scroll. Save a record with:
 
 ```bash
 npm run refs -- hero-text https://linear.app --frames

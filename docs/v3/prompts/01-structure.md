@@ -4,7 +4,7 @@ Read `docs/v3/BRIEF.md` and `docs/v3/INVENTORY.md` first. This step turns today'
 
 ## 1. Study how consultancies order their story (short)
 
-The goal is to see how a strong consultancy page moves from who they are, to what you can buy, to proof, to method, to contact. Capture two sites:
+The goal is to see how a strong consultancy page moves from who they are, to what you can buy, to proof, to method, to contact. Go through two sites live in Chrome, as the brief describes: scroll each homepage from top to footer, noting where each section starts and how it hands over to the next. Then save a record of each:
 
 - `npm run refs -- structure https://evilmartians.com --flow=10`: a consultancy for developer-tool, AI and cybersecurity startups, the closest business analogue to Cykoai.
 - `npm run refs -- structure https://www.trailofbits.com --flow=10`: a security firm whose services and public work are separate, distinct things.

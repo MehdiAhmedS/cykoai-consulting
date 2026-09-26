@@ -4,7 +4,7 @@ Read `docs/v3/BRIEF.md` first. This section answers one question: *what exactly 
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/offers/board/`. Then capture them live:
+Board captures are in `docs/v3/references/offers/board/`. Then go through each site live in Chrome, as the brief describes: hover the offer rows or cards, open anything that expands, and time the expand and collapse with the sampler. Save a record with:
 
 ```bash
 npm run refs -- offers https://evilmartians.com/services/ai-harness --at="What it takes to start" --mobile
@@ -13,7 +13,7 @@ npm run refs -- offers https://www.vanta.com --at="It's all here"
 npm run refs -- offers https://www.wiz.io --at="Code"
 ```
 
-On Trail of Bits, look for the Services section or page. If the homepage flow doesn't reach it, open the services page from the menu and capture that URL.
+On Trail of Bits, find the Services section or page in Chrome (use the menu if the homepage doesn't show it), and capture that URL too.
 
 In `docs/v3/references/offers/NOTES.md`:
 

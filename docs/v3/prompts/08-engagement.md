@@ -4,14 +4,14 @@ Read `docs/v3/BRIEF.md` first. This section answers *what happens after I get in
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/engagement/board/`. Then capture them live:
+Board captures are in `docs/v3/references/engagement/board/`. Then go through each site live in Chrome, as the brief describes: scroll slowly through anything that sticks or pins, measure where it sticks and for how long, and note what moves as you scroll. Save a record with:
 
 ```bash
 npm run refs -- engagement https://www.trailofbits.com --flow=4
 npm run refs -- engagement https://thoughtbot.com/services --flow=6
 ```
 
-Find Trail of Bits' "Anatomy of a report" page (linked from its Services area; the board captures show it) and capture that URL with `--flow=10 --mobile`. Find thoughtbot's Shaping Sprint page and capture it with `--at="What happens in a Shaping Sprint"`.
+In Chrome, find Trail of Bits' "Anatomy of a report" page (linked from its Services area; the board captures show it) and go through it, then capture that URL with `--flow=10 --mobile`. Do the same for thoughtbot's Shaping Sprint page, captured with `--at="What happens in a Shaping Sprint"`.
 
 In `docs/v3/references/engagement/NOTES.md`, cover:
 

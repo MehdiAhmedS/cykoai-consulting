@@ -4,7 +4,7 @@ Read `docs/v3/BRIEF.md` first. This section answers *have you done this before?*
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/projects/board/`. Then capture them live:
+Board captures are in `docs/v3/references/projects/board/`. Then go through each site live in Chrome, as the brief describes: hover the rows, open any row that expands, and note what changes on hover and how fast. Save a record with:
 
 ```bash
 npm run refs -- projects https://www.trailofbits.com/library/ --probe --flow=3

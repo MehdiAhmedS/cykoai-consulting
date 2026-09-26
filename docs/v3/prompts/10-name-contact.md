@@ -7,7 +7,7 @@ Read `docs/v3/BRIEF.md` first. Two sections, each with a single job:
 
 ## 1. Study the references
 
-Board captures are in `docs/v3/references/name/board/`. Then capture them live:
+Board captures are in `docs/v3/references/name/board/`. Then go through each site live in Chrome, as the brief describes: scroll Exo Ape's story slowly and time how its words and images enter, and look at how Linear Method sets its codes. Save a record with:
 
 ```bash
 npm run refs -- name https://www.exoape.com/story --flow=10 --frames --wait=4000
@@ -15,7 +15,7 @@ npm run refs -- name https://linear.app/method --at="Introduction"
 npm run refs -- offers https://evilmartians.com/services/ai-harness --at="What it takes to start"
 ```
 
-If Exo Ape ignores scroll input, rely on the board captures and say so.
+If Exo Ape ignores the headless capture's scrolling, rely on what you saw in Chrome and on the board captures, and say so.
 
 In `docs/v3/references/name/NOTES.md`, cover:
 

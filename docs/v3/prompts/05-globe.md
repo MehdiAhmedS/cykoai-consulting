@@ -18,7 +18,7 @@ Board captures are in `docs/v3/references/globe/board/`:
 - **Hadrian's clock strip:** geography without a map.
 - **Avoid** `avoid-kaspersky.jpg`, the threat-map cliché.
 
-Capture live:
+Then go through them live in Chrome, as the brief describes: watch Cloudflare's globe through at least one full cycle of its arcs or pins, try dragging it, and check how its canvas is set up (size, pixel ratio, WebGL or 2D). Save a record with:
 
 ```bash
 npm run refs -- globe https://www.cloudflare.com/network/ --frames --probe --mobile
