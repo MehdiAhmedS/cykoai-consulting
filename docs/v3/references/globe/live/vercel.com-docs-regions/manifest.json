@@ -1,0 +1,94 @@
+{
+  "url": "https://vercel.com/docs/regions",
+  "section": "globe",
+  "capturedAt": "2026-09-27T06:18:03.071Z",
+  "options": {
+    "probe": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/vercel.com-docs-regions/desktop-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "GeistSans, \"GeistSans Fallback\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(23, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(235, 235, 235)",
+          "border-radius": "0px",
+          "position": "sticky",
+          "top": "0px",
+          "height": "64px",
+          "transition": "all",
+          "text": "Copy WordmarkCopy LogoDownload Brand AssetsBrand GuidelinesDocsBuildBuild with A"
+        },
+        "nav": {
+          "font-family": "GeistSans, \"GeistSans Fallback\"",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(23, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(235, 235, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "64px",
+          "transition": "all",
+          "text": "BuildBuild with AIAI GatewayAI SDKSandboxContainer RegistryWorkflowVercel Agentv"
+        },
+        "h1": {
+          "font-family": "GeistSans, \"GeistSans Fallback\"",
+          "font-weight": "600",
+          "font-size": "40px",
+          "letter-spacing": "-2.4px",
+          "line-height": "48px",
+          "font-stretch": "100%",
+          "color": "rgb(23, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(235, 235, 235)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "48px",
+          "transition": "all",
+          "text": "Global network and regions"
+        },
+        "h2": {
+          "font-family": "GeistSans, \"GeistSans Fallback\"",
+          "font-weight": "600",
+          "font-size": "24px",
+          "letter-spacing": "-0.96px",
+          "line-height": "32px",
+          "font-stretch": "100%",
+          "color": "rgb(23, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(235, 235, 235)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "32px",
+          "transition": "all",
+          "text": "Global infrastructure"
+        }
+      },
+      "fonts": [
+        "Geist Mono 100 900 normal",
+        "GeistSans 100 900 normal",
+        "GeistSans Fallback normal normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none"
+}

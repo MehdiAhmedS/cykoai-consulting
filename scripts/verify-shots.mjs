@@ -83,6 +83,10 @@ async function run({ reduced, assetsOff }) {
       }
       window.scrollTo(0, 0);
     });
+    // The hero globe loads after idle and fades in after the headline (v3 step 05).
+    await page
+      .waitForFunction(() => !document.querySelector('[data-globe="loading"]'), null, { timeout: 8000 })
+      .catch(() => {});
     await page.waitForTimeout(600);
 
     const suffix = `${reduced ? "-rm" : ""}${assetsOff ? "-noassets" : ""}`;

@@ -1,9 +1,32 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
+import type { GlobeLocation } from "@/content/site";
+import { whenIdle } from "@/lib/idle";
+import {
+  ARC,
+  PERIOD_MS,
+  PULSE,
+  START_OFFSET_DEG,
+  THETA,
+  TAU,
+  easeOutCubic,
+  phiFacing,
+  rotate,
+  rotation,
+  slerp,
+  sphereRadius,
+  toXYZ,
+  type Rotation,
+  type Vec3,
+} from "@/lib/globe";
 
 interface WorldCanvasProps {
-  /** Draw the deployment arcs (default true). */
+  /** Only confirmed locations are drawn: the origin, and the clients its arcs reach. */
+  locations: GlobeLocation[];
+  /** Called once the first frame with land is drawn. */
+  onFirstFrame?: () => void;
+  /** Draw the arcs (default true). */
   arcs?: boolean;
   /** Force the single static frame (same rendering as reduced motion). */
   static?: boolean;
@@ -11,22 +34,26 @@ interface WorldCanvasProps {
 }
 
 /**
- * The World — Canvas 2D dotted globe, ported faithfully from
- * design-explorations/hero-direction-d-world.html (Direction D).
+ * The World: the hero globe's no-WebGL fallback (v3 step 05), a Canvas 2D
+ * dotted globe ported from design-explorations/hero-direction-d-world.html.
  *
  * Real geography (3,338 land points from world-atlas 110m, served as
- * /assets/land-points.json), 110s per rotation, −13° tilt, and driftwood
- * "deployment arcs" from Muscat to world cities, strictly one at a time.
- * No WebGL — sanctioned by D2. rAF pauses offscreen and on hidden tabs;
- * reduced-motion renders one static frame with a single completed arc.
+ * /assets/land-points.json) drawn with HeroGlobe's projection, tilt and spin
+ * (src/lib/globe.ts), so the two agree and east is no longer mirrored. Arcs
+ * run from the origin to each confirmed client in site.ts, strictly one at a
+ * time. rAF pauses off screen and on hidden tabs; reduced motion renders one
+ * static frame with the origin facing the viewer and no arcs.
  */
 export default function WorldCanvas({
+  locations,
+  onFirstFrame,
   arcs = true,
   static: forceStatic = false,
   className,
 }: WorldCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const arcsRef = useRef(arcs);
+  const firstFrame = useEffectEvent(() => onFirstFrame?.());
 
   useEffect(() => {
     arcsRef.current = arcs;
@@ -42,36 +69,14 @@ export default function WorldCanvas({
     const rm =
       forceStatic ||
       matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const D2R = Math.PI / 180;
-    const TILT = -13 * D2R;
-    const cosT = Math.cos(TILT);
-    const sinT = Math.sin(TILT);
-    const PERIOD = 110000; // one rotation: 110s — calm
-    const ROT0 = -32 * D2R; // start with the Gulf / Indian Ocean facing front
 
-    // Deployment network: Muscat hub → world
-    const HUB: [number, number] = [23.59, 58.38];
-    const TARGETS: [number, number][] = [
-      [51.5, -0.13], // London
-      [1.35, 103.82], // Singapore
-      [40.71, -74.0], // New York
-      [50.11, 8.68], // Frankfurt
-      [-1.29, 36.82], // Nairobi
-      [35.68, 139.69], // Tokyo
-      [-33.87, 151.21], // Sydney
-      [-23.55, -46.63], // São Paulo
-    ];
-    const vec = ([la, lo]: [number, number]) => {
-      const a = la * D2R,
-        o = lo * D2R,
-        c = Math.cos(a);
-      return [c * Math.cos(o), Math.sin(a), c * Math.sin(o)] as const;
-    };
-    type V3 = readonly [number, number, number];
-    const HUBV = vec(HUB);
-    const TARGV = TARGETS.map(vec);
+    const confirmed = locations.filter((l) => l.status === "confirmed");
+    const origin = confirmed.find((l) => l.role === "origin");
+    const HUBV = origin ? toXYZ(origin.lat, origin.lng) : null;
+    const TARGV = confirmed.filter((l) => l.role === "client").map((l) => toXYZ(l.lat, l.lng));
+    const PHI0 = origin ? phiFacing(origin.lng + (rm ? 0 : START_OFFSET_DEG)) : 0;
 
-    let pts: V3[] = [];
+    let pts: Vec3[] = [];
     let W = 0,
       H = 0,
       R = 0,
@@ -80,77 +85,48 @@ export default function WorldCanvas({
 
     function size() {
       if (!canvas || !ctx || !parent) return;
-      const b = parent.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = b.width;
-      H = b.height;
+      W = parent.clientWidth;
+      H = parent.clientHeight;
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      R = Math.min(W, H) * 0.46;
+      R = sphereRadius(H);
       CX = W / 2;
       CY = H / 2;
     }
 
-    function rotP(v: V3, cosR: number, sinR: number): V3 {
-      // rotate Y then tilt X
-      const x = v[0] * cosR + v[2] * sinR;
-      const z = -v[0] * sinR + v[2] * cosR;
-      const y = v[1] * cosT - z * sinT;
-      return [x, y, v[1] * sinT + z * cosT];
-    }
-    const slerp = (a: V3, b: V3, t: number): V3 => {
-      let d = a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-      d = Math.min(1, Math.max(-1, d));
-      const om = Math.acos(d),
-        so = Math.sin(om) || 1e-6;
-      const s0 = Math.sin((1 - t) * om) / so,
-        s1 = Math.sin(t * om) / so;
-      return [
-        a[0] * s0 + b[0] * s1,
-        a[1] * s0 + b[1] * s1,
-        a[2] * s0 + b[2] * s1,
-      ];
-    };
-    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-
     // Arc lifecycle: draw 3.2s → hold .9s → fade 1.2s → gap, one at a time
-    let arc: { t0: number; target: V3 } | null = null;
-    let nextArcAt = 1200;
+    let arc: { t0: number; target: Vec3 } | null = null;
+    let nextArcAt: number = ARC.first;
     let ti = 0;
-    function spawnArc(now: number, cosR: number, sinR: number) {
-      if (rotP(HUBV, cosR, sinR)[2] < 0.15) {
-        nextArcAt = now + 2000; // hub on far side — wait
+    function spawnArc(elapsed: number, m: Rotation) {
+      const hub = HUBV && rotate(m, HUBV);
+      const x = hub ? CX + hub[0] * R : 0;
+      const left = canvas ? canvas.getBoundingClientRect().left + x : 0;
+      // hub on far side or outside the visible part of the hero — wait
+      if (!hub || hub[2] < 0.15 || left < 24 || left > document.documentElement.clientWidth - 24) {
+        nextArcAt = elapsed + ARC.retry;
         return;
       }
-      arc = { t0: now, target: TARGV[ti++ % TARGV.length] };
+      arc = { t0: elapsed, target: TARGV[ti++ % TARGV.length] };
     }
 
-    function drawArc(
-      A: V3,
-      B: V3,
-      prog: number,
-      alpha: number,
-      cosR: number,
-      sinR: number
-    ) {
+    function drawArc(A: Vec3, B: Vec3, prog: number, alpha: number, m: Rotation) {
       if (!ctx) return;
-      const SEG = 64,
-        lift = 0.07;
       let started = false;
       ctx.beginPath();
       let head: [number, number] | null = null;
-      for (let i = 0; i <= SEG * prog; i++) {
-        const t = i / SEG;
-        const v = slerp(A, B, t);
-        const k = 1 + lift * Math.sin(Math.PI * t);
-        const p = rotP([v[0] * k, v[1] * k, v[2] * k], cosR, sinR);
+      for (let i = 0; i <= ARC.segments * prog; i++) {
+        const t = i / ARC.segments;
+        const k = 1 + ARC.lift * Math.sin(Math.PI * t);
+        const p = rotate(m, slerp(A, B, t));
         if (p[2] <= 0) {
           started = false;
           continue;
         }
-        const x = CX + p[0] * R,
-          y = CY - p[1] * R;
+        const x = CX + p[0] * k * R,
+          y = CY - p[1] * k * R;
         if (!started) {
           ctx.moveTo(x, y);
           started = true;
@@ -166,19 +142,12 @@ export default function WorldCanvas({
         ctx.fillStyle = `rgba(212,180,131,${alpha.toFixed(3)})`;
         ctx.fill();
       }
-      if (prog >= 1 && head) {
-        ctx.beginPath();
-        ctx.arc(head[0], head[1], 1.8, 0, 7);
-        ctx.fillStyle = `rgba(173,135,82,${(0.9 * alpha).toFixed(3)})`;
-        ctx.fill();
-      }
     }
 
-    function draw(now: number) {
+    function draw(elapsed: number) {
       if (!ctx) return;
-      const rot = rm ? ROT0 : ROT0 + ((now % PERIOD) / PERIOD) * 2 * Math.PI;
-      const cosR = Math.cos(rot),
-        sinR = Math.sin(rot);
+      const phi = rm ? PHI0 : (PHI0 + (elapsed / PERIOD_MS) * TAU) % TAU;
+      const m = rotation(phi, THETA);
       ctx.clearRect(0, 0, W, H);
 
       // sphere edge — hairline
@@ -190,7 +159,7 @@ export default function WorldCanvas({
 
       // land dots — alpha and size scale with depth
       for (let i = 0; i < pts.length; i++) {
-        const p = rotP(pts[i], cosR, sinR);
+        const p = rotate(m, pts[i]);
         if (p[2] <= 0.01) continue;
         const a = 0.1 + 0.42 * p[2];
         const r = 0.55 + 1.05 * p[2];
@@ -200,8 +169,20 @@ export default function WorldCanvas({
         ctx.fill();
       }
 
+      // client locations — the same places the arcs land
+      for (const t of TARGV) {
+        const p = rotate(m, t);
+        if (p[2] <= 0.01) continue;
+        ctx.beginPath();
+        ctx.arc(CX + p[0] * R, CY - p[1] * R, 1.8, 0, 7);
+        ctx.fillStyle = "rgba(173,135,82,.9)";
+        ctx.fill();
+      }
+
+      if (!HUBV) return;
+
       // origin pulse — Muscat
-      const hp = rotP(HUBV, cosR, sinR);
+      const hp = rotate(m, HUBV);
       if (hp[2] > 0.01) {
         const hx = CX + hp[0] * R,
           hy = CY - hp[1] * R;
@@ -210,101 +191,92 @@ export default function WorldCanvas({
         ctx.fillStyle = "rgba(173,135,82,.95)";
         ctx.fill();
         if (!rm) {
-          const ph = (now % 4000) / 4000;
+          const ph = (elapsed % PULSE.period) / PULSE.period;
           ctx.beginPath();
-          ctx.arc(hx, hy, 2.4 + ph * 14, 0, 7);
-          ctx.strokeStyle = `rgba(173,135,82,${(0.3 * (1 - ph)).toFixed(3)})`;
+          ctx.arc(hx, hy, 2.4 + ph * PULSE.grow, 0, 7);
+          ctx.strokeStyle = `rgba(173,135,82,${(PULSE.alpha * (1 - ph)).toFixed(3)})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
       }
 
-      // deployment arc — one at a time
-      if (!arcsRef.current) return;
-      if (rm) {
-        drawArc(HUBV, TARGV[0], 1, 1, cosR, sinR);
-      } else {
-        if (!arc && now >= nextArcAt) spawnArc(now, cosR, sinR);
-        if (arc) {
-          const e = now - arc.t0;
-          let prog = 1,
-            alpha = 1;
-          if (e < 3200) prog = ease(e / 3200);
-          else if (e < 4100) prog = 1;
-          else if (e < 5300) {
-            prog = 1;
-            alpha = 1 - (e - 4100) / 1200;
-          } else {
-            arc = null;
-            nextArcAt = now + 1400;
-          }
-          if (arc) drawArc(HUBV, arc.target, prog, alpha, cosR, sinR);
+      // deployment arc — one at a time (none under reduced motion)
+      if (rm || !arcsRef.current || !TARGV.length) return;
+      if (!arc && elapsed >= nextArcAt) spawnArc(elapsed, m);
+      if (arc) {
+        const e = elapsed - arc.t0;
+        let prog = 1,
+          alpha = 1;
+        if (e < ARC.draw) prog = easeOutCubic(e / ARC.draw);
+        else if (e < ARC.draw + ARC.hold) prog = 1;
+        else if (e < ARC.draw + ARC.hold + ARC.fade) {
+          prog = 1;
+          alpha = 1 - (e - ARC.draw - ARC.hold) / ARC.fade;
+        } else {
+          arc = null;
+          nextArcAt = elapsed + ARC.gap;
         }
+        if (arc) drawArc(HUBV, arc.target, prog, alpha, m);
       }
     }
 
-    // Run loop only while visible & tab focused
+    // Run loop only while near the viewport & tab visible; one elapsed clock
     let running = false;
     let rafId = 0;
     let disposed = false;
+    let intersecting = true;
+    let elapsed = 0;
+    let last = -1;
     const loop = (now: number) => {
-      draw(now);
+      elapsed += last < 0 ? 0 : Math.min(now - last, 100);
+      last = now;
+      draw(elapsed);
       if (running) rafId = requestAnimationFrame(loop);
     };
-    const start = () => {
-      if (!running && !disposed) {
+    const sync = () => {
+      const should = !rm && !disposed && pts.length > 0 && intersecting && !document.hidden;
+      if (should && !running) {
         running = true;
+        last = -1;
         rafId = requestAnimationFrame(loop);
+      } else if (!should && running) {
+        running = false;
+        cancelAnimationFrame(rafId);
       }
     };
-    const stop = () => {
-      running = false;
-      cancelAnimationFrame(rafId);
-    };
-
-    const onResize = () => {
-      size();
-      if (rm) draw(0);
-    };
-    const onVisibility = () => (document.hidden ? stop() : start());
 
     size();
-    addEventListener("resize", onResize);
+    const ro = new ResizeObserver(() => {
+      if (parent.clientWidth === W && parent.clientHeight === H) return;
+      size();
+      if (!running) draw(elapsed);
+    });
+    ro.observe(parent);
 
     let io: IntersectionObserver | null = null;
 
     // Fetch after the browser is idle: the 40KB land file must not
-    // compete with fonts and hydration for the LCP-critical window —
-    // the hero reads complete before the globe fades in.
-    const whenIdle = new Promise<void>((resolve) => {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(() => resolve(), { timeout: 1600 });
-      } else {
-        setTimeout(resolve, 350);
-      }
-    });
-
-    whenIdle
+    // compete with fonts and hydration for the LCP-critical window.
+    whenIdle()
       .then(() => fetch("/assets/land-points.json"))
       .then((r) => r.json())
       .then((land: [number, number][]) => {
         if (disposed) return;
-        // Precompute unit vectors for every land dot
-        pts = land.map(([la, lo]) => {
-          const a = la * D2R,
-            o = lo * D2R,
-            c = Math.cos(a);
-          return [c * Math.cos(o), Math.sin(a), c * Math.sin(o)] as const;
-        });
-        if (rm) {
-          draw(0); // static frame, one arc, no motion
-        } else {
-          io = new IntersectionObserver(([entry]) =>
-            entry.isIntersecting ? start() : stop()
+        pts = land.map(([la, lo]) => toXYZ(la, lo));
+        draw(0);
+        firstFrame();
+        if (!rm) {
+          // Watch the section, not the parallax layer (see src/lib/parallax.ts).
+          io = new IntersectionObserver(
+            ([entry]) => {
+              intersecting = entry.isIntersecting;
+              sync();
+            },
+            { rootMargin: "160px 0px" }
           );
-          io.observe(parent);
-          document.addEventListener("visibilitychange", onVisibility);
-          start();
+          io.observe(canvas.closest("section") ?? parent);
+          document.addEventListener("visibilitychange", sync);
+          sync();
         }
       })
       .catch(() => {
@@ -313,12 +285,13 @@ export default function WorldCanvas({
 
     return () => {
       disposed = true;
-      stop();
+      running = false;
+      cancelAnimationFrame(rafId);
       io?.disconnect();
-      removeEventListener("resize", onResize);
-      document.removeEventListener("visibilitychange", onVisibility);
+      ro.disconnect();
+      document.removeEventListener("visibilitychange", sync);
     };
-  }, [forceStatic]);
+  }, [forceStatic, locations]);
 
   return (
     <canvas

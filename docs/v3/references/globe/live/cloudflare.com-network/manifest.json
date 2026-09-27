@@ -1,0 +1,183 @@
+{
+  "url": "https://www.cloudflare.com/network/",
+  "section": "globe",
+  "capturedAt": "2026-09-27T06:47:13.320Z",
+  "options": {
+    "frames": true,
+    "probe": true,
+    "mobile": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-frame-0-0ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-frame-1-250ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-frame-2-600ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-frame-3-1000ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-frame-4-1600ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-frame-5-2500ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-frame-0-0ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-frame-1-250ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-frame-2-600ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-frame-3-1000ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-frame-4-1600ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-frame-5-2500ms.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/globe/live/cloudflare.com-network/mobile-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(38, 38, 38)",
+          "background-color": "rgb(255, 255, 255)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "72px",
+          "transition": "color 0.2s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.2s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.2s cubic-bezier(0.19, 1, 0.22, 1), outline-color 0.2s cubic-bezier(0.19, 1, 0.22, 1), text-decoration-color 0.2s cubic-bezier(0.19, 1, 0.22, 1), fill 0.2s cubic-bezier(0.19, 1, 0.22, 1), stroke 0.2s cubic-bezier(0.19, 1, 0.22, 1), --tw-gradient-from 0.2s cubic-bezier(0.19, 1, 0.22, 1), --tw-gradient-via 0.2s cubic-bezier(0.19, 1, 0.22, 1), --tw-gradient-to 0.2s cubic-bezier(0.19, 1, 0.22, 1)",
+          "text": "globalThis.process??={};globalThis.process.env??={};(function(){if(typeof window"
+        },
+        "nav": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(38, 38, 38)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "relative",
+          "top": "0px",
+          "height": "36px",
+          "transition": "all",
+          "text": "ProductsSolutionsResourcesPricing"
+        },
+        "h1": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "500",
+          "font-size": "56px",
+          "letter-spacing": "-1.4px",
+          "line-height": "55.44px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "55.4375px",
+          "transition": "all",
+          "text": "Build without boundaries"
+        },
+        "h2": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "500",
+          "font-size": "56px",
+          "letter-spacing": "-1.4px",
+          "line-height": "56px",
+          "font-stretch": "100%",
+          "color": "rgb(38, 38, 38)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "56px",
+          "transition": "all",
+          "text": "Cloudflare Global Network"
+        }
+      },
+      "fonts": [
+        "FT Kunst Grotesk 400 normal",
+        "FT Kunst Grotesk 500 normal"
+      ],
+      "tech": {
+        "canvas": 1,
+        "webgl": true,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(38, 38, 38)",
+          "background-color": "rgb(255, 255, 255)",
+          "border-bottom": "1px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "absolute",
+          "top": "0px",
+          "height": "55px",
+          "transition": "background-color 0.18s cubic-bezier(0.19, 1, 0.22, 1), border-color 0.18s cubic-bezier(0.19, 1, 0.22, 1)",
+          "text": "globalThis.process??={};globalThis.process.env??={};(function(){if(typeof window"
+        },
+        "nav": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(38, 38, 38)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "relative",
+          "transition": "all",
+          "text": "ProductsSolutionsResourcesPricing"
+        },
+        "h1": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "500",
+          "font-size": "40px",
+          "letter-spacing": "-1px",
+          "line-height": "39.6px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "79.1875px",
+          "transition": "all",
+          "text": "Build without boundaries"
+        },
+        "h2": {
+          "font-family": "\"FT Kunst Grotesk\", sans-serif",
+          "font-weight": "500",
+          "font-size": "32px",
+          "letter-spacing": "-0.8px",
+          "line-height": "32px",
+          "font-stretch": "100%",
+          "color": "rgb(38, 38, 38)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(240, 240, 240)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "64px",
+          "transition": "all",
+          "text": "Cloudflare Global Network"
+        }
+      },
+      "fonts": [
+        "FT Kunst Grotesk 400 normal",
+        "FT Kunst Grotesk 500 normal"
+      ],
+      "tech": {
+        "canvas": 1,
+        "webgl": true,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}

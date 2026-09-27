@@ -47,6 +47,17 @@ function DataLine({ className }: { className?: string }) {
 }
 
 /**
+ * Tells the hero globe (step 05) that the load sequence is over, so it can
+ * fade in after it. Fires once: auto re-splits rebuild the timeline.
+ */
+function markHeroSettled() {
+  const root = document.documentElement;
+  if (root.dataset.heroSettled) return;
+  root.dataset.heroSettled = "true";
+  window.dispatchEvent(new Event("hero:settled"));
+}
+
+/**
  * Hero load sequence (v3 step 04): eyebrow fades, the headline's lines rise
  * through padded masks, lede and CTAs follow, the data line types on last.
  * Runs once on load (not on scroll), after fonts settle so lines never
@@ -59,13 +70,18 @@ export default function HeroHeadline() {
   useLayoutEffect(() => {
     const column = columnRef.current;
     const desktopLine = desktopLineRef.current;
-    if (!column || !desktopLine) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!column || !desktopLine || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      markHeroSettled();
+      return;
+    }
 
     const scopes = [column, desktopLine];
     const q = (sel: string) => scopes.flatMap((s) => Array.from(s.querySelectorAll<HTMLElement>(sel)));
     const lines = column.querySelector<HTMLElement>("[data-hero-lines]");
-    if (!lines) return;
+    if (!lines) {
+      markHeroSettled();
+      return;
+    }
 
     let cancelled = false;
     let split: SplitText | null = null;
@@ -86,7 +102,7 @@ export default function HeroHeadline() {
         aria: "none",
         // Returned so an auto re-split (fonts, resize) syncs to the same time.
         onSplit: (self) => {
-          const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+          const tl = gsap.timeline({ defaults: { ease: "expo.out" }, onComplete: markHeroSettled });
           tl.fromTo(q("[data-hero-eyebrow]"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 0)
             .fromTo(self.lines, { yPercent: 108 }, { yPercent: 0, duration: 1.05, stagger: 0.08 }, 0.1)
             .fromTo(q("[data-hero-lede]"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8 }, 0.55)

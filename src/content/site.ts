@@ -76,6 +76,15 @@ export interface NamePart {
   status: Status;
 }
 
+/** A place on the hero globe. Clients sit at their country's capital and are labelled by country only. */
+export interface GlobeLocation {
+  name: string;
+  lat: number;
+  lng: number;
+  role: "origin" | "client";
+  status: Status;
+}
+
 const SECTION_LINKS: Link[] = [
   { label: "Offers", href: "#offers", status: "draft" },
   { label: "Projects", href: "#projects", status: "draft" },
@@ -114,6 +123,21 @@ export const site = {
     },
     primaryCta: TALK_TO_US,
     secondaryCta: { label: "See what we do", href: "#offers", status: "draft" } as Link,
+  },
+
+  // Real locations only (Mehdi, 26 Sep). Only confirmed entries are drawn.
+  globe: {
+    locations: [
+      { name: "Muscat", lat: 23.59, lng: 58.38, role: "origin", status: "confirmed" },
+      { name: "Pakistan", lat: 33.68, lng: 73.05, role: "client", status: "confirmed" }, // Islamabad
+      { name: "UAE", lat: 24.45, lng: 54.38, role: "client", status: "confirmed" }, // Abu Dhabi
+      { name: "Germany", lat: 52.52, lng: 13.4, role: "client", status: "confirmed" }, // Berlin
+    ] as GlobeLocation[],
+    // Clients in Africa are confirmed, but not the country: it joins `locations` once Mehdi names it.
+    pending: {
+      text: "Clients in Africa: the country is TBC, so it is not on the globe yet.",
+      status: "draft",
+    } as Text,
   },
 
   offers: {
