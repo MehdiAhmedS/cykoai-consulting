@@ -1,0 +1,141 @@
+{
+  "url": "https://www.metalab.com",
+  "section": "projects",
+  "capturedAt": "2026-09-27T15:14:29.568Z",
+  "options": {
+    "probe": true,
+    "mobile": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/projects/live/metalab.com/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/projects/live/metalab.com/mobile-top.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "\"Basis Grotesque Pro\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "1000px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "54px",
+          "transition": "all",
+          "text": "MenuCloseYYZ 11:14 AMLDN 4:14 PMCDG 5:14 PMTST 3:14 AMYYJ 8:14 AMNYC 11:14 AMSFO"
+        },
+        "nav": {
+          "font-family": "\"Basis Grotesque Pro\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "absolute",
+          "top": "450px",
+          "height": "564.406px",
+          "transition": "all",
+          "text": "Case StudiesWhat We DoAbout UsLatest NewsGet in TouchCase StudiesRobinhoodMidjou"
+        },
+        "h1": {
+          "font-family": "\"PP Eiko\", sans-serif",
+          "font-weight": "240",
+          "font-size": "88px",
+          "letter-spacing": "-1.76px",
+          "line-height": "103.84px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "103.844px",
+          "transition": "all",
+          "text": "Robinhood"
+        }
+      },
+      "fonts": [
+        "Basis Grotesque Pro 300 normal",
+        "Basis Grotesque Pro 400 normal",
+        "PP Eiko 300 normal",
+        "PP Eiko 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "\"Basis Grotesque Pro\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "1000px",
+          "position": "fixed",
+          "top": "0px",
+          "height": "48px",
+          "transition": "all",
+          "text": "MenuCloseGet in Touch"
+        },
+        "nav": {
+          "font-family": "\"Basis Grotesque Pro\", sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "absolute",
+          "top": "353.188px",
+          "height": "192.031px",
+          "transition": "all",
+          "text": "Case StudiesWhat We DoAbout UsLatest NewsGet in Touch"
+        },
+        "h1": {
+          "font-family": "\"PP Eiko\", sans-serif",
+          "font-weight": "240",
+          "font-size": "44px",
+          "letter-spacing": "-0.88px",
+          "line-height": "44px",
+          "font-stretch": "100%",
+          "color": "rgb(255, 255, 255)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(255, 255, 255)",
+          "border-radius": "0px",
+          "position": "absolute",
+          "top": "211px",
+          "height": "88px",
+          "transition": "all",
+          "text": "We makeinterfaces"
+        }
+      },
+      "fonts": [
+        "Basis Grotesque Pro 300 normal",
+        "Basis Grotesque Pro 400 normal",
+        "PP Eiko 300 normal",
+        "PP Eiko 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}

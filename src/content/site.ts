@@ -35,29 +35,6 @@ export interface Offer {
   status: Status;
 }
 
-export interface Project {
-  title: string;
-  client: string;
-  practice: string;
-  stack: string;
-  since: string;
-  state: "In progress" | "Ongoing";
-  /** Copy status of the row (its title and wording). */
-  status: Status;
-  /** Set when the client line has its own status. */
-  clientStatus?: Status;
-}
-
-export interface OwnProject {
-  name: string;
-  line: string;
-  practice: string;
-  stack: string;
-  year: string;
-  link: string;
-  status: Status;
-}
-
 export interface Step {
   title: string;
   text: string;
@@ -199,83 +176,6 @@ export const site = {
         status: "draft",
       },
     ] as Offer[],
-  },
-
-  projects: {
-    label: { text: "Projects", status: "draft" } as Text,
-    heading: { text: "What we're working on now.", status: "draft" } as Text,
-    intro: {
-      text: "Current engagements. Some clients are named; confidential ones are withheld.",
-      status: "draft",
-    } as Text,
-    columns: {
-      title: "Engagement",
-      client: "Client",
-      practice: "Practice",
-      stack: "Standard / stack",
-      since: "Since",
-      state: "Status",
-      status: "draft" as Status,
-    },
-    items: [
-      {
-        title: "Google Workspace hardening and access review",
-        client: "HDT Systems, Germany",
-        practice: "Security",
-        stack: "Google Workspace · ISO/IEC 27001 controls",
-        since: TBC,
-        state: "In progress",
-        status: "draft",
-        clientStatus: "confirmed",
-      },
-      {
-        title: "Launch-readiness audits for AI-built apps",
-        client: "Withheld",
-        practice: "Security",
-        stack: "Architecture and design review",
-        since: TBC,
-        state: "Ongoing",
-        status: "draft",
-      },
-      {
-        title: "Mobile app with device integrations",
-        client: "Withheld",
-        practice: "Engineering",
-        stack: "Mobile · device APIs · IoT",
-        since: TBC,
-        state: "Ongoing",
-        status: "draft",
-      },
-      {
-        title: "Secure AI environment",
-        client: "Withheld",
-        practice: "AI",
-        stack: "Google Vertex AI",
-        since: TBC,
-        state: "In progress",
-        status: "draft",
-      },
-      {
-        title: "AI workflow automation",
-        client: "Withheld",
-        practice: "AI",
-        stack: TBC,
-        since: TBC,
-        state: "In progress",
-        status: "draft",
-      },
-      {
-        title: "Penetration testing and web builds",
-        client: "Withheld",
-        practice: "Security · Design",
-        stack: TBC,
-        since: TBC,
-        state: "Ongoing",
-        status: "draft",
-      },
-    ] as Project[],
-    /** Cykoai's own projects; Mehdi supplies them. Renders nothing while empty. */
-    ownProjects: [] as OwnProject[],
   },
 
   engagement: {

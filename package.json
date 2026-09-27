@@ -32,6 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
     "playwright": "^1.62.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
     "typescript": "^5",

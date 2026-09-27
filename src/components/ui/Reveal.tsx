@@ -12,6 +12,11 @@ interface RevealProps {
   /** Rise distance in px. */
   y?: number;
   once?: boolean;
+  /**
+   * Fade opacity only (not visibility), so links inside stay in the Tab
+   * order before they reveal; focusing one completes the reveal.
+   */
+  focusable?: boolean;
 }
 
 /**
@@ -25,6 +30,7 @@ export default function Reveal({
   delay = 0,
   y = 24,
   once = true,
+  focusable = false,
 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,11 +40,12 @@ export default function Reveal({
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (el.getBoundingClientRect().top < window.innerHeight * 0.85) return;
 
+    const alpha = focusable ? "opacity" : "autoAlpha";
     const tween = gsap.fromTo(
       el,
-      { autoAlpha: 0, y },
+      { [alpha]: 0, y },
       {
-        autoAlpha: 1,
+        [alpha]: 1,
         y: 0,
         duration: 0.7,
         ease: "expo.out",
@@ -51,11 +58,15 @@ export default function Reveal({
       }
     );
 
+    const finish = () => tween.progress(1);
+    if (focusable) el.addEventListener("focusin", finish);
+
     return () => {
+      el.removeEventListener("focusin", finish);
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-  }, [delay, y, once]);
+  }, [delay, y, once, focusable]);
 
   return (
     <div ref={ref} className={cn(className)}>

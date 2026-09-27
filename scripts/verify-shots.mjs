@@ -8,6 +8,9 @@
  *     [--reduced]             also run the prefers-reduced-motion pass
  *     [--assets-off]          also run with [data-gen-asset] display:none
  *     [--full]                full matrix (= --reduced --assets-off)
+ *     [--scroll=<selector>@<fraction>]  (repeatable) also scroll so the selector's
+ *                             top sits at that fraction of the viewport height,
+ *                             wait 600ms (and for in-view images), save a viewport shot
  *
  * Every run covers 390 / 768 / 1440 widths and captures console output;
  * any console error fails the run (exit 1).
@@ -16,12 +19,19 @@ import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
-const args = Object.fromEntries(
-  process.argv.slice(2).map((a) => {
-    const [k, v] = a.replace(/^--/, "").split("=");
-    return [k, v ?? true];
-  })
-);
+// Split on the first "=" only: selectors may contain one.
+const pairs = process.argv.slice(2).map((a) => {
+  const flag = a.replace(/^--/, "");
+  const i = flag.indexOf("=");
+  return i === -1 ? [flag, true] : [flag.slice(0, i), flag.slice(i + 1)];
+});
+const args = Object.fromEntries(pairs);
+const SCROLLS = pairs
+  .filter(([k, v]) => k === "scroll" && typeof v === "string")
+  .map(([, v]) => {
+    const at = v.lastIndexOf("@");
+    return { selector: v.slice(0, at), fraction: Number(v.slice(at + 1)), raw: v };
+  });
 
 const URL = args.url ?? "http://localhost:3000";
 const OUT = resolve(args.out ?? "shots");
@@ -52,6 +62,32 @@ async function capture(page, label) {
   } else {
     await page.screenshot({ path: `${OUT}/${label}.png`, fullPage: true });
   }
+  shots++;
+}
+
+// Scroll so the selector's top sits at `fraction` of the viewport height, then a viewport shot.
+// window.scrollTo works with Lenis: it syncs to native scroll and updates ScrollTrigger.
+async function scrollShot(page, { selector, fraction, raw }, label) {
+  const found = await page.evaluate(({ selector, fraction }) => {
+    const el = document.querySelector(selector);
+    if (!el) return false;
+    window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - fraction * window.innerHeight);
+    return true;
+  }, { selector, fraction });
+  if (!found) {
+    console.warn(`--scroll: no element for ${selector}`);
+    return;
+  }
+  await page.waitForTimeout(600);
+  // Images mount as the stage reaches them; wait until those in view have decoded.
+  await page
+    .waitForFunction(() =>
+      [...document.querySelectorAll("#projects img")]
+        .filter((img) => { const r = img.getBoundingClientRect(); return r.bottom > 0 && r.top < window.innerHeight && r.width > 0; })
+        .every((img) => img.complete && img.naturalWidth > 0), null, { timeout: 8000 })
+    .catch(() => {});
+  const slug = raw.replace(/[^a-z0-9@.-]+/gi, "-").replace(/^-|-$/g, "");
+  await page.screenshot({ path: `${OUT}/scroll-${slug}-${label}.png` });
   shots++;
 }
 
@@ -91,6 +127,7 @@ async function run({ reduced, assetsOff }) {
 
     const suffix = `${reduced ? "-rm" : ""}${assetsOff ? "-noassets" : ""}`;
     await capture(page, `${SECTION ? SECTION.replace(/[^a-z0-9-]/gi, "") + "-" : ""}${vp.name}${suffix}`);
+    for (const target of SCROLLS) await scrollShot(page, target, `${vp.name}${suffix}`);
     await context.close();
   }
 }
