@@ -76,12 +76,15 @@ export interface NamePart {
   status: Status;
 }
 
-/** A place on the hero globe. Clients sit at their country's capital and are labelled by country only. */
+/**
+ * A place on the hero globe, at its country's capital. Clients are labelled
+ * by country only; decorative places get a marker and an arc but no label.
+ */
 export interface GlobeLocation {
   name: string;
   lat: number;
   lng: number;
-  role: "origin" | "client";
+  role: "origin" | "client" | "decorative";
   status: Status;
 }
 
@@ -115,23 +118,24 @@ export const site = {
       text: "Cybersecurity, AI automation, mobile apps, API integrations and company websites, from one team.",
       status: "draft",
     } as Text,
-    caption: {
-      origin: "Origin Muscat",
-      coordinates: "23.59° N, 58.38° E",
-      timezone: "GST UTC+4",
-      status: "confirmed" as Status,
-    },
     primaryCta: TALK_TO_US,
     secondaryCta: { label: "See what we do", href: "#offers", status: "draft" } as Link,
   },
 
-  // Real locations only (Mehdi, 26 Sep). Only confirmed entries are drawn.
+  // Clients are real (Mehdi, 26 Sep). Only confirmed entries are drawn.
   globe: {
     locations: [
+      // Arcs visit these in order (skipping any not in view). Decorative places are
+      // not clients (Mehdi, 27 Sep): they get an arc but are never labelled.
       { name: "Muscat", lat: 23.59, lng: 58.38, role: "origin", status: "confirmed" },
       { name: "Pakistan", lat: 33.68, lng: 73.05, role: "client", status: "confirmed" }, // Islamabad
+      { name: "Saudi Arabia", lat: 24.71, lng: 46.68, role: "decorative", status: "confirmed" }, // Riyadh
       { name: "UAE", lat: 24.45, lng: 54.38, role: "client", status: "confirmed" }, // Abu Dhabi
+      { name: "India", lat: 28.61, lng: 77.21, role: "decorative", status: "confirmed" }, // New Delhi
       { name: "Germany", lat: 52.52, lng: 13.4, role: "client", status: "confirmed" }, // Berlin
+      { name: "Egypt", lat: 30.04, lng: 31.24, role: "decorative", status: "confirmed" }, // Cairo
+      { name: "United Kingdom", lat: 51.51, lng: -0.13, role: "decorative", status: "confirmed" }, // London
+      { name: "Singapore", lat: 1.35, lng: 103.82, role: "decorative", status: "confirmed" },
     ] as GlobeLocation[],
     // Clients in Africa are confirmed, but not the country: it joins `locations` once Mehdi names it.
     pending: {

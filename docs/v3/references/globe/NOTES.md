@@ -227,3 +227,26 @@ Measured in headless Google Chrome with the real GPU (`channel: "chrome"`, ANGLE
   - **Sphere colour:** ours is darker. In dark mode, cobe fills the ocean at 10% of `baseColor`, which reads as a near-black disc on Windsor. The land dots come out `baseColor × 5.1` ≈ `#5B82DD`. Both are questions for Mehdi, because they follow the prompt's values.
 - **Differences from the prompt, all recorded:** tilt +13° (Mehdi); marker sizes (Mehdi); label chip (Mehdi); cobe 2's loop and texture handling; a 45° animated start; the right offset −0.39 × width; software WebGL counts as WebGL, as the prompt says.
 - **TBC:** the African country. It stays out of `site.globe.locations`, with a dev-only DRAFT note under the hero.
+
+## Changes after Mehdi's review (27 Sep 2026)
+
+- **Decorative places (Mehdi's choice):** Saudi Arabia, India, Egypt, the United Kingdom and Singapore are not clients. They are in `site.globe.locations` with `role: "decorative"`, placed at their capitals.
+  - Each gets a marker (the client size) and an arc, but never a label, so the site names no country where Cykoai has no clients.
+  - This departs from the brief's "real locations only" rule. Mehdi was told and chose it; the brief is unchanged.
+- **Arcs:** still one at a time, with v1's timings.
+  - Each arc goes to the next place in `site.ts` order that faces the viewer and is on screen, and never repeats the previous one.
+  - Muscat must face the viewer, but it may sit under the right-edge crop, so late arcs sweep in from the edge.
+  - Measured in the first 34 s: Pakistan (label), Saudi Arabia, the UAE (label), Germany (label), the United Kingdom. India, Egypt and Singapore follow as they turn into view.
+- **Size:** the sphere is 15% larger (`GLOBE_SCALE` 1.15, 92% of the canvas; R = 373 px at 1440×900).
+  - The right offset became −0.45 × the width, so the sphere's left edge stays where it was.
+  - Clearance from the dim headline span is unchanged (55 px at 1440×1000); allowing for the now larger arc lift, it is 28 px there, still over the 24 px floor.
+  - Markers are now 16 px (Muscat) and 9 px across. The animated start moved to 60° west of centre.
+- **Data line removed (Mehdi):** "ORIGIN MUSCAT · 23.59° N, 58.38° E · GST UTC+4" is gone from the hero on every width, along with `hero.caption` in `site.ts`. The load sequence now settles after the CTAs (about 1.9 s after navigation on dev), so the globe fades in earlier.
+- **Re-checked:**
+  - Alignment: 0.000 px numerically, and within 0.94 px in pixels (markers cut by the viewport edge or near the rim skipped).
+  - No glow: the rim is within 1 level of Windsor.
+  - Contrast: the dim span keeps 3.84:1 at every desktop size, 3.83:1 at 390 and 3.63:1 at 768 (40% kept).
+  - `verify-shots --full` for the page and `#top` into `docs/v3/after/05-globe-review/`: console clean.
+  - Lighthouse: mobile 89 and 92 (LCP 3.4 s, CLS 0, TBT 50–190 ms); desktop 100.
+  - The cobe chunk is unchanged (5,893 B gzipped).
+- **Tooling note:** the long-running dev server kept serving stale Tailwind CSS (the new offset class never appeared). Restarting did not help; clearing `.next/dev` did.

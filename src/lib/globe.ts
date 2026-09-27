@@ -22,18 +22,18 @@ export const THETA = 13 * D2R;
 export const PERIOD_MS = 110_000;
 /**
  * The animated start turns the origin this far west of centre, onto the
- * uncropped side: far enough that all three client arcs (6.7 s each) play
- * before the origin turns under the hero's right-edge crop.
+ * uncropped side: far enough that three arcs (6.7 s each) play before the
+ * origin turns under the hero's right-edge crop.
  */
-export const START_OFFSET_DEG = 45;
-/** cobe's `scale` option. */
-export const GLOBE_SCALE = 1;
+export const START_OFFSET_DEG = 60;
+/** cobe's `scale` option: the sphere fills 92% of the canvas (15% up after the step 05 review). */
+export const GLOBE_SCALE = 1.15;
 /** cobe's sphere radius in its own units (the shader's `a<=.64`). */
 export const SPHERE = 0.8;
 /**
  * cobe 2 draws markers as discs of radius size·scale·height/4, about three
  * times the area of 0.6's soft dots for the same number (Mehdi, 27 Sep:
- * match the intended look). Roughly 14 px and 8 px across at 810 px.
+ * match the intended look). Roughly 16 px and 9 px across at 810 px.
  */
 export const MARKER_SIZE = { origin: 0.035, client: 0.02 } as const;
 

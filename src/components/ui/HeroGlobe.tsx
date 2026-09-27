@@ -236,7 +236,8 @@ function startGlobe(o: StartOptions): () => void {
 
   const confirmed = o.locations.filter((l) => l.status === "confirmed");
   const origin = confirmed.find((l) => l.role === "origin");
-  const clients = confirmed.filter((l) => l.role === "client");
+  // Arcs reach clients and decorative places; only clients are ever labelled.
+  const targets = confirmed.filter((l) => l.role !== "origin");
   const hub = origin ? toXYZ(origin.lat, origin.lng) : null;
   const phiStart = origin ? phiFacing(origin.lng + (reduced ? 0 : START_OFFSET_DEG)) : 0;
 
@@ -322,6 +323,7 @@ function startGlobe(o: StartOptions): () => void {
   let arc: { target: GlobeLocation; to: Vec3; t0: number } | null = null;
   let nextArcAt: number = ARC.first;
   let targetIndex = 0;
+  let lastTarget: GlobeLocation | null = null;
   let captionOn = false;
   let captionFor: GlobeLocation | null = null;
   let chipW = 0;
@@ -330,10 +332,21 @@ function startGlobe(o: StartOptions): () => void {
   let viewW = 0;
   const costs: number[] = [];
 
-  /** Is screen-x `x` (globe px) inside the part of the hero the viewport shows? */
-  const onScreen = (x: number) => {
-    const left = root.getBoundingClientRect().left + x;
-    return left >= 24 && left <= document.documentElement.clientWidth - 24;
+  /**
+   * The next target, in site.ts order, that faces the viewer and sits inside
+   * the visible part of the hero; never the one just drawn.
+   */
+  const nextTarget = (m: Rotation, seen: (p: Vec3) => boolean) => {
+    for (let k = 0; k < targets.length; k++) {
+      const target = targets[(targetIndex + k) % targets.length];
+      if (target === lastTarget && targets.length > 1) continue;
+      const p = rotate(m, toXYZ(target.lat, target.lng));
+      if (p[2] >= 0.2 && seen(p)) {
+        targetIndex = (targetIndex + k + 1) % targets.length;
+        return target;
+      }
+    }
+    return null;
   };
 
   const hideCaption = () => {
@@ -372,9 +385,9 @@ function startGlobe(o: StartOptions): () => void {
     }
   };
 
-  /** One mono country name beside the destination, from landing until the arc has faded. */
+  /** One mono country name beside a client destination, from landing until the arc has faded. */
   const placeCaption = (m: Rotation, e: number, alpha: number) => {
-    if (!arc || e < ARC.draw) return hideCaption();
+    if (!arc || e < ARC.draw || arc.target.role !== "client") return hideCaption();
     const p = rotate(m, arc.to);
     if (p[2] < (captionOn ? CAPTION_OFF : CAPTION_ON)) return hideCaption();
     if (captionFor !== arc.target) {
@@ -401,10 +414,21 @@ function startGlobe(o: StartOptions): () => void {
   const runArcs = (m: Rotation, hubP: Vec3) => {
     if (!hub) return;
     if (!arc && elapsed >= nextArcAt) {
-      if (hubP[2] >= 0.15 && onScreen(map(hubP)[0])) {
-        const target = clients[targetIndex++ % clients.length];
+      // Parallax only moves the globe vertically, so its left edge is exact here.
+      const left = root.getBoundingClientRect().left;
+      const viewport = document.documentElement.clientWidth;
+      const seen = (p: Vec3) => {
+        const x = left + map(p)[0];
+        return x >= 24 && x <= viewport - 24;
+      };
+      // Muscat must face the viewer (v1's rule) but may sit under the right-edge crop:
+      // the arc then sweeps in from the edge to a destination that is on screen.
+      const target = hubP[2] >= 0.15 ? nextTarget(m, seen) : null;
+      if (target) {
         arc = { target, to: toXYZ(target.lat, target.lng), t0: elapsed };
-      } else nextArcAt = elapsed + ARC.retry;
+        lastTarget = target;
+      }
+      else nextArcAt = elapsed + ARC.retry;
     }
     if (!arc) return hideCaption();
     const e = elapsed - arc.t0;
@@ -450,7 +474,7 @@ function startGlobe(o: StartOptions): () => void {
         ctx.lineWidth = 1;
         ctx.stroke();
       }
-      if (clients.length) runArcs(m, hubP);
+      if (targets.length) runArcs(m, hubP);
     }
 
     if (crosshairs) {
@@ -640,8 +664,8 @@ function startGlobe(o: StartOptions): () => void {
 
 /**
  * The hero globe (v3 step 05): cobe's WebGL sphere with a 2D overlay on top
- * (graticule, edge hairline, Muscat's pulse, one arc at a time to a confirmed
- * client, and that client's country name). Both layers share one rAF loop, so
+ * (graticule, edge hairline, Muscat's pulse, one arc at a time to a client or
+ * a decorative place, and a client's country name). Both layers share one rAF loop, so
  * they share phi and theta. cobe loads after idle, in its own chunk; the globe
  * fades in after the headline sequence. No WebGL: WorldCanvas, same locations.
  * Decorative: aria-hidden, and the hero reads completely without it.

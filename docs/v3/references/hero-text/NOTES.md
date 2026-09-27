@@ -87,3 +87,6 @@ Load animations: the `--frames` window (0–2500ms from DOMContentLoaded) caught
 - **Linear:** the same window shows nothing (its lines start at about 2.9s after load, blur-to-sharp, no masks).
 - **Exo Ape:** the same window is still its preloader (its lines rise about 2.95→4.1s).
 - Ours is fully settled before either reference starts. It uses Exo Ape's mask technique with a similar stagger (80ms against their about 60ms) and no preloader.
+
+## Later change (27 Sep 2026, step 05 review)
+- Mehdi removed the mono data line ("ORIGIN MUSCAT · …"). The sequence now ends with the CTAs, and `HeroHeadline` fires `hero:settled` when it completes, so the globe fades in after it (see `../globe/NOTES.md`).

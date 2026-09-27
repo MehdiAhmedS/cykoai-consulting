@@ -40,8 +40,8 @@ interface WorldCanvasProps {
  * Real geography (3,338 land points from world-atlas 110m, served as
  * /assets/land-points.json) drawn with HeroGlobe's projection, tilt and spin
  * (src/lib/globe.ts), so the two agree and east is no longer mirrored. Arcs
- * run from the origin to each confirmed client in site.ts, strictly one at a
- * time. rAF pauses off screen and on hidden tabs; reduced motion renders one
+ * run from the origin to each client and decorative place in site.ts,
+ * strictly one at a time. rAF pauses off screen and on hidden tabs; reduced motion renders one
  * static frame with the origin facing the viewer and no arcs.
  */
 export default function WorldCanvas({
@@ -73,7 +73,8 @@ export default function WorldCanvas({
     const confirmed = locations.filter((l) => l.status === "confirmed");
     const origin = confirmed.find((l) => l.role === "origin");
     const HUBV = origin ? toXYZ(origin.lat, origin.lng) : null;
-    const TARGV = confirmed.filter((l) => l.role === "client").map((l) => toXYZ(l.lat, l.lng));
+    // Arcs reach clients and decorative places alike.
+    const TARGV = confirmed.filter((l) => l.role !== "origin").map((l) => toXYZ(l.lat, l.lng));
     const PHI0 = origin ? phiFacing(origin.lng + (rm ? 0 : START_OFFSET_DEG)) : 0;
 
     let pts: Vec3[] = [];
@@ -100,16 +101,30 @@ export default function WorldCanvas({
     let arc: { t0: number; target: Vec3 } | null = null;
     let nextArcAt: number = ARC.first;
     let ti = 0;
+    let lastTarget: Vec3 | null = null;
     function spawnArc(elapsed: number, m: Rotation) {
+      const left = canvas ? canvas.getBoundingClientRect().left : 0;
+      const vw = document.documentElement.clientWidth;
+      const seen = (p: Vec3) => left + CX + p[0] * R >= 24 && left + CX + p[0] * R <= vw - 24;
       const hub = HUBV && rotate(m, HUBV);
-      const x = hub ? CX + hub[0] * R : 0;
-      const left = canvas ? canvas.getBoundingClientRect().left + x : 0;
-      // hub on far side or outside the visible part of the hero — wait
-      if (!hub || hub[2] < 0.15 || left < 24 || left > document.documentElement.clientWidth - 24) {
+      // hub on far side — wait (it may sit under the right-edge crop)
+      if (!hub || hub[2] < 0.15) {
         nextArcAt = elapsed + ARC.retry;
         return;
       }
-      arc = { t0: elapsed, target: TARGV[ti++ % TARGV.length] };
+      // next target, in order, that faces the viewer and is on screen (never the last one again)
+      for (let k = 0; k < TARGV.length; k++) {
+        const target = TARGV[(ti + k) % TARGV.length];
+        if (target === lastTarget && TARGV.length > 1) continue;
+        const p = rotate(m, target);
+        if (p[2] >= 0.2 && seen(p)) {
+          ti = (ti + k + 1) % TARGV.length;
+          arc = { t0: elapsed, target };
+          lastTarget = target;
+          return;
+        }
+      }
+      nextArcAt = elapsed + ARC.retry;
     }
 
     function drawArc(A: Vec3, B: Vec3, prog: number, alpha: number, m: Rotation) {

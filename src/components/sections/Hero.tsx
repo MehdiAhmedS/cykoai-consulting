@@ -25,7 +25,7 @@ export default function Hero() {
       <div
         aria-hidden="true"
         data-hero-globe
-        className="pointer-events-none absolute top-1/2 aspect-square -translate-y-1/2 [--globe-w:min(90vh,58vw)] min-[900px]:right-[calc(var(--globe-w)*-0.39)] min-[900px]:w-(--globe-w) max-[899px]:right-1/2 max-[899px]:w-[130vw] max-[899px]:translate-x-1/2 max-[899px]:opacity-40"
+        className="pointer-events-none absolute top-1/2 aspect-square -translate-y-1/2 [--globe-w:min(90vh,58vw)] min-[900px]:right-[calc(var(--globe-w)*-0.45)] min-[900px]:w-(--globe-w) max-[899px]:right-1/2 max-[899px]:w-[130vw] max-[899px]:translate-x-1/2 max-[899px]:opacity-40"
       >
         <div data-speed="0.93" className="h-full w-full will-change-transform">
           <HeroGlobe locations={globe.locations} />
