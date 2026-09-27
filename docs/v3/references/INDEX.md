@@ -47,6 +47,8 @@ Study, don't copy: take principles (proportion, hierarchy, spacing, timing), nev
 
 ## offers/board
 
+Superseded on 27 September: step 06 builds from the Cowork study in `offers/study/index.html`. These captures belong to the first design.
+
 | File | Site | What it shows | Take / skip |
 |---|---|---|---|
 | evilmartians-what-it-takes.jpg | https://evilmartians.com/services/ai-harness | An offer written as terms: a 2-week sprint, the price, "From you" / "From us", a weekly rate to extend | Scope + length (+ price if Mehdi wants) in three sentences |

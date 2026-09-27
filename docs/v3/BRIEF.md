@@ -33,7 +33,7 @@ An audit of every statement on the current page (v1 copy, September 2026) found 
 | Section | id | The visitor asks | Only this section carries | Replaces |
 |---|---|---|---|---|
 | Hero | `top` | Who are you, and what do you do? | The thesis, once. What Cykoai does in one plain line. Where it really works. | Hero |
-| Offers | `offers` | What exactly can I hire you for? | Named engagements: who each is for, what you get, what it touches. | What we do + Services |
+| Offers | `offers` | What exactly can I hire you for? | Named engagements: who each is for and what you get, each with a small 3D piece of the work. | What we do + Services |
 | Projects | `projects` | Have you done this before? | The work itself: landing pages Mehdi designed and built, and current engagements, with the client (or "Withheld"), practice, stack and status. Featured work shows its screen or an illustration. | The illustrative engagement note |
 | Engagement | `engagement` | What happens after I get in touch? | Team shape, what you receive at each stage, how handover works; length once Mehdi confirms it. | Process + "Skin in the game" |
 | Standards | `standards` | Why trust you with access to our systems? | The frameworks Cykoai works to, the rules it keeps, who does the work. | Why Cykoai |
@@ -113,6 +113,8 @@ From Mehdi, 25–26 September 2026.
 
 Bukhait Sefrar and Asaan Nikah are real organisations, so neither is named until Mehdi confirms they've agreed. Whether each of the other six was made for a client or as a concept is TBC. HDT Systems' own landing page isn't finished and isn't shown.
 
+**Technologies Mehdi works with** (27 September): Flutter, Swift, Kotlin, React Native, the LAMP stack, Next.js, Django, Python, API integrations, React, MongoDB, MySQL and Frappe. A technologies section before The name is planned; its prompt is still to come.
+
 **Where clients are:** Muscat (Oman, also Cykoai's origin), Pakistan, the UAE, Germany, and a country in Africa (which one is TBC).
 
 **The name:** "Cykoai" is pronounced "see-ko-ya".
@@ -141,7 +143,7 @@ Content rules:
 **Amended in v3:**
 
 - **Glass on the navbar only.** Backdrop blur 16–20px, tint at least 72% opaque, a 1px hairline, and an `@supports not (backdrop-filter: blur(1px))` solid fallback. No inset highlight, no `saturate()`, no shadow, no `mix-blend-mode`.
-- **WebGL in the hero globe only.** It's built with three.js (plain three, named imports only), in its own chunk loaded after the headline, on viewports 900px and wider. Phones, reduced motion and browsers without WebGL get a still frame of the same scene instead. The globe shows only places from `site.ts`: confirmed clients, which are labelled, and Mehdi's decorative places, which never are. The hero must read completely with the globe removed.
+- **WebGL in the hero globe and the Offers pieces only.** Both use three.js (plain three, named imports only), which loads after the headline in one chunk they share, on viewports 900px and wider. The Offers pieces share a single renderer. Phones, reduced motion and browsers without WebGL get still images of the same scenes instead. The globe shows only places from `site.ts`: confirmed clients, which are labelled, and Mehdi's decorative places, which never are. The hero must read completely with the globe removed.
 - **Project captures.** Projects may show captures of Mehdi's own live pages from `public/assets/projects/`, made by `scripts/capture-projects.mjs` (step 07). They're the only imagery outside `public/assets/gen/`, and the page must still work without them.
 - **Numbers only as data:** dates, weeks, counts, coordinates, time zones. No ordinal section indices, numbered rows or numbered menus.
 - **Typography:** Archivo + Chivo Mono (see Type system), built in step 02. Until then, leave the fonts alone.
@@ -207,7 +209,7 @@ From the samples, work out when each element starts and stops moving, the stagge
 
 ## How to build and check every step
 
-Each step runs as two passes in one session: the study, then the build. Steps 05b and 11 have nothing to study: Mehdi starts them in plan mode, so skip item 2.
+Each step runs as two passes in one session: the study, then the build. Steps 05b, 06 and 11 have nothing to study: Mehdi starts them in plan mode, so skip item 2.
 
 1. **Read** this brief, the step's prompt, `CLAUDE.md`, and the files you'll touch. Then run `git status`. If `docs/v3/BRIEF.md`, anything in `docs/v3/prompts/`, or files the step's prompt says come from Cowork show as modified or new, those are updates from the Cowork review: commit them on their own first, as `v3(docs): update brief and prompts`. If anything else is unexpected, stop and ask.
 2. **Study (first pass).** Mehdi asks for part 1 of the prompt on its own: go through the references in Chrome, save the captures and write NOTES.md, as "How to study a reference" describes. Change no code in this pass. End with a short summary of what you learned and anything that should change how the rest of the prompt is built.
@@ -234,7 +236,7 @@ All picked on 26 September 2026. The globe and Projects were revised on 27 Septe
 | Navbar | A: inset glass bar; Linear's values on dark sections, Harvey's on light, switched per section | 03 |
 | Headline motion | A: line-mask rise in the heavy display, then a mono data line types on | 04 |
 | Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, up to three at once, a slow sway, a still frame on phones | 05, 05b |
-| Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi | 06 |
+| Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi. Revised on 27 September from the Cowork study: rows open on scroll, Cuberto-style, each with a three.js piece of the work | 06 |
 | Projects | A: engagement register (26 September). Replaced on 27 September by the showcase board's A, the stage: a sticky frame whose screen wipes to each project as it scrolls past, live captures of Mehdi's landing pages, confidential work as labelled illustrations, and the rest in a "More work" list | 07 |
 | Engagement | A: deliverable anatomy, with the team (and length, once confirmed) on a "cover" | 08 |
 | Standards | A: rules as constraints plus a frameworks strip | 09 |
@@ -255,6 +257,8 @@ Answered on 27 September:
 - The globe is rebuilt in three.js (step 05b), with overlapping arcs, a sway instead of a spin, and a still frame on phones.
 - Projects is the stage (showcase board, direction A). Its screens are captures of the live pages. Confidential security work is shown as UI mockups. The device app is a phone shell until real screens, with data blurred, are ready.
 - Eight of Mehdi's landing pages go in (see "Cykoai's real work").
+- Offers: the six offers stay as they are. Rows open as they scroll into view and fill with Windsor, each with its own 3D piece instead of a picture (Cowork study approved; the bot piece is the second version).
+- The technologies Mehdi works with are listed under "Cykoai's real work".
 
 Still open; until answered, the value stays TBC in `site.ts` (or `projects.ts`) and is hidden in production:
 

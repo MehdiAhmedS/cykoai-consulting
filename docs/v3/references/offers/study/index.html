@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cykoai Offers Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Chivo+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --windsor:#0B1527; --windsor-2:#13203A; --windsor-3:#1D2C4B;
+  --drift:#AD8752; --drift-soft:#D4B483; --drift-deep:#7D5F33;
+  --n900:#0B1527; --n700:#3A4356; --n500:#6B7385; --n300:#B4B9C4; --n150:#E4E6EA; --n100:#F2F3F5; --n50:#F9F9FA;
+  --white:#FFFFFF;
+  --f-sans:"Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(16px, 4vw, 56px);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--white); color:var(--n900); font-family:var(--f-sans); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+.wrap{max-width:1240px; margin-inline:auto; padding-inline:var(--gutter)}
+.mono{font-family:var(--f-mono); font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; line-height:1.8}
+
+/* study bar */
+.bar{background:var(--n50); border-bottom:1px solid var(--n150)}
+.bar .wrap{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 24px; padding-block:14px}
+.bar .id{color:var(--n500)} .bar .id b{color:var(--drift-deep); font-weight:500}
+.ctrl{display:flex; flex-wrap:wrap; align-items:center; gap:14px}
+.seg{display:inline-flex; border:1px solid var(--n150); background:var(--white)}
+.seg button{font:500 11px/1 var(--f-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--n500); background:none; border:0; padding:9px 12px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--windsor); color:var(--white)}
+.seg button:focus-visible{outline:2px solid var(--drift); outline-offset:1px}
+.fps{color:var(--n500); min-width:12ch; text-align:right; font-variant-numeric:tabular-nums}
+
+/* section header */
+.offers{padding-block:clamp(72px, 12vh, 132px) clamp(64px, 10vh, 110px)}
+.label{display:flex; align-items:center; gap:14px; color:var(--n700)}
+.label::before{content:""; width:28px; height:1px; background:var(--drift)}
+h2{margin:28px 0 0; font-weight:740; font-stretch:110%; font-size:clamp(2.1rem, 4.2vw, 3.5rem); line-height:1; letter-spacing:-.03em; max-width:22ch; text-wrap:balance}
+.lead{margin:20px 0 0; font-size:1.1875rem; color:var(--n700); max-width:60ch}
+.list{margin-top:clamp(40px, 7vh, 72px); border-bottom:1px solid var(--n150)}
+
+/* a row */
+.row{position:relative; isolation:isolate}
+.row .fill{position:absolute; inset:0; background:var(--windsor); transform:scaleY(0); transform-origin:50% 0; transition:transform .7s var(--ease); z-index:-1}
+.row .rule{position:absolute; left:0; right:0; top:0; height:1px; background:var(--n150); transition:background-color .5s var(--ease)}
+.row.open .fill{transform:scaleY(1)}
+.row.open .rule{background:rgba(255,255,255,.1)}
+.row + .row.open .rule, .row.open + .row .rule{background:rgba(255,255,255,.1)}
+.row.open + .row:not(.open) .rule{background:var(--n150)}
+.head{display:grid; grid-template-columns:150px minmax(0,1.25fr) minmax(0,1fr) 22px; align-items:baseline; gap:12px 28px; padding:30px clamp(16px, 2.5vw, 32px)}
+.practice{color:var(--n500); transition:color .5s var(--ease)}
+.row h3{margin:0; font-weight:700; font-stretch:104%; font-size:clamp(1.5rem, 2.4vw, 2.1rem); line-height:1.1; letter-spacing:-.015em; color:var(--n900); transition:color .5s var(--ease), font-weight .5s var(--ease)}
+.for{margin:0; font-size:.9375rem; line-height:1.5; color:var(--n500); transition:color .5s var(--ease)}
+.icon{position:relative; width:18px; height:18px; align-self:center; transition:transform .6s var(--ease)}
+.icon::before,.icon::after{content:""; position:absolute; left:0; top:50%; width:18px; height:1px; background:var(--n700); transition:background-color .5s var(--ease)}
+.icon::after{transform:rotate(90deg)}
+.row.open .practice{color:var(--drift-soft)}
+.row.open h3{color:var(--white); font-weight:680}
+.row.open .for{color:var(--n300)}
+.row.open .icon{transform:rotate(45deg)}
+.row.open .icon::before,.row.open .icon::after{background:var(--white)}
+
+.body{display:grid; grid-template-rows:0fr; transition:grid-template-rows .7s var(--ease)}
+.row.open .body{grid-template-rows:1fr}
+.body > .inner{min-height:0; overflow:hidden}
+.grid{display:grid; grid-template-columns:150px minmax(0,.85fr) minmax(0,1.15fr); gap:18px 28px; padding:4px clamp(16px, 2.5vw, 32px) 36px}
+.copy{grid-column:2; display:grid; gap:10px; align-content:start; padding-top:6px; opacity:0; transform:translateY(12px); transition:opacity .5s var(--ease), transform .7s var(--ease)}
+.copy .mono{color:var(--drift-soft)}
+.copy p{margin:0; color:var(--white); max-width:40ch}
+.copy .note{color:var(--n300); font-size:.9375rem}
+.viz{grid-column:3; opacity:0; transition:opacity .8s var(--ease) .12s}
+.viz canvas{display:block; width:100%; aspect-ratio:16/10; max-width:100%}
+.viz figcaption{margin-top:10px; color:var(--n300)}
+.row.open .copy{opacity:1; transform:none; transition-delay:.12s}
+.row.open .viz{opacity:1}
+
+/* notes */
+.notes{background:var(--windsor); color:var(--white); padding-block:clamp(56px, 9vh, 96px)}
+.notes h2{color:var(--white); font-size:clamp(1.6rem, 2.8vw, 2.3rem); font-weight:720; max-width:26ch; margin:0}
+.notes .intro{margin:16px 0 0; color:var(--n300); max-width:62ch}
+.cols{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.1); margin-top:36px}
+.cols > div{background:var(--windsor); padding:20px 22px; display:grid; gap:8px; align-content:start}
+.cols .mono{color:var(--drift-soft)}
+.cols p{margin:0; color:var(--n300); font-size:.9375rem; line-height:1.55}
+.cols p b{color:var(--white); font-weight:600}
+.asks{margin:36px 0 0; padding:0; list-style:none; display:grid; gap:10px; max-width:70ch}
+.asks li{color:var(--n300); padding-left:22px; position:relative}
+.asks li::before{content:""; position:absolute; left:0; top:.8em; width:12px; height:1px; background:var(--drift)}
+.asks b{color:var(--white); font-weight:600}
+
+@media (max-width: 900px){
+  .cols{grid-template-columns:1fr 1fr}
+}
+@media (max-width: 760px){
+  .head{grid-template-columns:minmax(0,1fr) 22px; gap:6px 16px; padding-block:24px}
+  .practice{grid-column:1; order:1}
+  .row h3{grid-column:1; order:2}
+  .for{grid-column:1; order:3}
+  .icon{grid-column:2; grid-row:1 / span 3; order:4}
+  .grid{grid-template-columns:minmax(0,1fr); padding-bottom:28px}
+  .viz{grid-column:1; order:1}
+  .copy{grid-column:1; order:2}
+  .cols{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  .row .fill,.body,.copy,.viz,.icon,.row h3,.practice,.for,.rule{transition:none !important}
+}
+</style>
+
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <p class="mono id" style="margin:0">Cykoai · Offers · <b>3D study</b> · approved 27 Sep</p>
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="How rows open">
+        <button type="button" id="mode-scroll" aria-pressed="true">Open on scroll</button>
+        <button type="button" id="mode-all" aria-pressed="false">Open all</button>
+      </div>
+      <span class="mono fps" id="fps" aria-live="off">—</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="offers" aria-labelledby="offers-h">
+  <div class="wrap">
+    <p class="mono label" style="margin:0">Offers</p>
+    <h2 id="offers-h">What you can hire us for.</h2>
+    <p class="lead">Six ways to work with us. Pick one, or combine them.</p>
+
+    <div class="list" id="list">
+      <article class="row" data-scene="security">
+        <div class="fill" aria-hidden="true"></div><div class="rule" aria-hidden="true"></div>
+        <div class="head">
+          <p class="mono practice" style="margin:0">Security</p>
+          <h3>Security reviews</h3>
+          <p class="for">Apps about to launch, including AI-built ones</p>
+          <span class="icon" aria-hidden="true"></span>
+        </div>
+        <div class="body"><div class="inner"><div class="grid">
+          <div class="copy">
+            <p class="mono" style="margin:0">You get</p>
+            <p>Architecture and design review and penetration testing, with findings by severity and fixes.</p>
+          </div>
+          <figure class="viz" style="margin:0"><canvas aria-hidden="true"></canvas><figcaption class="mono">An app's layers, scanned before launch</figcaption></figure>
+        </div></div></div>
+      </article>
+
+      <article class="row" data-scene="workspace">
+        <div class="fill" aria-hidden="true"></div><div class="rule" aria-hidden="true"></div>
+        <div class="head">
+          <p class="mono practice" style="margin:0">Security</p>
+          <h3>Workspace hardening</h3>
+          <p class="for">Organisations on Google Workspace</p>
+          <span class="icon" aria-hidden="true"></span>
+        </div>
+        <div class="body"><div class="inner"><div class="grid">
+          <div class="copy">
+            <p class="mono" style="margin:0">You get</p>
+            <p>A hardened configuration, a review of contractor and freelancer access, and controls mapped to ISO/IEC 27001.</p>
+          </div>
+          <figure class="viz" style="margin:0"><canvas aria-hidden="true"></canvas><figcaption class="mono">Accounts, their access, and the shell around them</figcaption></figure>
+        </div></div></div>
+      </article>
+
+      <article class="row" data-scene="automation">
+        <div class="fill" aria-hidden="true"></div><div class="rule" aria-hidden="true"></div>
+        <div class="head">
+          <p class="mono practice" style="margin:0">AI</p>
+          <h3>AI automation</h3>
+          <p class="for">Teams with repetitive, manual work</p>
+          <span class="icon" aria-hidden="true"></span>
+        </div>
+        <div class="body"><div class="inner"><div class="grid">
+          <div class="copy">
+            <p class="mono" style="margin:0">You get</p>
+            <p>AI workflows that remove manual steps, including private AI on Google Vertex.</p>
+          </div>
+          <figure class="viz" style="margin:0"><canvas aria-hidden="true"></canvas><figcaption class="mono">Scattered manual work in, one steady flow out</figcaption></figure>
+        </div></div></div>
+      </article>
+
+      <article class="row" data-scene="mobile">
+        <div class="fill" aria-hidden="true"></div><div class="rule" aria-hidden="true"></div>
+        <div class="head">
+          <p class="mono practice" style="margin:0">Engineering</p>
+          <h3>Mobile apps and device integrations</h3>
+          <p class="for">Products that talk to hardware</p>
+          <span class="icon" aria-hidden="true"></span>
+        </div>
+        <div class="body"><div class="inner"><div class="grid">
+          <div class="copy">
+            <p class="mono" style="margin:0">You get</p>
+            <p>Mobile applications with API integrations to devices and IoT hardware.</p>
+          </div>
+          <figure class="viz" style="margin:0"><canvas aria-hidden="true"></canvas><figcaption class="mono">One app, in conversation with its devices</figcaption></figure>
+        </div></div></div>
+      </article>
+
+      <article class="row" data-scene="bot">
+        <div class="fill" aria-hidden="true"></div><div class="rule" aria-hidden="true"></div>
+        <div class="head">
+          <p class="mono practice" style="margin:0">Engineering</p>
+          <h3>APIs and bot deployments</h3>
+          <p class="for">Teams connecting systems</p>
+          <span class="icon" aria-hidden="true"></span>
+        </div>
+        <div class="body"><div class="inner"><div class="grid">
+          <div class="copy">
+            <p class="mono" style="margin:0">You get</p>
+            <p>API integrations and Docker-based bot deployments.</p>
+          </div>
+          <figure class="viz" style="margin:0"><canvas aria-hidden="true"></canvas><figcaption class="mono" id="bot-cap">A bot in its container, calling the services around it</figcaption></figure>
+        </div></div></div>
+      </article>
+
+      <article class="row" data-scene="profile">
+        <div class="fill" aria-hidden="true"></div><div class="rule" aria-hidden="true"></div>
+        <div class="head">
+          <p class="mono practice" style="margin:0">Design</p>
+          <h3>Company profiles</h3>
+          <p class="for">Companies that need a presence</p>
+          <span class="icon" aria-hidden="true"></span>
+        </div>
+        <div class="body"><div class="inner"><div class="grid">
+          <div class="copy">
+            <p class="mono" style="margin:0">You get</p>
+            <p>Landing pages and brand design, from the ground up.</p>
+          </div>
+          <figure class="viz" style="margin:0"><canvas aria-hidden="true"></canvas><figcaption class="mono">Grid, layout, type and brand, layer by layer</figcaption></figure>
+        </div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="notes" aria-labelledby="notes-h">
+  <div class="wrap">
+    <p class="mono label" style="margin:0 0 20px; color:var(--n300)">About this study</p>
+    <h2 id="notes-h">Each offer opens as it reaches you, with a small 3D piece of the work.</h2>
+    <p class="intro">Rows open on their own as they scroll up past the lower third of the screen, the way Cuberto's do, and close again if you scroll back. The copy is the current draft from the site. The 3D pieces share the globe's look: Windsor solids with a light ramp, white hairline edges, and Driftwood for the one thing that moves the story on.</p>
+    <div class="cols">
+      <div><p class="mono">Security reviews</p><p>Three layers of an app (interface, API, data) with a <b>scan passing through</b>. Where it passes, points on a layer flag and ring.</p></div>
+      <div><p class="mono">Workspace hardening</p><p>Accounts around the organisation, inside a faceted shell. Freelancer links are Driftwood, and one at a time <b>their access is pulled back</b>.</p></div>
+      <div><p class="mono">AI automation</p><p>Irregular tasks arrive on three lanes, pass <b>through one gate</b>, and leave as an even, single stream.</p></div>
+      <div><p class="mono">Mobile and devices</p><p>A phone with its app, <b>sending commands</b> to a sensor, a hub and a tag, and getting data back along arcs like the globe's.</p></div>
+      <div><p class="mono">APIs and bots</p><p>A bot inside its container (the deployment), <b>turning to call each service</b> around it: a database, messaging, the web, payments, files and events. Each call goes out in Driftwood and the reply comes back in white.</p></div>
+      <div><p class="mono">Company profiles</p><p>A page that <b>separates into its layers</b>: the grid, the layout, the type and the brand, then settles back into one.</p></div>
+    </div>
+    <div class="cols">
+      <div><p class="mono">One renderer</p><p>All six pieces share a single WebGL renderer, drawn into each row's own canvas. Only rows that are open and on screen draw.</p></div>
+      <div><p class="mono">Same three.js</p><p>The site already loads three.js for the globe, so these reuse that code rather than adding a second engine.</p></div>
+      <div><p class="mono">Still when needed</p><p>With reduced motion, every row is open and each piece shows one still pose. Phones could get stills too, like the globe.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm";
+
+THREE.ColorManagement.enabled = false;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const C = (h) => new THREE.Color(h);
+const LIGHT = new THREE.Vector3(-0.55, 0.62, 0.56).normalize();
+
+/* ---------- shared materials ---------- */
+function ramp({ lit = "#2A4170", shade = "#101B31", rim = 0.26, opacity = 1, side = THREE.FrontSide } = {}) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uLit: { value: C(lit) }, uShade: { value: C(shade) }, uRim: { value: C("#B4B9C4") },
+      uRimAmt: { value: rim }, uOpacity: { value: opacity }, uLight: { value: LIGHT },
+    },
+    vertexShader: `
+      varying vec3 vN; varying vec3 vV; varying vec3 vC;
+      void main(){
+        vec4 p = vec4(position, 1.0); vec3 nn = normal; vC = vec3(1.0);
+        #ifdef USE_INSTANCING
+          p = instanceMatrix * p; nn = mat3(instanceMatrix) * nn;
+        #endif
+        #ifdef USE_INSTANCING_COLOR
+          vC = instanceColor;
+        #endif
+        vec4 mv = modelViewMatrix * p;
+        vN = normalize(normalMatrix * nn); vV = normalize(-mv.xyz);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      uniform vec3 uLit; uniform vec3 uShade; uniform vec3 uRim; uniform vec3 uLight;
+      uniform float uRimAmt; uniform float uOpacity;
+      varying vec3 vN; varying vec3 vV; varying vec3 vC;
+      void main(){
+        vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;
+        float hl = dot(n, uLight) * 0.5 + 0.5;
+        vec3 c = mix(uShade, uLit, smoothstep(0.15, 0.95, hl)) * vC;
+        float f = 1.0 - max(dot(n, normalize(vV)), 0.0);
+        c = mix(c, uRim, smoothstep(0.55, 1.0, f) * uRimAmt);
+        gl_FragColor = vec4(c, uOpacity);
+      }`,
+    transparent: opacity < 1, depthWrite: opacity >= 1, side,
+  });
+}
+const lineMat = (color = "#FFFFFF", opacity = 0.3) => new THREE.LineBasicMaterial({ color, transparent: true, opacity, depthWrite: false });
+const basic = (color, opacity = 1) => new THREE.MeshBasicMaterial({ color, transparent: opacity < 1, opacity, depthWrite: opacity >= 1 });
+const edges = (geo, mat, thr = 20) => new THREE.LineSegments(new THREE.EdgesGeometry(geo, thr), mat);
+const lineFrom = (pts, mat, loop = false) => {
+  const g = new THREE.BufferGeometry().setFromPoints(pts);
+  return loop ? new THREE.LineLoop(g, mat) : new THREE.Line(g, mat);
+};
+const rectXZ = (w, d, y = 0) => [new THREE.Vector3(-w/2, y, -d/2), new THREE.Vector3(w/2, y, -d/2), new THREE.Vector3(w/2, y, d/2), new THREE.Vector3(-w/2, y, d/2)];
+const rectXY = (w, h, x = 0, y = 0, z = 0) => [new THREE.Vector3(x-w/2, y-h/2, z), new THREE.Vector3(x+w/2, y-h/2, z), new THREE.Vector3(x+w/2, y+h/2, z), new THREE.Vector3(x-w/2, y+h/2, z)];
+const circlePts = (r, n = 64, plane = "xy") => Array.from({ length: n }, (_, i) => {
+  const a = (i / n) * Math.PI * 2, c = Math.cos(a) * r, s = Math.sin(a) * r;
+  return plane === "xy" ? new THREE.Vector3(c, s, 0) : plane === "yz" ? new THREE.Vector3(0, c, s) : new THREE.Vector3(c, 0, s);
+});
+function makeCam(pos, look = [0, 0, 0]) {
+  const cam = new THREE.PerspectiveCamera(30, 1.6, 0.1, 60);
+  cam.position.set(...pos); cam.lookAt(new THREE.Vector3(...look));
+  return cam;
+}
+const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), P = new THREE.Vector3(), E = new THREE.Euler();
+const setInst = (mesh, i, x, y, z, s = 1, rx = 0, ry = 0, rz = 0) => {
+  P.set(x, y, z); S.set(s, s, s); Q.setFromEuler(E.set(rx, ry, rz)); M.compose(P, Q, S); mesh.setMatrixAt(i, M);
+};
+const quad = (a, b, lift) => {
+  const mid = a.clone().add(b).multiplyScalar(0.5); mid.y += lift;
+  return new THREE.QuadraticBezierCurve3(a.clone(), mid, b.clone());
+};
+
+/* ---------- 1. Security reviews: layers under a scan ---------- */
+function sceneSecurity() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 2.3, 4.6], [0, -0.2, 0]);
+  const root = new THREE.Group(); scene.add(root);
+  const plateGeo = new THREE.BoxGeometry(2.3, 0.06, 1.44);
+  const plateMat = ramp({ lit: "#26406B", shade: "#0F1A30", rim: 0.22 });
+  const edgeMat = lineMat("#FFFFFF", 0.34);
+  const ys = [0.62, 0, -0.62];
+  const dotGeo = new THREE.SphereGeometry(0.034, 12, 8);
+  const dots = new THREE.InstancedMesh(dotGeo, basic("#FFFFFF"), 45);
+  const dotPos = [];
+  ys.forEach((y) => {
+    const plate = new THREE.Mesh(plateGeo, plateMat); plate.position.y = y; root.add(plate);
+    const e = edges(plateGeo, edgeMat); e.position.y = y; root.add(e);
+    for (let i = 0; i < 5; i++) for (let j = 0; j < 3; j++) dotPos.push(new THREE.Vector3(-0.84 + i * 0.42, y + 0.052, -0.42 + j * 0.42));
+  });
+  const base = C("#6B7385"), hot = C("#D4B483"), col = new THREE.Color();
+  dotPos.forEach((p, i) => { setInst(dots, i, p.x, p.y, p.z); dots.setColorAt(i, base); });
+  root.add(dots);
+  // data paths between layers
+  const vpos = [];
+  [[0, 0], [2, 1], [4, 2], [1, 2], [3, 0]].forEach(([i, j]) => {
+    const k = i * 3 + j;
+    for (let pl = 0; pl < 2; pl++) { const a = dotPos[pl * 15 + k], b = dotPos[(pl + 1) * 15 + k]; vpos.push(a.x, a.y, a.z, b.x, b.y + 0.02, b.z); }
+  });
+  const vg = new THREE.BufferGeometry(); vg.setAttribute("position", new THREE.Float32BufferAttribute(vpos, 3));
+  root.add(new THREE.LineSegments(vg, lineMat("#FFFFFF", 0.13)));
+  // scanner
+  const scanGeo = new THREE.PlaneGeometry(2.64, 1.78); scanGeo.rotateX(-Math.PI / 2);
+  const scanMat = basic("#D4B483", 0.08); scanMat.side = THREE.DoubleSide;
+  const scanEdgeMat = lineMat("#D4B483", 0.9);
+  const scan = new THREE.Group();
+  scan.add(new THREE.Mesh(scanGeo, scanMat), lineFrom(rectXZ(2.64, 1.78), scanEdgeMat, true));
+  root.add(scan);
+  // findings per layer (indices within a layer) and their rings
+  const flags = [[3, 11], [7], [1, 13]];
+  const flagAt = new Array(45).fill(-99);
+  const ringGeo = new THREE.RingGeometry(0.9, 1, 48); ringGeo.rotateX(-Math.PI / 2);
+  const rings = flags.map(() => { const m = new THREE.Mesh(ringGeo, basic("#D4B483", 0)); m.material.side = THREE.DoubleSide; root.add(m); return { m, at: -99 }; });
+  const T = 4.8; let prevY = 2;
+  function update(t) {
+    root.rotation.y = -0.42 + 0.16 * Math.sin(t * 0.3);
+    const c = t % T;
+    const y = c < 3.0 ? lerp(1.02, -1.02, easeInOut(c / 3.0)) : -1.02;
+    const a = c < 0.3 ? c / 0.3 : c < 3.0 ? 1 : 1 - clamp((c - 3.0) / 0.35);
+    scan.position.y = y; scanMat.opacity = 0.08 * a; scanEdgeMat.opacity = 0.9 * a;
+    ys.forEach((ly, li) => {
+      if (prevY > ly + 0.05 && y <= ly + 0.05) {
+        flags[li].forEach((k) => (flagAt[li * 15 + k] = t));
+        rings[li].at = t; const p = dotPos[li * 15 + flags[li][0]]; rings[li].m.position.set(p.x, p.y - 0.01, p.z);
+      }
+    });
+    prevY = c < 3.0 ? y : 2;
+    for (let i = 0; i < 45; i++) {
+      const age = t - flagAt[i];
+      const w = age >= 0 && age < 3 ? 1 - smooth(1.7, 2.6, age) : 0;
+      col.copy(base).lerp(hot, w); dots.setColorAt(i, col);
+      const s = 1 + 0.7 * (age >= 0 && age < 0.45 ? Math.sin((age / 0.45) * Math.PI) : 0) + 0.25 * w;
+      const p = dotPos[i]; setInst(dots, i, p.x, p.y, p.z, s);
+    }
+    dots.instanceColor.needsUpdate = true; dots.instanceMatrix.needsUpdate = true;
+    rings.forEach((r) => {
+      const age = t - r.at, k = clamp(age / 1.1);
+      r.m.visible = age >= 0 && age < 1.1;
+      r.m.scale.setScalar(lerp(0.05, 0.3, easeOut(k))); r.m.material.opacity = 0.85 * (1 - k);
+    });
+  }
+  return { scene, camera, update, still: 1.4 };
+}
+
+/* ---------- 2. Workspace hardening: accounts inside a shell ---------- */
+function sceneWorkspace() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 0.5, 4.7]);
+  const tilt = new THREE.Group(); tilt.rotation.x = 0.2; scene.add(tilt);
+  const root = new THREE.Group(); tilt.add(root);
+  root.add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.3, 4), ramp({ lit: "#36548A", shade: "#13203A", rim: 0.32 })));
+  const N = 22, R = 1.02, nodes = [];
+  for (let i = 0; i < N; i++) {
+    const y = 1 - ((i + 0.5) * 2) / N, r = Math.sqrt(1 - y * y), th = i * Math.PI * (3 - Math.sqrt(5));
+    nodes.push(new THREE.Vector3(Math.cos(th) * r * R, y * R, Math.sin(th) * r * R));
+  }
+  const freelancers = [2, 6, 11, 15, 19];
+  const staff = C("#B4B9C4"), soft = C("#D4B483"), dim = C("#3A4356"), grey = C("#6B7385"), col = new THREE.Color();
+  const dots = new THREE.InstancedMesh(new THREE.SphereGeometry(0.052, 14, 10), basic("#FFFFFF"), N);
+  nodes.forEach((p, i) => { setInst(dots, i, p.x, p.y, p.z); dots.setColorAt(i, freelancers.includes(i) ? soft : staff); });
+  root.add(dots);
+  const lpos = new Float32Array(N * 6), lcol = new Float32Array(N * 6);
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute("position", new THREE.BufferAttribute(lpos, 3)); lg.setAttribute("color", new THREE.BufferAttribute(lcol, 3));
+  const links = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false }));
+  root.add(links);
+  const shellGeo = new THREE.IcosahedronGeometry(1.46, 1);
+  const shell = new THREE.Group();
+  shell.add(new THREE.Mesh(shellGeo, ramp({ lit: "#36548A", shade: "#13203A", rim: 0.2, opacity: 0.07, side: THREE.DoubleSide })));
+  shell.add(edges(shellGeo, lineMat("#FFFFFF", 0.17), 1));
+  tilt.add(shell);
+  const CYCLE = 3.2, HOLD = 7.2;
+  function stateOf(i, t) {
+    // returns {cut: 0..1, hl: 0..1, s: scale}
+    const fi = freelancers.indexOf(i); if (fi < 0) return { cut: 0, hl: 0, s: 1 };
+    const period = CYCLE * freelancers.length;
+    let a = ((t - fi * CYCLE) % period + period) % period;
+    if (a < 0.7) return { cut: 0, hl: Math.sin((a / 0.7) * Math.PI), s: 1 + 0.7 * Math.sin((a / 0.7) * Math.PI) };
+    if (a < 1.6) { const k = easeInOut((a - 0.7) / 0.9); return { cut: k, hl: 0, s: lerp(1, 0.6, k) }; }
+    if (a < 1.6 + HOLD) return { cut: 1, hl: 0, s: 0.6 };
+    if (a < 2.6 + HOLD) { const k = easeInOut((a - 1.6 - HOLD) / 1.0); return { cut: 1 - k, hl: 0, s: lerp(0.6, 1, k) }; }
+    return { cut: 0, hl: 0, s: 1 };
+  }
+  function update(t) {
+    root.rotation.y = t * 0.14; shell.rotation.y = -t * 0.05; shell.rotation.z = t * 0.02;
+    let squeeze = 0;
+    nodes.forEach((p, i) => {
+      const st = stateOf(i, t), free = freelancers.includes(i);
+      const core = p.clone().normalize().multiplyScalar(0.3);
+      const end = p.clone().lerp(core, st.cut);
+      lpos.set([core.x, core.y, core.z, end.x, end.y, end.z], i * 6);
+      col.copy(free ? soft : grey); if (free) col.lerp(dim, st.cut);
+      lcol.set([col.r * 0.6, col.g * 0.6, col.b * 0.6, col.r, col.g, col.b], i * 6);
+      col.copy(free ? soft : staff); if (free) col.lerp(dim, st.cut);
+      dots.setColorAt(i, col); setInst(dots, i, p.x, p.y, p.z, st.s);
+      if (free && st.cut > 0 && st.cut < 1) squeeze = Math.max(squeeze, Math.sin(st.cut * Math.PI));
+    });
+    shell.scale.setScalar(1 - 0.03 * squeeze);
+    lg.attributes.position.needsUpdate = true; lg.attributes.color.needsUpdate = true;
+    dots.instanceColor.needsUpdate = true; dots.instanceMatrix.needsUpdate = true;
+  }
+  return { scene, camera, update, still: 8.5 };
+}
+
+/* ---------- 3. AI automation: lanes through a gate ---------- */
+function sceneAutomation() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 1.45, 3.75], [0, -0.04, 0]);
+  const root = new THREE.Group(); scene.add(root);
+  const lanes = [-0.85, 0, 0.85].map((z) => new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-1.72, 0, z), new THREE.Vector3(-1.15, 0, z * 0.92), new THREE.Vector3(-0.7, 0, z * 0.45), new THREE.Vector3(-0.42, 0, 0),
+  ], false, "centripetal"));
+  const out = new THREE.LineCurve3(new THREE.Vector3(0.42, 0, 0), new THREE.Vector3(1.72, 0, 0));
+  lanes.forEach((c) => root.add(lineFrom(c.getPoints(48), lineMat("#FFFFFF", 0.2))));
+  root.add(lineFrom(out.getPoints(2), lineMat("#D4B483", 0.55)));
+  const gate = new THREE.Group(); root.add(gate);
+  const torus = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.05, 18, 72), ramp({ lit: "#3A5A93", shade: "#13203A", rim: 0.34 }));
+  torus.rotation.y = Math.PI / 2; gate.add(torus);
+  const orbit = new THREE.Group(); gate.add(orbit);
+  const ring1 = lineFrom(circlePts(0.5, 72, "yz"), lineMat("#D4B483", 0.8), true); ring1.rotation.z = 0.45; orbit.add(ring1);
+  const bead = new THREE.Mesh(new THREE.SphereGeometry(0.03, 12, 8), basic("#D4B483")); bead.position.set(0, 0.5, 0); ring1.add(bead);
+  const orbit2 = lineFrom(circlePts(0.5, 72, "yz"), lineMat("#FFFFFF", 0.22), true); orbit2.rotation.z = 0.9; gate.add(orbit2);
+  const discMat = basic("#D4B483", 0.07); discMat.side = THREE.DoubleSide;
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(0.33, 48), discMat); disc.rotation.y = Math.PI / 2; gate.add(disc);
+  const MAX = 30;
+  const ins = new THREE.InstancedMesh(new THREE.BoxGeometry(0.15, 0.15, 0.15), ramp({ lit: "#5A6D93", shade: "#1D2C4B", rim: 0.2 }), MAX);
+  const outs = new THREE.InstancedMesh(new THREE.SphereGeometry(0.085, 16, 12), basic("#D4B483"), MAX);
+  root.add(ins, outs);
+  let items = [], emitted = [], queue = 0, nextSpawn = 0, lastEmit = -9, clock = 0, seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  function step(dt) {
+    clock += dt;
+    if (clock >= nextSpawn && items.length < MAX - 2 && queue < 6) {
+      items.push({ lane: Math.floor(rnd() * 3), u: 0, sp: 0.27 + rnd() * 0.12, r: [rnd() * 6, rnd() * 6, rnd() * 6], w: rnd() * 6 });
+      nextSpawn = clock + 0.28 + rnd() * 0.65;
+    }
+    items.forEach((it) => (it.u += it.sp * dt));
+    const done = items.filter((it) => it.u >= 1); queue += done.length; items = items.filter((it) => it.u < 1);
+    if (queue > 0 && clock - lastEmit >= 0.52) { emitted.push({ u: 0 }); queue--; lastEmit = clock; }
+    emitted.forEach((o) => (o.u += 0.3 * dt)); emitted = emitted.filter((o) => o.u < 1);
+  }
+  for (let k = 0; k < 400; k++) step(1 / 30);
+  function draw() {
+    for (let i = 0; i < MAX; i++) {
+      const it = items[i];
+      if (!it) { setInst(ins, i, 0, -99, 0, 0.0001); continue; }
+      const p = lanes[it.lane].getPoint(it.u);
+      const s = smooth(0, 0.08, it.u) * (1 - smooth(0.9, 1, it.u) * 0.6);
+      setInst(ins, i, p.x, p.y + 0.07 + 0.025 * Math.sin(clock * 3 + it.w), p.z, s, it.r[0] + clock * 1.3, it.r[1] + clock, it.r[2]);
+    }
+    for (let i = 0; i < MAX; i++) {
+      const o = emitted[i];
+      if (!o) { setInst(outs, i, 0, -99, 0, 0.0001); continue; }
+      const q = out.getPoint(o.u);
+      setInst(outs, i, q.x, q.y + 0.07, q.z, smooth(0, 0.06, o.u) * (1 - smooth(0.9, 1, o.u)));
+    }
+    ins.instanceMatrix.needsUpdate = true; outs.instanceMatrix.needsUpdate = true;
+  }
+  let lastT = null;
+  function update(t, dt) {
+    const d = dt ?? (lastT == null ? 0 : t - lastT); lastT = t;
+    if (d > 0) step(Math.min(d, 0.05));
+    orbit.rotation.x = t * 1.1; orbit2.rotation.x = -t * 0.6;
+    root.rotation.y = -0.12 + 0.08 * Math.sin(t * 0.25);
+    draw();
+  }
+  return { scene, camera, update, still: 0 };
+}
+
+/* ---------- 4. Mobile apps and device integrations ---------- */
+function roundedRect(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+  return s;
+}
+function sceneMobile() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 0.3, 4.7]);
+  const root = new THREE.Group(); scene.add(root);
+  const phone = new THREE.Group(); phone.rotation.set(-0.06, 0.38, 0); root.add(phone);
+  const bodyGeo = new THREE.ExtrudeGeometry(roundedRect(0.8, 1.6, 0.13), { depth: 0.06, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 3, curveSegments: 10 });
+  bodyGeo.center();
+  phone.add(new THREE.Mesh(bodyGeo, ramp({ lit: "#2C4574", shade: "#101B31", rim: 0.3 })));
+  const zf = 0.045;
+  phone.add(lineFrom(roundedRect(0.824, 1.624, 0.14).getPoints(12).map((p) => new THREE.Vector3(p.x, p.y, zf)), lineMat("#FFFFFF", 0.4), true));
+  const screen = new THREE.Mesh(new THREE.ShapeGeometry(roundedRect(0.68, 1.44, 0.08), 8), basic("#0B1527")); screen.position.z = zf + 0.002; phone.add(screen);
+  const ui = new THREE.Group(); ui.position.z = zf + 0.005; phone.add(ui);
+  const bar = (w, h, x, y, c, o = 1) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), basic(c, o)); m.position.set(x, y, 0); ui.add(m); return m; };
+  bar(0.22, 0.03, -0.18, 0.6, "#6B7385");
+  ui.add(lineFrom(rectXY(0.56, 0.34, 0, 0.3), lineMat("#FFFFFF", 0.3), true));
+  const gauge = new THREE.Mesh(new THREE.RingGeometry(0.075, 0.09, 40), basic("#D4B483")); gauge.position.set(-0.14, 0.3, 0); ui.add(gauge);
+  bar(0.2, 0.025, 0.1, 0.35, "#B4B9C4", 0.7); bar(0.14, 0.02, 0.07, 0.29, "#6B7385"); bar(0.17, 0.02, 0.085, 0.24, "#6B7385");
+  ui.add(lineFrom(rectXY(0.56, 0.22, 0, -0.05), lineMat("#FFFFFF", 0.22), true));
+  bar(0.3, 0.022, -0.06, -0.02, "#B4B9C4", 0.6); bar(0.2, 0.02, -0.11, -0.09, "#6B7385");
+  const uiDot = new THREE.Mesh(new THREE.CircleGeometry(0.022, 20), basic("#D4B483")); uiDot.position.set(0.2, -0.05, 0); ui.add(uiDot);
+  [-0.3, -0.39, -0.48, -0.57].forEach((y, i) => bar(i % 2 ? 0.34 : 0.44, 0.018, -0.03 - (i % 2) * 0.05, y, "#3A4356"));
+  // devices
+  const devMat = ramp({ lit: "#2C4574", shade: "#101B31", rim: 0.3 }), devEdge = lineMat("#FFFFFF", 0.32);
+  const devices = [];
+  const addDevice = (geo, pos, rot, dotOff, thr = 20) => {
+    const g = new THREE.Group(); g.position.copy(pos); g.rotation.set(...rot);
+    g.add(new THREE.Mesh(geo, devMat), edges(geo, devEdge, thr));
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.036, 12, 8), basic("#3A4356")); dot.position.copy(dotOff); g.add(dot);
+    root.add(g); devices.push({ g, dot, at: -99 });
+  };
+  addDevice(new THREE.BoxGeometry(0.34, 0.34, 0.34), new THREE.Vector3(1.5, 0.5, -0.35), [0.2, 0.5, 0], new THREE.Vector3(0, 0.2, 0));
+  addDevice(new THREE.CylinderGeometry(0.25, 0.25, 0.1, 48), new THREE.Vector3(1.38, -0.6, 0.25), [0.18, 0, 0], new THREE.Vector3(0, 0.07, 0), 30);
+  addDevice(new THREE.BoxGeometry(0.44, 0.44, 0.05), new THREE.Vector3(-1.5, -0.3, -0.1), [0.15, -0.55, 0], new THREE.Vector3(0, 0, 0.045));
+  const anchor = new THREE.Vector3(0.12, 0.12, 0.12);
+  const curves = devices.map((d) => quad(anchor, d.g.position, 0.55));
+  curves.forEach((c) => root.add(lineFrom(c.getPoints(40), lineMat("#FFFFFF", 0.2))));
+  const packets = curves.map(() => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.046, 14, 10), basic("#D4B483")); root.add(m); return m; });
+  const hot = C("#D4B483"), idle = C("#3A4356"), white = C("#FFFFFF");
+  const PER = 3.0;
+  function update(t) {
+    root.rotation.y = 0.12 * Math.sin(t * 0.35);
+    phone.position.y = 0.04 * Math.sin(t * 0.9);
+    curves.forEach((c, i) => {
+      const a = ((t + i * 1.0) % PER + PER) % PER, pk = packets[i], d = devices[i];
+      if (a < 1.1) { const k = easeInOut(a / 1.1); pk.visible = true; pk.position.copy(c.getPoint(k)); pk.material.color.copy(hot); if (a > 1.05 && d.at < t - 1) d.at = t; }
+      else if (a > 1.45 && a < 2.55) { const k = easeInOut((a - 1.45) / 1.1); pk.visible = true; pk.position.copy(c.getPoint(1 - k)); pk.material.color.copy(white); }
+      else pk.visible = false;
+      const age = t - d.at; d.dot.material.color.copy(idle).lerp(hot, age >= 0 && age < 1.2 ? 1 - smooth(0.5, 1.2, age) : 0);
+    });
+    uiDot.visible = Math.sin(t * 2.4) > -0.6;
+  }
+  return { scene, camera, update, still: 0.6 };
+}
+
+/* ---------- 5. APIs and bot deployments: a bot in its container ---------- */
+function sceneBot() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 1.75, 4.4], [0, -0.22, 0]);
+  const root = new THREE.Group(); scene.add(root);
+  // the container: a deployed unit
+  const cageGeo = new THREE.BoxGeometry(0.92, 0.92, 0.92);
+  const cage = new THREE.Group(); root.add(cage);
+  cage.add(new THREE.Mesh(cageGeo, ramp({ lit: "#36548A", shade: "#13203A", rim: 0.2, opacity: 0.08, side: THREE.DoubleSide })));
+  const cageEdgeMat = lineMat("#FFFFFF", 0.42); cage.add(edges(cageGeo, cageEdgeMat));
+  const cornerGeo = new THREE.SphereGeometry(0.022, 10, 8), cornerMat = basic("#B4B9C4");
+  [-1, 1].forEach((x) => [-1, 1].forEach((y) => [-1, 1].forEach((z) => { const d = new THREE.Mesh(cornerGeo, cornerMat); d.position.set(x * 0.46, y * 0.46, z * 0.46); cage.add(d); })));
+  // the bot
+  const bot = new THREE.Group(); cage.add(bot);
+  bot.add(new THREE.Mesh(new THREE.CapsuleGeometry(0.19, 0.2, 8, 28), ramp({ lit: "#3E5F99", shade: "#13203A", rim: 0.36 })));
+  const visor = new THREE.Mesh(new THREE.TorusGeometry(0.196, 0.014, 8, 48, Math.PI * 0.62), basic("#D4B483"));
+  visor.rotation.set(Math.PI / 2, 0, Math.PI / 2 - Math.PI * 0.31); visor.position.y = 0.07; bot.add(visor);
+  bot.add(lineFrom([new THREE.Vector3(0, 0.29, 0), new THREE.Vector3(0, 0.4, 0)], lineMat("#FFFFFF", 0.5)));
+  const tip = new THREE.Mesh(new THREE.SphereGeometry(0.03, 12, 8), basic("#D4B483")); tip.position.y = 0.41; bot.add(tip);
+  // the services around it, each on a socket
+  const svcMat = ramp({ lit: "#2C4574", shade: "#101B31", rim: 0.3 }), svcEdge = lineMat("#FFFFFF", 0.3);
+  const R = 1.5, services = [];
+  const mk = (build, i) => {
+    const a = (i / 6) * Math.PI * 2 + 0.26;
+    const g = new THREE.Group(); g.position.set(Math.sin(a) * R, -0.14, Math.cos(a) * R); g.rotation.y = a + Math.PI;
+    build(g); root.add(g);
+    const sockMat = lineMat("#FFFFFF", 0.22);
+    const sock = lineFrom(circlePts(0.22, 48, "xz"), sockMat, true); sock.position.set(g.position.x, -0.34, g.position.z); root.add(sock);
+    const from = new THREE.Vector3(Math.sin(a) * 0.5, 0, Math.cos(a) * 0.5), to = g.position.clone().setY(-0.05);
+    const wireMat = lineMat("#FFFFFF", 0.1); root.add(lineFrom([from, to], wireMat));
+    services.push({ g, a, sockMat, wireMat, from, to });
+  };
+  const solid = (g, geo, x = 0, y = 0, z = 0, thr = 20) => { const m = new THREE.Mesh(geo, svcMat), e = edges(geo, svcEdge, thr); m.position.set(x, y, z); e.position.set(x, y, z); g.add(m, e); return m; };
+  // database
+  mk((g) => { const c = new THREE.CylinderGeometry(0.15, 0.15, 0.07, 40); [0, 0.09, 0.18].forEach((y) => solid(g, c, 0, y - 0.1, 0, 30)); }, 0);
+  // messaging
+  mk((g) => { const geo = new THREE.ExtrudeGeometry(roundedRect(0.36, 0.26, 0.05), { depth: 0.05, bevelEnabled: false, curveSegments: 6 }); geo.center(); solid(g, geo, 0, 0, 0, 30);
+    [0.05, -0.02].forEach((y, k) => { const b = new THREE.Mesh(new THREE.PlaneGeometry(k ? 0.14 : 0.22, 0.022), basic("#B4B9C4", 0.7)); b.position.set(-0.03 - k * 0.04, y, 0.027); g.add(b); }); }, 1);
+  // web
+  mk((g) => { solid(g, new THREE.SphereGeometry(0.15, 28, 18), 0, 0, 0, 90);
+    g.add(lineFrom(circlePts(0.152, 48, "xz"), svcEdge, true)); const m = lineFrom(circlePts(0.152, 48, "yz"), svcEdge, true); g.add(m); }, 2);
+  // payments
+  mk((g) => { solid(g, new THREE.BoxGeometry(0.36, 0.23, 0.025)); const s = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.04), basic("#D4B483")); s.position.set(0, 0.05, 0.014); g.add(s); }, 3);
+  // files
+  mk((g) => { const b = new THREE.BoxGeometry(0.26, 0.02, 0.32); [0, 0.05, 0.1].forEach((y, k) => solid(g, b, k * 0.02, y - 0.06, -k * 0.02)); }, 4);
+  // events
+  mk((g) => { solid(g, new THREE.OctahedronGeometry(0.16), 0, 0, 0, 1); }, 5);
+  const packet = new THREE.Mesh(new THREE.SphereGeometry(0.045, 14, 10), basic("#D4B483")); root.add(packet);
+  const order = [0, 3, 1, 4, 2, 5], SLOT = 2.2;
+  const hot = C("#D4B483"), white = C("#FFFFFF");
+  let heading = 0;
+  function update(t) {
+    root.rotation.y = 0.35 + t * 0.07;
+    cage.rotation.y = 0; bot.position.y = 0.03 * Math.sin(t * 1.4);
+    const n = Math.floor(t / SLOT), a = t - n * SLOT, sv = services[order[((n % 6) + 6) % 6]];
+    // turn the bot's visor toward the service it is calling (visor faces +z)
+    let target = sv.a, d = target - heading; d = Math.atan2(Math.sin(d), Math.cos(d));
+    heading += d * (reduce ? 1 : 0.12); bot.rotation.y = heading;
+    services.forEach((s) => { s.sockMat.color.copy(white); s.sockMat.opacity = 0.22; s.wireMat.opacity = 0.1; s.g.position.y = -0.14; });
+    packet.visible = false;
+    if (a > 0.35 && a < 1.2) { const k = easeInOut((a - 0.35) / 0.85); packet.visible = true; packet.material.color.copy(hot); packet.position.lerpVectors(sv.from, sv.to, k); sv.wireMat.opacity = 0.42; }
+    else if (a >= 1.2 && a < 1.45) { sv.sockMat.color.copy(hot); sv.sockMat.opacity = 0.9; sv.wireMat.opacity = 0.42; sv.g.position.y = -0.14 + 0.04 * Math.sin(((a - 1.2) / 0.25) * Math.PI); }
+    else if (a >= 1.45 && a < 2.15) { const k = easeInOut((a - 1.45) / 0.7); packet.visible = true; packet.material.color.copy(white); packet.position.lerpVectors(sv.to, sv.from, k); sv.sockMat.color.copy(hot); sv.sockMat.opacity = 0.9 * (1 - k); sv.wireMat.opacity = 0.42; }
+    const pulse = a < 0.35 ? Math.sin((a / 0.35) * Math.PI) : 0;
+    tip.scale.setScalar(1 + 0.8 * pulse); cageEdgeMat.opacity = 0.42 + 0.2 * pulse;
+  }
+  return { scene, camera, update, still: 0.8 };
+}
+
+/* ---------- 6. Company profiles: a page in layers ---------- */
+function sceneProfile() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 0.3, 3.8]);
+  const tilt = new THREE.Group(); tilt.rotation.x = 0.12; scene.add(tilt);
+  const root = new THREE.Group(); tilt.add(root);
+  const W = 1.6, H = 1.0, pageGeo = new THREE.BoxGeometry(W, H, 0.02);
+  const pageMat = ramp({ lit: "#22365C", shade: "#101B31", rim: 0.2 });
+  const pages = [];
+  for (let i = 0; i < 4; i++) {
+    const g = new THREE.Group(); g.add(new THREE.Mesh(pageGeo, pageMat)); g.add(lineFrom(rectXY(W, H, 0, 0, 0.011), lineMat("#FFFFFF", 0.36), true));
+    const c = new THREE.Group(); c.position.z = 0.012; g.add(c); root.add(g); pages.push({ g, c });
+  }
+  const plane = (grp, w, h, x, y, color, o = 1) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), basic(color, o)); m.position.set(x, y, 0.001); grp.add(m); };
+  const box = (grp, w, h, x, y, o = 0.3) => grp.add(lineFrom(rectXY(w, h, x, y, 0.001), lineMat("#FFFFFF", o), true));
+  // grid
+  const gp = []; for (let i = 0; i <= 12; i++) { const x = -0.7 + i * (1.4 / 12); gp.push(x, -0.42, 0.001, x, 0.42, 0.001); }
+  for (let j = 0; j <= 6; j++) { const y = -0.42 + j * 0.14; gp.push(-0.7, y, 0.001, 0.7, y, 0.001); }
+  const gg = new THREE.BufferGeometry(); gg.setAttribute("position", new THREE.Float32BufferAttribute(gp, 3));
+  pages[0].c.add(new THREE.LineSegments(gg, lineMat("#FFFFFF", 0.1)));
+  // layout
+  box(pages[1].c, 1.4, 0.08, 0, 0.38); plane(pages[1].c, 0.78, 0.36, -0.3, 0.1, "#3A4356"); box(pages[1].c, 0.5, 0.36, 0.45, 0.1);
+  [-0.47, 0, 0.47].forEach((x) => box(pages[1].c, 0.42, 0.2, x, -0.28, 0.24));
+  // type
+  plane(pages[2].c, 0.86, 0.075, -0.26, 0.24, "#FFFFFF", 0.85); plane(pages[2].c, 0.58, 0.075, -0.4, 0.13, "#FFFFFF", 0.85);
+  [-0.02, -0.08, -0.14, -0.2].forEach((y, i) => plane(pages[2].c, i === 3 ? 0.5 : 0.84, 0.02, i === 3 ? -0.44 : -0.27, y, "#6B7385"));
+  plane(pages[2].c, 0.24, 0.05, -0.57, -0.33, "#B4B9C4", 0.8);
+  // brand
+  plane(pages[3].c, 0.62, 0.44, 0.34, 0.04, "#AD8752");
+  pages[3].c.add(lineFrom(circlePts(0.07, 40).map((p) => p.add(new THREE.Vector3(-0.6, 0.33, 0.001))), lineMat("#D4B483", 0.9), true));
+  [["#0B1527", -0.6], ["#FFFFFF", -0.47], ["#D4B483", -0.34]].forEach(([c, x]) => { plane(pages[3].c, 0.1, 0.1, x, -0.33, c); box(pages[3].c, 0.1, 0.1, x, -0.33, 0.3); });
+  plane(pages[3].c, 0.46, 0.05, -0.37, 0.14, "#FFFFFF", 0.85); plane(pages[3].c, 0.32, 0.05, -0.44, 0.05, "#FFFFFF", 0.85);
+  const T = 7.2;
+  function update(t) {
+    root.rotation.y = -0.62 + 0.1 * Math.sin(t * 0.3);
+    const a = t % T;
+    const k = a < 1.2 ? 0 : a < 2.9 ? easeInOut((a - 1.2) / 1.7) : a < 5.4 ? 1 : a < 7.1 ? 1 - easeInOut((a - 5.4) / 1.7) : 0;
+    pages.forEach((p, i) => {
+      const o = i - 1.5;
+      p.g.position.set(o * 0.14 * k, o * 0.05 * k, lerp(o * 0.028, o * 0.5, k));
+      p.g.rotation.y = 0.08 * o * k;
+    });
+  }
+  return { scene, camera, update, still: 3.8 };
+}
+
+/* ---------- renderer, rows and loop ---------- */
+const makers = { security: sceneSecurity, workspace: sceneWorkspace, automation: sceneAutomation, mobile: sceneMobile, bot: sceneBot, profile: sceneProfile };
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.setPixelRatio(1); renderer.setClearColor(0x000000, 0);
+let glW = 0, glH = 0;
+const rows = [...document.querySelectorAll(".row")];
+const views = rows.map((row) => {
+  const canvas = row.querySelector("canvas");
+  const v = { row, canvas, ctx: canvas.getContext("2d"), s: makers[row.dataset.scene](), w: 0, h: 0, still: false };
+  new ResizeObserver(() => {
+    const dpr = Math.min(devicePixelRatio || 1, 2), r = canvas.getBoundingClientRect();
+    v.w = Math.max(2, Math.round(r.width * dpr)); v.h = Math.max(2, Math.round(r.width * dpr / 1.6));
+    canvas.width = v.w; canvas.height = v.h; v.still = false;
+  }).observe(canvas);
+  return v;
+});
+function draw(v) {
+  if (glW !== v.w || glH !== v.h) { renderer.setSize(v.w, v.h, false); glW = v.w; glH = v.h; }
+  v.s.camera.aspect = v.w / v.h; v.s.camera.updateProjectionMatrix();
+  renderer.render(v.s.scene, v.s.camera);
+  v.ctx.clearRect(0, 0, v.w, v.h); v.ctx.drawImage(renderer.domElement, 0, 0);
+}
+
+let mode = "scroll";
+const btnScroll = document.getElementById("mode-scroll"), btnAll = document.getElementById("mode-all");
+function setMode(m) {
+  mode = m; btnScroll.setAttribute("aria-pressed", String(m === "scroll")); btnAll.setAttribute("aria-pressed", String(m === "all"));
+  if (m === "all") rows.forEach((r) => r.classList.add("open")); else updateOpen(true);
+}
+btnScroll.addEventListener("click", () => setMode("scroll"));
+btnAll.addEventListener("click", () => setMode("all"));
+function updateOpen(force) {
+  if (mode !== "scroll") return;
+  const vh = innerHeight;
+  rows.forEach((row) => {
+    const top = row.getBoundingClientRect().top, open = row.classList.contains("open");
+    if (!open && top < vh * 0.66) row.classList.add("open");
+    else if ((open && top > vh * 0.78) || (force && top >= vh * 0.66)) row.classList.remove("open");
+  });
+}
+if (reduce) setMode("all");
+addEventListener("scroll", () => updateOpen(), { passive: true });
+updateOpen(true);
+
+const fpsEl = document.getElementById("fps");
+let last = performance.now(), t = 0, frames = 0, fpsT = 0, drawn = 0;
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (!document.hidden) t += dt;
+  updateOpen();
+  drawn = 0;
+  for (const v of views) {
+    if (!v.row.classList.contains("open") || v.w < 4) continue;
+    const r = v.canvas.getBoundingClientRect();
+    if (r.bottom < -40 || r.top > innerHeight + 40) continue;
+    if (reduce) { if (!v.still) { v.s.update(v.s.still, 0); draw(v); v.still = true; } continue; }
+    v.s.update(t, dt); draw(v); drawn++;
+  }
+  frames++; fpsT += dt;
+  if (fpsT >= 0.5) { fpsEl.textContent = reduce ? "Still frames" : `${Math.round(frames / fpsT)} fps · ${drawn} drawing`; frames = 0; fpsT = 0; }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+
+</body>
+</html>

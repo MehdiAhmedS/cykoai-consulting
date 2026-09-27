@@ -40,7 +40,7 @@ Also update `layout.tsx` metadata. The title and description still describe "ent
   - accessibility 95 or higher
 
   Record the scores in FINAL.md.
-- **Bundle:** the globe's three.js chunk loads after idle on desktop only, and phones never request it; fonts are subset to Latin; there are no leftover dependencies. Remove anything unused from `package.json`.
+- **Bundle:** three.js is one chunk, shared by the globe and the Offers pieces; it loads after idle on desktop only, and phones never request it; fonts are subset to Latin; there are no leftover dependencies. Remove anything unused from `package.json`.
 - **Accessibility:**
   - landmarks, and one `h1` with h2 → h3 order
   - focus visible everywhere

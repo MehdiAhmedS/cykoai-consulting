@@ -13,7 +13,7 @@ Thirteen steps, one prompt each, run in order (05b was added on 27 September to 
 
 ## How to run a step
 
-Each step is two passes in one session. First Claude Code goes through the reference sites in Chrome and writes down how they look and move; then it plans and builds from what it found. Steps 05b and 11 have only the second pass (see the note after the list).
+Each step is two passes in one session. First Claude Code goes through the reference sites in Chrome and writes down how they look and move; then it plans and builds from what it found. Steps 05b, 06 and 11 have only the second pass (see the note after the list).
 
 1. **Fresh context.** Type `/clear`, then `/effort` to check it still says xhigh. Plan mode stays off for the study.
 2. **Study.** Paste this, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/01-structure.md. Do only the reference study in part 1, in Chrome as the brief describes: save the captures, write NOTES.md and summarise what you found. Don't change any code yet.`
@@ -32,9 +32,9 @@ Each step is two passes in one session. First Claude Code goes through the refer
 6. **Review.** When it reports back, look at the screenshots in `docs/v3/after/<step>/`, or click around `localhost:3000`.
 7. **Checkpoints.** After steps 01, 02 and 05b, tell Claude in Cowork "step NN done" and wait for the review before starting the next step. Between the other steps, carry on unless something looks wrong.
 
-**Steps with no study pass (05b and 11).** After `/clear`, set the effort, press Shift+Tab until the footer reads "plan mode on" and paste, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/05b-globe-threejs.md. This step has no study pass, so plan the whole prompt, then carry it out exactly. Stop and ask if anything doesn't match what the prompt describes.` Then carry on from item 4.
+**Steps with no study pass (05b, 06 and 11).** After `/clear`, set the effort, press Shift+Tab until the footer reads "plan mode on" and paste, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/05b-globe-threejs.md. This step has no study pass, so plan the whole prompt, then carry it out exactly. Stop and ask if anything doesn't match what the prompt describes.` Then carry on from item 4.
 
-**Effort:** xhigh for every step. The prompts already make the design decisions, so the job is careful execution; max is slower, uses more of your plan and tends to overthink work that's already specified. Switch to `/effort max` for step 05b, where the globe's shaders and frame budget need the most care, or when re-running a step that went wrong.
+**Effort:** xhigh for every step. The prompts already make the design decisions, so the job is careful execution; max is slower, uses more of your plan and tends to overthink work that's already specified. Switch to `/effort max` for steps 05b and 06, where the 3D shaders and frame budget need the most care, or when re-running a step that went wrong.
 
 **If something goes wrong:** Esc stops Claude Code, and you can type a correction. `/rewind` (or Esc twice) rolls back its file edits in the current session, but not commands it ran. Each step is its own commit, so a finished step can be reverted on its own.
 
@@ -49,7 +49,7 @@ Each step is two passes in one session. First Claude Code goes through the refer
 | 04 · Hero headline | Line-mask rise, lede and CTAs, the Muscat data line types on. | nothing |
 | 05 · Globe | cobe sphere, graticule overlay and arcs; decorative places and a larger globe after review. Done 27 September; 05b replaces its engine. | nothing |
 | 05b · Globe in three.js | Rebuilds the globe in three.js from the Cowork study: a lit sphere, arcs that travel and land (up to three at once), a slow sway, and a still frame on phones. The study is already done, so skip the study pass and start in plan mode. | which country in Africa (added when known) |
-| 06 · Offers | Offer rows built on your six capabilities, short copy. Runs after 07, once we've talked through the services. | the services talk |
+| 06 · Offers | Rows that open as you scroll, Cuberto-style, each with a three.js piece of the work, from the Cowork study; still images on phones. The study is already done, so skip the study pass and start in plan mode. Runs after 07. | nothing |
 | 07 · Projects | The stage: a sticky frame whose screen wipes to each project as you scroll. Your landing pages are captured live, confidential work is shown as labelled illustrations, and the rest goes in a list. Runs before 06. | for each landing page: client or concept, naming and year; whether to link the live pages |
 | 08 · Engagement | Sticky "cover" with length, team, effort; five parts with what you receive. | typical length and effort (hidden until then) |
 | 09 · Standards | Rules as constraints, frameworks strip, team slot. | credentials (optional) |
