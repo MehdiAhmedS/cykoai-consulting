@@ -54,18 +54,21 @@ Study, don't copy: take principles (proportion, hierarchy, spacing, timing), nev
 | vanta-grid.jpg · vanta-seventh.jpg | https://www.vanta.com | Six modules in a grid and a full-width seventh block (the chat widget over a card is Vanta's own) | The six-plus-one layout; skip the product mockups |
 | wiz-tabs.jpg | https://www.wiz.io | Code / Cloud / Defend tabs sharing one diagram frame whose contents change | One persistent diagram, a state per offer; skip colour per tab |
 
-## projects/board
+## projects/board: the stage (checked 27 Sep 2026)
+
+Picked on the showcase board on 27 September (direction A). The register captures from 26 September are in `projects/board/register-26sep/`; that direction was replaced and they no longer apply.
 
 | File | Site | What it shows | Take / skip |
 |---|---|---|---|
-| trailofbits-library.jpg | https://www.trailofbits.com/library/ | Table: type · title · client · domain · date · effort (weeks) · link; repeat-client chips | Effort in weeks on every row; skip five filters for six rows |
-| trailofbits-private-client.jpg | same | Client filter set to "A private client" | Confidential work as a client value |
-| zellic-toggle.jpg · zellic-private-rows.jpg | https://reports.zellic.io | "Show private reports" adds rows reading "Private Report · — · Private" (233 of 533) | Admit confidential volume without naming anyone |
-| ottersec-audits.jpg | https://osec.io/audits | Findings per audit as severity counts (C/H/M/L/I), colour-coded | Numbers that are data; use once a pentest has real counts |
-| mapprojectoffice-confidential.jpg | https://mapprojectoffice.com/index-page/ | List view: "coca-cola (confidential) · confidential · 2024" | A named client with a withheld project, calmly |
-| metalab-ongoing.jpg | https://www.metalab.com/work | "An ongoing partnership with Nike…" | Honest wording for unfinished work |
-| cure53-log.jpg | https://cure53.de/#publications | Newest-first report log; reports published only at the client's request | The publishing rule belongs in Standards |
-| distyl-cards.jpg | https://www.distyl.ai/case-studies | Anonymised client ("F100 Telecom Operator") with exactly two metrics | Later, when engagements finish with real numbers |
+| darkroom-stage.jpg · darkroom-next.jpg | https://darkroom.engineering | A full-screen frame held by plain CSS sticky for three projects' worth of scrolling. Each next project wipes up from the bottom, tied to scroll, while its giant name holds mid-screen | Take the sticky frame and the scroll-tied wipe; skip the red display type and full-bleed video |
+| metalab-stage.jpg | https://www.metalab.com | One stage that swaps to the project pointed at: its interface on a monitor, the name in large type, the services ("Product Design, Product Strategy") and one sentence | Take the detail set; skip pointing as the only trigger |
+| exoape-work-stage.jpg | https://www.exoape.com/work | One project on screen at a time: a large image, an inset image, the name and the category | Take the focus on one project; skip the wheel takeover and the "01 / 14" counter |
+| cuberto-grid.jpg | https://cuberto.com | Landing pages in a monitor and apps in a phone, one sentence under each | Take device frames for pages and apps; skip the soft rounded cards |
+| ramotion-cases.jpg | https://www.ramotion.com | Case studies that show the product itself: a dashboard with its phone app over it, pages in a browser frame | Take the product's own interface as the picture |
+| 14islands-card.jpg | https://www.14islands.com | Large cards for the best work, then a plain list of further projects by name and category | Take the list after the showcase: "More work" |
+| hadrian-panel.jpg | https://www.hadrian.co | A panel with a hairline table under it: a mono label on the left, a plain statement on the right | Take hairline facts under each project |
+| helsing-panel.jpg | https://helsing.ai | The product name in white with what it is in grey beneath ("AI strike drone") | Take the two-tone name and descriptor |
+| evilmartians-featured.jpg | https://evilmartians.com | One client at a time with a single mono data line | Take one data line per project; skip funding stages and results |
 
 ## engagement/board
 

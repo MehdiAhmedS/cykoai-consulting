@@ -30,7 +30,7 @@ Take the terms and the one-line scope. Skip product mockups, colour per tab and 
 - **Header:** `type-label` "Offers", then the `type-h2` heading and `type-lead` intro from `site.ts`, left-aligned, max 22ch and 60ch.
 - **The list:** one full-width list ordered by practice (Security, then AI, then Engineering, then Design), with no numbers. Each row is a button that expands in place. Keep every line short; Mehdi asked for brevity.
 - **Closed row, desktop,** a grid of `minmax(0,1fr) auto`:
-  - Left: the offer name in a large display size (`type-h3`, scaled up to about `clamp(1.5rem, 2.4vw, 2.1rem)`), with the "for" line under it in `type-small` n500.
+  - Left: the offer name in `type-h3-lg`, the larger `type-h3` that step 07 added, with the "for" line under it in `type-small` n500.
   - Right, aligned to the name's baseline: the practice in `type-label`, and a plus/cross icon drawn with two hairlines, as in v1's `IndexRow`. There's no length or price: Mehdi wants the copy short.
 - **Expanded row:** a two-column definition grid (one column on mobile) with:
   - **You get:** from `site.ts`.

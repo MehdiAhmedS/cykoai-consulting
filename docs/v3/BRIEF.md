@@ -34,7 +34,7 @@ An audit of every statement on the current page (v1 copy, September 2026) found 
 |---|---|---|---|---|
 | Hero | `top` | Who are you, and what do you do? | The thesis, once. What Cykoai does in one plain line. Where it really works. | Hero |
 | Offers | `offers` | What exactly can I hire you for? | Named engagements: who each is for, what you get, what it touches. | What we do + Services |
-| Projects | `projects` | Have you done this before? | Real engagements: client or sector, practice, standard or stack, since when, status. | The illustrative engagement note |
+| Projects | `projects` | Have you done this before? | The work itself: landing pages Mehdi designed and built, and current engagements, with the client (or "Withheld"), practice, stack and status. Featured work shows its screen or an illustration. | The illustrative engagement note |
 | Engagement | `engagement` | What happens after I get in touch? | Team shape, what you receive at each stage, how handover works; length once Mehdi confirms it. | Process + "Skin in the game" |
 | Standards | `standards` | Why trust you with access to our systems? | The frameworks Cykoai works to, the rules it keeps, who does the work. | Why Cykoai |
 | The name | `name` | Why "Cykoai"? | The word only: how it's said, its three parts, what each means. | Name story + Philosophy's last line |
@@ -100,7 +100,18 @@ From Mehdi, 25–26 September 2026.
 5. AI workflow automation. Client withheld.
 6. Security analysis and penetration testing; development; landing pages. Clients withheld.
 
-Cykoai's own projects may also be listed; Mehdi will supply names and details (TBC).
+**Landing pages Mehdi designed and built** (supplied 27 September; step 07 lists their live URLs). All are built with Next.js and Tailwind CSS and hosted on Vercel.
+
+1. Bukhait Sefrar: an Arabic, right-to-left site for a law firm and legal consultancy in Muscat.
+2. Asaan Nikah: a landing page and an application system for a free matrimony service that runs on WhatsApp.
+3. Rabia Al Basri: an interactive autobiography of the eighth-century mystic.
+4. MONO: sustainable modular homes.
+5. Optimus: an AI platform.
+6. GiGi Energy: an energy drink.
+7. Voss Architects: an architecture studio.
+8. Hously: an architecture and interiors studio.
+
+Bukhait Sefrar and Asaan Nikah are real organisations, so neither is named until Mehdi confirms they've agreed. Whether each of the other six was made for a client or as a concept is TBC. HDT Systems' own landing page isn't finished and isn't shown.
 
 **Where clients are:** Muscat (Oman, also Cykoai's origin), Pakistan, the UAE, Germany, and a country in Africa (which one is TBC).
 
@@ -110,8 +121,9 @@ Cykoai's own projects may also be listed; Mehdi will supply names and details (T
 
 Content rules:
 
-- **Never invent.** Clients, metrics, dates, prices, credentials and quotes are never invented. Anything unconfirmed stays in `src/content/site.ts` with `status: "draft"` or the value `"TBC"`.
-- **Confidential clients read "Withheld".** Naming a client needs that client's consent, which Mehdi confirms.
+- **Never invent.** Clients, metrics, dates, prices, credentials and quotes are never invented. Anything unconfirmed stays in `src/content/site.ts` (or `projects.ts`, from step 07) with `status: "draft"` or the value `"TBC"`.
+- **Confidential clients read "Withheld".** Naming a client needs that client's consent, which Mehdi confirms. A capture of a client's page names the client too, so it needs the same consent.
+- **Illustrations.** Confidential work is shown with UI mockups tagged "Illustration". They show the kind of work only: the labels of its parts, and redaction bars where a client's data would be. They carry no names, counts, scores, dates, states or outcomes.
 - **Two things leave the page:** the "Illustrative" engagement note, and the stat strip (2–4 people, <90 days, 100%), whose numbers are unverified.
 - **Voice:** sentence case and short declarative sentences. Use numbers only when they're real.
 
@@ -120,7 +132,7 @@ Content rules:
 **Kept from §1:**
 
 - Palette: Windsor #0B1527, white, and Driftwood #AD8752, used sparingly (rules, links, focus, about one highlight per screen).
-- Flat fields; hairlines, not shadows; radii 2–8px.
+- Flat fields; hairlines, not shadows; radii 2–8px (the Projects phone outline, a picture of a device, is the one exception).
 - Sentence case; no emoji or hype.
 - Motion: GSAP + ScrollTrigger + Lenis only; transforms and opacity only; at most 2 pins per page; a full reduced-motion fallback.
 - Imagery only from `public/assets/gen/`, and the page must work with every image removed.
@@ -130,6 +142,7 @@ Content rules:
 
 - **Glass on the navbar only.** Backdrop blur 16–20px, tint at least 72% opaque, a 1px hairline, and an `@supports not (backdrop-filter: blur(1px))` solid fallback. No inset highlight, no `saturate()`, no shadow, no `mix-blend-mode`.
 - **WebGL in the hero globe only.** It's built with three.js (plain three, named imports only), in its own chunk loaded after the headline, on viewports 900px and wider. Phones, reduced motion and browsers without WebGL get a still frame of the same scene instead. The globe shows only places from `site.ts`: confirmed clients, which are labelled, and Mehdi's decorative places, which never are. The hero must read completely with the globe removed.
+- **Project captures.** Projects may show captures of Mehdi's own live pages from `public/assets/projects/`, made by `scripts/capture-projects.mjs` (step 07). They're the only imagery outside `public/assets/gen/`, and the page must still work without them.
 - **Numbers only as data:** dates, weeks, counts, coordinates, time zones. No ordinal section indices, numbered rows or numbered menus.
 - **Typography:** Archivo + Chivo Mono (see Type system), built in step 02. Until then, leave the fonts alone.
 - **Reveal timing:** the hero headline reveal may run up to 1200ms; other reveals stay at 500–800ms.
@@ -212,7 +225,7 @@ Each step runs as two passes in one session: the study, then the build. Steps 05
 
 ## Decisions from the reference board
 
-All picked on 26 September 2026.
+All picked on 26 September 2026. The globe and Projects were revised on 27 September.
 
 | Area | Decision | Step |
 |---|---|---|
@@ -222,7 +235,7 @@ All picked on 26 September 2026.
 | Headline motion | A: line-mask rise in the heavy display, then a mono data line types on | 04 |
 | Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, up to three at once, a slow sway, a still frame on phones | 05, 05b |
 | Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi | 06 |
-| Projects | A: engagement register with status; confidential rows shown as withheld | 07 |
+| Projects | A: engagement register (26 September). Replaced on 27 September by the showcase board's A, the stage: a sticky frame whose screen wipes to each project as it scrolls past, live captures of Mehdi's landing pages, confidential work as labelled illustrations, and the rest in a "More work" list | 07 |
 | Engagement | A: deliverable anatomy, with the team (and length, once confirmed) on a "cover" | 08 |
 | Standards | A: rules as constraints plus a frameworks strip | 09 |
 | The name | A: dictionary entry (pronunciation, three parts, one closing line) | 10 |
@@ -240,10 +253,15 @@ Answered on 27 September:
 - Five decorative places (Saudi Arabia, India, Egypt, the UK and Singapore) get arcs but never labels. They are not clients.
 - The hero's Muscat data line is removed.
 - The globe is rebuilt in three.js (step 05b), with overlapping arcs, a sway instead of a spin, and a still frame on phones.
+- Projects is the stage (showcase board, direction A). Its screens are captures of the live pages. Confidential security work is shown as UI mockups. The device app is a phone shell until real screens, with data blurred, are ready.
+- Eight of Mehdi's landing pages go in (see "Cykoai's real work").
 
-Still open; until answered, the value stays TBC in `site.ts` and is hidden in production:
+Still open; until answered, the value stays TBC in `site.ts` (or `projects.ts`) and is hidden in production:
 
 - which country in Africa (the globe)
-- Cykoai's own projects to list: name, one line, capability, stack, year, link (07)
+- for each landing page: made for a client or as a concept, whether the client can be named, and the year (07)
+- whether to link to the live landing pages (07)
+- real screens for the device app, with data blurred (07, later)
+- HDT Systems' landing page, once it's finished (07, later)
 - any credentials to show for the team (09, optional)
 - what a client should send for each offer (10, optional)

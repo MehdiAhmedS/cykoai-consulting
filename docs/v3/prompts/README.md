@@ -1,6 +1,6 @@
 # v3 build: how to run the prompts
 
-Thirteen steps, one prompt each, run in order (05b was added on 27 September to rebuild the globe), with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A), so every prompt is ready.
+Thirteen steps, one prompt each, run in order (05b was added on 27 September to rebuild the globe, and 07 now runs before 06), with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A). On 27 September Projects was picked again, on the showcase board (A, the stage). Every prompt is ready.
 
 ## Before each working session
 
@@ -49,8 +49,8 @@ Each step is two passes in one session. First Claude Code goes through the refer
 | 04 · Hero headline | Line-mask rise, lede and CTAs, the Muscat data line types on. | nothing |
 | 05 · Globe | cobe sphere, graticule overlay and arcs; decorative places and a larger globe after review. Done 27 September; 05b replaces its engine. | nothing |
 | 05b · Globe in three.js | Rebuilds the globe in three.js from the Cowork study: a lit sphere, arcs that travel and land (up to three at once), a slow sway, and a still frame on phones. The study is already done, so skip the study pass and start in plan mode. | which country in Africa (added when known) |
-| 06 · Offers | Offer rows built on your six capabilities, short copy. | nothing |
-| 07 · Projects | Dark register: HDT Systems named, the rest withheld. | your own projects to list |
+| 06 · Offers | Offer rows built on your six capabilities, short copy. Runs after 07, once we've talked through the services. | the services talk |
+| 07 · Projects | The stage: a sticky frame whose screen wipes to each project as you scroll. Your landing pages are captured live, confidential work is shown as labelled illustrations, and the rest goes in a list. Runs before 06. | for each landing page: client or concept, naming and year; whether to link the live pages |
 | 08 · Engagement | Sticky "cover" with length, team, effort; five parts with what you receive. | typical length and effort (hidden until then) |
 | 09 · Standards | Rules as constraints, frameworks strip, team slot. | credentials (optional) |
 | 10 · Name + Contact | Dictionary entry for "cykoai" [see·ko·ya]; what to send per offer. | what clients should send (optional) |

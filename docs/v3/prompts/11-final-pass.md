@@ -19,7 +19,7 @@ Read `docs/v3/BRIEF.md` first. No new design in this step. It makes the seven se
 
 ## 2. Dead code
 
-Remove components and assets nothing imports any more. Likely candidates: `WhatWeDo`, `Services`, `Philosophy`, `EngagementNote`, `StatStrip`, `SectionLabel`, `DiagonalPlane`, `LedgerEntry` (if it came back), and unused `public/assets` files. Check every removal with a build. `WorldCanvas`, cobe and `public/assets/land-points.json` should already be gone after step 05b; remove them if not.
+Remove components and assets nothing imports any more. Likely candidates: `WhatWeDo`, `Services`, `Philosophy`, `EngagementNote`, `StatStrip`, `SectionLabel`, `DiagonalPlane`, `LedgerEntry` (if it came back), and unused `public/assets` files. Keep `public/assets/projects/`: its captures let Mehdi move entries onto the Projects stage without capturing them again. Check every removal with a build. `WorldCanvas`, cobe and `public/assets/land-points.json` should already be gone after step 05b; remove them if not.
 
 ## 3. Content gate
 
