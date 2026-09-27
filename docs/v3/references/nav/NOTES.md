@@ -65,3 +65,8 @@ Studied 26 Sep 2026 live in Chrome at 1440 (system theme dark), measured with th
   - With the blur off at the normal 72% light tint, a heading beneath shows through behind the logo, but the links stay readable. Real browsers without blur get the 96% fallback instead.
 - **Blur:** a heading passing under the bar becomes a soft smudge on light and a soft glow on dark.
 - **No console errors.** Lint and build pass. Reduced motion cuts all transitions through the global rule.
+
+## Pill (27 Sep 2026, per Mehdi)
+- **Shape:** the bar is a centred pill with `rounded-full`, and the "Talk to us" CTA is a pill too (`py-[7px]`, so it sits about 8px inside the round end). These are the radii exceptions, recorded in CLAUDE.md and the brief.
+- **Width:** from 900px it's `min(1000px, 100% − 48px)`, centred with `inset-x-0 mx-auto` and no transform, so the mobile overlay stays fixed to the viewport. At 1440 that leaves 220px each side. Below 900px it's full width less 8px each side, as before.
+- **Unchanged:** the height (56 / 52px), the top offset (12 / 8px), the 40px tone line, the anchor offsets and the glass values. The logo no longer lines up with the page's 1320px container.

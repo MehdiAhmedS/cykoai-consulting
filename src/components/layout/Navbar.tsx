@@ -142,13 +142,13 @@ export default function Navbar() {
   return (
     <header
       data-nav-tone={tone}
-      className="site-nav fixed inset-x-2 top-2 z-50 min-[900px]:inset-x-3 min-[900px]:top-3"
+      className="site-nav fixed inset-x-2 top-2 z-50 min-[900px]:inset-x-0 min-[900px]:top-3 min-[900px]:mx-auto min-[900px]:w-[min(1000px,calc(100%-48px))]"
     >
-      <div className="nav-bar h-[52px] rounded-md min-[900px]:h-14">
-        {/* back out to viewport width (12px inset + 1px border) so the
-            contents line up with the page's 1320px container */}
-        <div className="h-full px-4 min-[900px]:mx-[-13px] min-[900px]:px-0">
-          <div className="flex h-full items-center justify-between min-[900px]:mx-auto min-[900px]:max-w-[1320px] min-[900px]:px-[clamp(20px,4vw,56px)]">
+      {/* A centred pill (Mehdi, 27 Sep): the navbar's rounded ends are the one
+          exception to the 2–8px radii besides the Projects phone outline. */}
+      <div className="nav-bar h-[52px] rounded-full min-[900px]:h-14">
+        <div className="h-full pl-5 pr-2 min-[900px]:pl-6">
+          <div className="flex h-full items-center justify-between">
             <a
               href="#top"
               className="flex items-center gap-2.5"
@@ -175,7 +175,7 @@ export default function Navbar() {
               <DraftMark status={linksStatus} className="-ml-2" />
               <a
                 href={cta.href}
-                className="type-small nav-cta rounded-xs px-[18px] py-[9px] font-medium"
+                className="type-small nav-cta rounded-full px-[18px] py-[7px] font-medium"
               >
                 {cta.label}
               </a>

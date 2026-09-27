@@ -134,7 +134,7 @@ Content rules:
 **Kept from §1:**
 
 - Palette: Windsor #0B1527, white, and Driftwood #AD8752, used sparingly (rules, links, focus, about one highlight per screen).
-- Flat fields; hairlines, not shadows; radii 2–8px (the Projects phone outline, a picture of a device, is the one exception).
+- Flat fields; hairlines, not shadows; radii 2–8px. The exceptions: the Projects phone outline (a picture of a device) and the navbar, a centred pill with a pill CTA (Mehdi, 27 Sep).
 - Sentence case; no emoji or hype.
 - Motion: GSAP + ScrollTrigger + Lenis only; transforms and opacity only; at most 2 pins per page; a full reduced-motion fallback.
 - Imagery only from `public/assets/gen/`, and the page must work with every image removed.
@@ -262,6 +262,7 @@ Answered on 27 September:
 - The globe's arcs go to and fro: out from Muscat, back to Muscat, and between the other places, in turn, up to five at once. The phone still frame keeps Muscat's three client arcs.
 - The "Company profiles" offer is now "Landing pages" (id `landing-pages`): almost any kind of landing page, with the brand design to match.
 - The Offers pieces have no captions under them; the "You get" copy beside each piece carries what it shows.
+- The navbar is a centred pill, at most 1000px wide from 900px (full width less 8px each side below), with a pill CTA. It keeps its height, top offset and tone switching.
 
 Still open; until answered, the value stays TBC in `site.ts` (or `projects.ts`) and is hidden in production:
 
