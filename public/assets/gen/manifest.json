@@ -81,6 +81,25 @@
       "scene": "front longitude 72° E, the three client arcs in full at 80%, no heads, rings, pulse or labels, transparent background",
       "px": "1600x1600, 800x800",
       "credits": 0
+    },
+    {
+      "id": "offer-stills",
+      "files": [
+        "offer-security-reviews-1600.webp",
+        "offer-workspace-hardening-1600.webp",
+        "offer-ai-automation-1600.webp",
+        "offer-mobile-iot-1600.webp",
+        "offer-apis-bots-1600.webp",
+        "offer-landing-pages-1600.webp"
+      ],
+      "status": "pending review",
+      "role": "Offers pieces' still images (v3 step 06) for phones, reduced motion, no WebGL 2 and ?offers-fallback, shown with next/image (decorative, in the 16:10 box of each open row)",
+      "motif": "offers",
+      "model": "none: rendered by the site's own Offers engine (src/components/ui/offers3d/engine.ts, renderStills), encoded to WebP by Chrome at quality 0.8",
+      "script": "scripts/render-offer-stills.mjs (opens http://localhost:3000/?offers-still with npm run dev running)",
+      "scene": "each Cowork study scene at its still time (security 1.4 s, workspace 8.5 s, automation 0 s after its pre-run, mobile 0.6 s, bot 0.8 s with the visor snapped, profile 3.8 s), transparent background",
+      "px": "1600x1000",
+      "credits": 0
     }
   ],
   "retired": [

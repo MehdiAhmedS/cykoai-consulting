@@ -174,6 +174,169 @@ body {
 [data-tone="dark"] :is(.type-h3, .type-h3-lg) {
   font-weight: 680;
 }
+/* An open Offers row is Windsor (step 06): its name drops by 20 too, at once. Never data-tone on a row. */
+[data-open] :is(.type-h3-lg) {
+  font-weight: 680;
+}
+
+/* Offers rows (v3 step 06), from the Cowork study: OffersList sets data-open as a
+   row rises past 66% of the viewport. The fill grows down from the row's top,
+   colours change over 0.5s, and the body opens with grid-template-rows (the one
+   layout transition). data-instant on a row turns its transitions off for a
+   frame; reduced motion is open from the first paint, below. */
+.offer-row {
+  position: relative;
+  isolation: isolate;
+}
+.offer-fill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-windsor);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+.offer-rule {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--color-n150);
+  transition: background-color 0.5s var(--ease-out-expo);
+}
+.offer-practice {
+  color: var(--color-n500);
+  transition: color 0.5s var(--ease-out-expo);
+}
+.offer-name {
+  color: var(--color-n900);
+  transition: color 0.5s var(--ease-out-expo);
+}
+.offer-for {
+  color: var(--color-n500);
+  transition: color 0.5s var(--ease-out-expo);
+}
+/* A plus drawn with two 18px hairlines; it turns into a cross when open. */
+.offer-icon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.offer-icon::before,
+.offer-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 1px;
+  background: var(--color-n700);
+  transition: background-color 0.5s var(--ease-out-expo);
+}
+.offer-icon::after {
+  transform: rotate(90deg);
+}
+.offer-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.7s var(--ease-out-expo);
+}
+.offer-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.offer-copy {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
+}
+.offer-piece {
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out-expo) 0.12s;
+}
+.offer-row[data-open] .offer-fill {
+  transform: scaleY(1);
+}
+.offer-row[data-open] .offer-rule {
+  background: rgb(255 255 255 / 0.1);
+}
+.offer-row[data-open] .offer-practice {
+  color: var(--color-driftwood-soft);
+}
+.offer-row[data-open] .offer-name {
+  color: var(--color-white);
+}
+.offer-row[data-open] .offer-for {
+  color: var(--color-n300);
+}
+.offer-row[data-open] .offer-icon {
+  transform: rotate(45deg);
+}
+.offer-row[data-open] .offer-icon::before,
+.offer-row[data-open] .offer-icon::after {
+  background: var(--color-white);
+}
+.offer-row[data-open] .offer-body {
+  grid-template-rows: 1fr;
+}
+.offer-row[data-open] .offer-copy {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+.offer-row[data-open] .offer-piece {
+  opacity: 1;
+}
+.offer-row[data-instant],
+.offer-row[data-instant] *,
+.offer-row[data-instant] *::before,
+.offer-row[data-instant] *::after {
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .offer-row .offer-fill {
+    transform: scaleY(1);
+  }
+  .offer-row .offer-rule {
+    background: rgb(255 255 255 / 0.1);
+  }
+  .offer-row .offer-practice {
+    color: var(--color-driftwood-soft);
+  }
+  .offer-row .offer-name {
+    color: var(--color-white);
+  }
+  .offer-row :is(.type-h3-lg) {
+    font-weight: 680;
+  }
+  .offer-row .offer-for {
+    color: var(--color-n300);
+  }
+  .offer-row .offer-icon {
+    transform: rotate(45deg);
+  }
+  .offer-row .offer-icon::before,
+  .offer-row .offer-icon::after {
+    background: var(--color-white);
+  }
+  .offer-row .offer-body {
+    grid-template-rows: 1fr;
+  }
+  .offer-row .offer-copy,
+  .offer-row .offer-piece {
+    opacity: 1;
+    transform: none;
+  }
+  .offer-row,
+  .offer-row *,
+  .offer-row *::before,
+  .offer-row *::after {
+    transition: none !important;
+  }
+}
 
 /* Navbar glass (v3 step 03): the only glass on the page. The header's
    data-nav-tone follows the section under the bar; values are flat

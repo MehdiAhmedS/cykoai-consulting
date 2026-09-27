@@ -67,22 +67,45 @@ async function capture(page, label) {
 
 // Scroll so the selector's top sits at `fraction` of the viewport height, then a viewport shot.
 // window.scrollTo works with Lenis: it syncs to native scroll and updates ScrollTrigger.
+// Offers rows open as they pass and push what's below down, so it scrolls again until the
+// target holds still, then waits for an Offers row to open and its piece to appear.
 async function scrollShot(page, { selector, fraction, raw }, label) {
-  const found = await page.evaluate(({ selector, fraction }) => {
-    const el = document.querySelector(selector);
-    if (!el) return false;
-    window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - fraction * window.innerHeight);
-    return true;
-  }, { selector, fraction });
-  if (!found) {
+  const place = () =>
+    page.evaluate(({ selector, fraction }) => {
+      const el = document.querySelector(selector);
+      if (!el) return null;
+      window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - fraction * window.innerHeight);
+      return el.getBoundingClientRect().top;
+    }, { selector, fraction });
+  let top = await place();
+  if (top === null) {
     console.warn(`--scroll: no element for ${selector}`);
     return;
   }
-  await page.waitForTimeout(600);
-  // Images mount as the stage reaches them; wait until those in view have decoded.
+  for (let tries = 0; tries < 8; tries++) {
+    await page.waitForTimeout(tries ? 1200 : 600);
+    const next = await place();
+    if (next !== null && Math.abs(next - top) <= 2) break;
+    top = next;
+  }
+  // An Offers row: wait until it's open, then for the fill and the piece (the first draw, in engine mode).
+  const offer = await page.evaluate((selector) => {
+    const row = document.querySelector(selector)?.closest("[data-offer]");
+    return row ? `#${row.id}` : null;
+  }, selector);
+  if (offer) {
+    await page.waitForSelector(`${offer}[data-open]`, { timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(1600);
+    await page.waitForSelector(`${offer} canvas[data-piece="ready"], ${offer} img`, { timeout: 8000 }).catch(() => {});
+  } else {
+    await page.waitForTimeout(600);
+  }
+  // Images mount as the page reaches them; wait until those in view have decoded. Images inside
+  // closed Offers rows are clipped out of view, which getBoundingClientRect doesn't see.
   await page
     .waitForFunction(() =>
-      [...document.querySelectorAll("#projects img")]
+      [...document.querySelectorAll("img")]
+        .filter((img) => !img.closest("[data-offer]:not([data-open])"))
         .filter((img) => { const r = img.getBoundingClientRect(); return r.bottom > 0 && r.top < window.innerHeight && r.width > 0; })
         .every((img) => img.complete && img.naturalWidth > 0), null, { timeout: 8000 })
     .catch(() => {});

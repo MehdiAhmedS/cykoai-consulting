@@ -1,73 +1,38 @@
 import MonoLabel from "@/components/ui/MonoLabel";
 import SplitText from "@/components/ui/SplitText";
 import Reveal from "@/components/ui/Reveal";
-import IndexRow from "@/components/ui/IndexRow";
 import DraftMark from "@/components/ui/DraftMark";
+import OffersList from "@/components/offers/OffersList";
 import { site } from "@/content/site";
 
 const { label, heading, intro, fields, items } = site.offers;
 
 /**
- * Offers (v3 step 01): the named engagements as expandable rows, on the
- * Services heading pattern. Each row carries its practice as a mono tag;
- * opening it shows who it's for and what you get.
+ * Offers (v3 step 06): the six named engagements, in practice order, as rows
+ * that open on scroll, each with a small three.js piece of that kind of work
+ * (a still image on phones and under reduced motion). No numbers.
  */
 export default function Offers() {
   return (
-    <section
-      id="offers"
-      data-tone="light"
-      className="relative bg-white py-[clamp(88px,14vh,150px)]"
-    >
+    <section id="offers" data-tone="light" className="relative bg-white py-[clamp(88px,14vh,150px)]">
       <div className="mx-auto max-w-[1320px] px-[clamp(20px,4vw,56px)]">
-        <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
-          <div>
-            <Reveal>
-              <MonoLabel tick>
-                {label.text}
-                <DraftMark status={label.status} />
-              </MonoLabel>
-            </Reveal>
-            <h2 className="type-h2 mt-8 max-w-2xl text-windsor">
-              <SplitText>{heading.text}</SplitText>
-              <DraftMark status={heading.status} />
-            </h2>
-          </div>
-          <Reveal delay={0.15}>
-            <p className="type-small max-w-sm text-n500">
-              {intro.text}
-              <DraftMark status={intro.status} />
-            </p>
-          </Reveal>
-        </div>
-
-        <div className="mt-16 border-b border-n150">
-          {items.map((offer, i) => (
-            <Reveal key={offer.id} delay={Math.min(i * 0.04, 0.2)}>
-              <IndexRow
-                title={
-                  <>
-                    {offer.name}
-                    <DraftMark status={offer.status} />
-                  </>
-                }
-                meta={offer.practice}
-              >
-                <dl className="type-body grid max-w-[64ch] grid-cols-[88px_1fr] gap-x-6 gap-y-3 md:grid-cols-[112px_1fr]">
-                  <dt className="type-label pt-[3px] text-n500">
-                    {fields.for}
-                  </dt>
-                  <dd className="text-n700">{offer.for}</dd>
-                  <dt className="type-label pt-[3px] text-n500">
-                    {fields.youGet}
-                    {i === 0 && <DraftMark status={fields.status} className="ml-1" />}
-                  </dt>
-                  <dd className="text-n700">{offer.youGet}</dd>
-                </dl>
-              </IndexRow>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal>
+          <MonoLabel tick>
+            {label.text}
+            <DraftMark status={label.status} />
+          </MonoLabel>
+        </Reveal>
+        <h2 className="type-h2 mt-8 max-w-[22ch] text-windsor">
+          <SplitText>{heading.text}</SplitText>
+          <DraftMark status={heading.status} />
+        </h2>
+        <Reveal delay={0.1}>
+          <p className="type-lead mt-5 max-w-[60ch] text-n700">
+            {intro.text}
+            <DraftMark status={intro.status} />
+          </p>
+        </Reveal>
+        <OffersList items={items} labels={{ for: fields.for, youGet: fields.youGet, status: fields.status }} />
       </div>
     </section>
   );

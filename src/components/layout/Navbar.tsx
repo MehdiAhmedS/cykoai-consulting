@@ -30,28 +30,40 @@ export default function Navbar() {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const targets = Array.from(
+    const sections = Array.from(
       document.querySelectorAll<HTMLElement>("section[data-tone], footer[data-tone]")
     );
+    // An open Offers row is Windsor (step 06): under the bar it reads as dark.
+    const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-offer]"));
+    const onLine = new Set<HTMLElement>();
     let observer: IntersectionObserver | null = null;
+
+    const pick = () => {
+      const section = sections.find((s) => onLine.has(s));
+      const row = rows.find((r) => onLine.has(r));
+      if (row) setTone(row.hasAttribute("data-open") ? "dark" : "light");
+      else if (section) setTone(section.dataset.tone === "light" ? "light" : "dark");
+      if (section) setActive(section.id ? `#${section.id}` : null);
+    };
 
     const observe = () => {
       observer?.disconnect();
+      onLine.clear();
       observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
-            if (!entry.isIntersecting) continue;
             const el = entry.target as HTMLElement;
-            setTone(el.dataset.tone === "light" ? "light" : "dark");
-            setActive(el.id ? `#${el.id}` : null);
+            if (entry.isIntersecting) onLine.add(el);
+            else onLine.delete(el);
           }
+          pick();
         },
         {
           // Only a 1px line at the bar's centre counts.
           rootMargin: `-${BAR_LINE}px 0px -${Math.max(window.innerHeight - BAR_LINE - 1, 0)}px 0px`,
         }
       );
-      targets.forEach((t) => observer?.observe(t));
+      [...sections, ...rows].forEach((t) => observer?.observe(t));
     };
 
     observe();
@@ -61,11 +73,13 @@ export default function Navbar() {
       frame = requestAnimationFrame(observe);
     };
     addEventListener("resize", onResize);
+    addEventListener("offers:change", pick);
 
     return () => {
       observer?.disconnect();
       cancelAnimationFrame(frame);
       removeEventListener("resize", onResize);
+      removeEventListener("offers:change", pick);
     };
   }, []);
 

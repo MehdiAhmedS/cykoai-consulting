@@ -32,6 +32,8 @@ export interface Offer {
   practice: string;
   for: string;
   youGet: string;
+  /** Under the offer's 3D piece (v3 step 06, from the Cowork study). */
+  caption: Text;
   status: Status;
 }
 
@@ -133,6 +135,7 @@ export const site = {
         practice: "Security",
         for: "Apps about to launch, including AI-built ones",
         youGet: "Architecture and design review and penetration testing, with findings by severity and fixes",
+        caption: { text: "An app's layers, scanned before launch", status: "draft" },
         status: "draft",
       },
       {
@@ -141,6 +144,7 @@ export const site = {
         practice: "Security",
         for: "Organisations on Google Workspace",
         youGet: "A hardened configuration, a review of contractor and freelancer access, and controls mapped to ISO/IEC 27001",
+        caption: { text: "Accounts, their access, and the shell around them", status: "draft" },
         status: "draft",
       },
       {
@@ -149,6 +153,7 @@ export const site = {
         practice: "AI",
         for: "Teams with repetitive, manual work",
         youGet: "AI workflows that remove manual steps, including private AI on Google Vertex",
+        caption: { text: "Scattered manual work in, one steady flow out", status: "draft" },
         status: "draft",
       },
       {
@@ -157,6 +162,7 @@ export const site = {
         practice: "Engineering",
         for: "Products that talk to hardware",
         youGet: "Mobile applications with API integrations to devices and IoT hardware",
+        caption: { text: "One app, in conversation with its devices", status: "draft" },
         status: "draft",
       },
       {
@@ -165,14 +171,17 @@ export const site = {
         practice: "Engineering",
         for: "Teams connecting systems",
         youGet: "API integrations and Docker-based bot deployments",
+        caption: { text: "A bot in its container, calling the services around it", status: "draft" },
         status: "draft",
       },
       {
-        id: "company-profiles",
-        name: "Company profiles",
+        // Renamed from "Company profiles" (Mehdi, 27 Sep): almost any kind of landing page.
+        id: "landing-pages",
+        name: "Landing pages",
         practice: "Design",
         for: "Companies that need a presence",
-        youGet: "Landing pages and brand design, from the ground up",
+        youGet: "Landing pages of almost any kind, with the brand design to match, built from the ground up",
+        caption: { text: "Grid, layout, type and brand, layer by layer", status: "draft" },
         status: "draft",
       },
     ] as Offer[],
