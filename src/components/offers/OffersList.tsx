@@ -213,7 +213,8 @@ export default function OffersList({ items, labels }: OffersListProps) {
       const moved = (anchor?.getBoundingClientRect().top ?? 0) - before;
       const lenis = lenisNow();
       // Lenis first learns the page grew; otherwise its scrollTo clamps to the old limit.
-      lenis?.resize();
+      // Dimensions only: lenis.resize() would also stop a smooth scroll in progress.
+      lenis?.dimensions.resize();
       if (Math.abs(moved) >= 1) {
         const y = window.scrollY + moved;
         if (lenis) lenis.scrollTo(y, { immediate: true, force: true });

@@ -38,7 +38,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // Lenis watches <html> for size changes, but <html> is h-full, so it never
     // grows: when the page gets taller after load (Offers rows opening, step 06)
     // Lenis kept its old limit and scrolling stopped short. <body> does grow.
-    const bodyObserver = new ResizeObserver(() => lenis.resize());
+    // Only the dimensions: lenis.resize() also resets the scroll target to the
+    // current position, which stopped every smooth scroll while a row opened.
+    const bodyObserver = new ResizeObserver(() => lenis.dimensions.resize());
     bodyObserver.observe(document.body);
 
     // One shared translator for every [data-speed] layer on the page
