@@ -1,6 +1,14 @@
 # Globe: cobe sphere, graticule, real locations only
 
-**Build plan (approved 27 Sep 2026).**
+## Step 05b: three.js (plan approved 27 Sep 2026)
+
+- **Engine:** `src/components/ui/globe/engine.ts` (plain three 0.186.1, named imports only) with every value in `constants.ts`, ported from the Cowork study with Mehdi's picks: overlapping arcs, sway, all nine places, neutral dots, hairline rim. cobe, `WorldCanvas`, `src/lib/globe.ts` and `land-points.json` are gone.
+- **Land:** `scripts/gen-globe-land.mjs` writes `public/assets/globe-land.bin` (11,061 points, 44,244 B), byte-identical to the study's inline data.
+- **Loading:** from 900 px, with motion allowed and WebGL 2: idle, then the headline settles, then the engine chunk and the land data load together. The scene is built in one idle slot, and the shaders compile (`renderer.compile` with a zero-opacity arc, head and ring) in another. The first frame sets `data-globe="ready"` and fades in.
+- **Still frame everywhere else** (phones, reduced motion, no WebGL, `?globe-fallback`): `globe-still-800/1600.webp`, rendered by the engine (`?globe-still` + `scripts/render-globe-still.mjs`), drawn into a 2D canvas after idle, `data-globe="still"`. A width crossing 900 px switches modes cleanly.
+- **Two readings of the prompt:** three loads after the headline settles (the brief's "loaded after the headline"), not in the first idle slot as cobe did. The head point's disc fills 76% of its sprite, so scale 0.022 gives about 8 px.
+
+**Step 05 build plan (approved 27 Sep 2026).**
 - **cobe 2.0.1, not 0.6.x.** It has no `onRender` and no loop of its own: `createGlobe()` draws once and each `update()` draws one frame. So one rAF loop in `HeroGlobe.tsx` calls `update({ phi })` and then draws the 2D overlay with the same phi and theta. `src/lib/globe.ts` reproduces cobe's `U()` and `O()` exactly.
 - **Mehdi's choices:**
   - The tilt is +13°, north toward the viewer. The prompt's −13°, applied as in v1, would show the globe from slightly south of the equator.
@@ -250,3 +258,54 @@ Measured in headless Google Chrome with the real GPU (`channel: "chrome"`, ANGLE
   - Lighthouse: mobile 89 and 92 (LCP 3.4 s, CLS 0, TBT 50–190 ms); desktop 100.
   - The cobe chunk is unchanged (5,893 B gzipped).
 - **Tooling note:** the long-running dev server kept serving stale Tailwind CSS (the new offset class never appeared). Restarting did not help; clearing `.next/dev` did.
+
+## Step 05b checks (27 Sep 2026)
+
+Measured in headless Google Chrome with the real GPU (`channel: "chrome"`), on dev with `?globe-debug` unless noted. Screenshots are in `docs/v3/after/05b-globe/`.
+
+- **Chrome self-review:** not possible. The Chrome window stayed hidden (`visibilityState: hidden`), so Chrome drew no frames. The globe paused itself there, as it should. The comparison with the study was made in headless Chrome instead (`cmp-study.png`, `cmp-site.png`, both 7 s after load): the sphere, dots, graticule and rim match. The only difference is the planned one: a solid head point instead of the study's soft glow.
+- **Land data:** 11,061 points, 44,244 B, byte-identical to the study's inline data.
+- **Chunk:** `40pmkdc0_t824.js` (three plus the engine) is 569,705 B raw and 140,232 B gzipped (the budget is 160 KB). It is not in `/`'s first-load list.
+  - First-load JS is 843,524 B. That is 7,524 B less than step 05 measured the same way (851,048 B, from a build of the previous commit), because the HeroGlobe chunk shrank from 26,889 to 19,365 B.
+  - `globe-land.bin` is 44,244 B.
+  - The still frames are 146,290 B (1600) and 62,118 B (800), WebP at quality 0.8, both under §AM.3's 150 KB texture budget.
+- **Cost** (1440×900, dpr 1):
+  - 60 fps.
+  - JS per frame: 0.27 ms mean, 0.5 ms p95 (the budget is 2 ms). At the other five sizes, p95 is 0.3–0.7 ms.
+  - 18–20 draw calls (the budget is 24), so the markers stay nine meshes.
+  - Production: 301 rAF callbacks in 5.01 s (60.1 fps).
+- **Motion** (50 s at 1440×900):
+  - The sway ran from 62.0° to 100.0° east.
+  - At most three arcs were in flight.
+  - Each arc landed at 1.50–1.52 s (frame-quantised) and was gone at 3.10 s. Launches came every 1.31–1.32 s.
+  - At most one caption was visible at a time, and only Pakistan, the UAE and Germany were labelled.
+  - Six places were reached: Pakistan, Saudi Arabia, the UAE, India, Germany and Egypt. Singapore (under the right-edge crop) and the United Kingdom (facing below 0.3) were not reached, as the target rules intend.
+- **Head point** (calculated): the disc is 0.022 × 0.76 across. At 1440×900 that is 7.9 px at the front of the sphere, and 8.2–8.5 px at an arc's apex.
+- **Pause:**
+  - 121 frames in 2 s on screen.
+  - 0 when scrolled two viewports down, and 120 again on return.
+  - 0 while hidden, with a simulated `visibilitychange` (headless keeps tabs visible).
+  - It resumes where it left off: elapsed went from 6.52 to 7.50 s one second after showing again.
+- **Composition:** this is the gap from "your organization." to the sphere. R comes from fov 30° at 4.18 units. The gaps are unchanged from step 05. "Closest arc" is the closest a lit arc point came to the headline's text boxes over 45–50 s at each size; none crossed.
+
+  | Size | R | Sphere left | Dim span ends | Clear | Closest arc |
+  |---|---|---|---|---|---|
+  | 1920×1080 | 447 | 1424 | 1199 | 225 | 289 |
+  | 1440×900 | 372 | 1027 | 959 | 68 | 123 |
+  | 1440×1000 | 384 | 1014 | 959 | 55 | 111 |
+  | 1366×768 | 318 | 1014 | 879 | 135 | 183 |
+  | 1280×800 | 331 | 913 | 802 | 111 | 160 |
+  | 1024×768 | 273 | 721 | 642 | 80 | 129 |
+
+- **Network:**
+  - Production at 500 px requested only `globe-still-800.webp`.
+  - Reduced motion at 1440 requested only `globe-still-1600.webp`.
+  - Dev with `?globe-fallback` requested only `globe-still-1600.webp`, plus Turbopack's 769-byte dev loader stub for the dynamic import. The stub loads no three code, and production has no stub.
+  - The desktop production control requested the engine chunk and `globe-land.bin`.
+- **Lighthouse (production, :3100):**
+  - Mobile: 93 and 93. LCP 3.2–3.3 s (the lede), TBT 30–50 ms, CLS 0.
+  - Desktop: 99 and 100. LCP 0.6 s (the lede), TBT 0–80 ms, CLS 0.
+- **verify-shots:** `--full` for the page and for `#top`, console clean. SwiftShader runs the engine at 1440; 390 and 768 show the still frame at 40%.
+- **Captures:** `--frames --mobile` against production with real Chrome, in `frames/`.
+- **Still frame:** it matches the study's own reduced-motion frame (`study-still.png`). At 72° east the Germany arc climbs near the rim and curls into Germany, which faces at only 0.28 there. This is a question for Mehdi.
+- **Differences from the prompt:** no values differ. Two implementation choices are recorded in the plan at the top: three loads after the headline settles, and the head disc fills 76% of its sprite.

@@ -69,6 +69,18 @@
       "px": "1344x768",
       "credits": 1.25,
       "prompt": "Ultra-minimal topographic contour line drawing, thin light grey contour lines on off-white background, one straight diagonal line crossing the entire field, a single contour line in warm bronze, flat clean vector style, minimalist, abstract, no people, no text, no watermark"
+    },
+    {
+      "id": "globe-still",
+      "files": ["globe-still-1600.webp", "globe-still-800.webp"],
+      "status": "pending review",
+      "role": "Hero globe still frame (v3 step 05b) for phones, reduced motion and no WebGL, drawn into a 2D canvas after idle; the 800 or 1600 file by the canvas's device-pixel width",
+      "motif": "globe",
+      "model": "none: rendered by the site's own globe engine (src/components/ui/globe/engine.ts, renderStill), encoded to WebP by Chrome at quality 0.8",
+      "script": "scripts/render-globe-still.mjs (opens http://localhost:3000/?globe-still with npm run dev running)",
+      "scene": "front longitude 72° E, the three client arcs in full at 80%, no heads, rings, pulse or labels, transparent background",
+      "px": "1600x1600, 800x800",
+      "credits": 0
     }
   ],
   "retired": [

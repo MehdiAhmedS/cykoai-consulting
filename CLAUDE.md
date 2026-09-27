@@ -17,7 +17,8 @@ The site must demonstrate calm: if a change adds visual noise, it is wrong.
 - Type: Archivo (display 104–112% width, text 100%) + Chivo Mono (labels, data). Use the type-* utilities; no ad-hoc font sizes, weights or tracking.
 - Sentence case. No emoji/hype
 - Numbers only as data: no ordinal section indices, numbered rows or numbered menus.
-- WebGL only for the hero globe (cobe).
+- WebGL only for the hero globe (three.js). The sphere's light-to-shade ramp is shading on a 3D
+  object, not a gradient field, so the "no gradients" rule doesn't cover it. Nothing else on the globe glows.
 - Motion: GSAP+ScrollTrigger+Lenis only. ≤3 parallax speeds, ≤2 pins, transforms+opacity,
   full reduced-motion fallback
 - Imagery ONLY from public/assets/gen/ per REDESIGN_PLAN.md §AM. Site must work with all images removed

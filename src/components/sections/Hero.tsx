@@ -7,10 +7,10 @@ const { globe } = site;
 
 /**
  * Hero — Direction D "The World" (mockup: hero-direction-d-world.html).
- * Editorial left column over the Windsor band; the cobe globe (v3 step 05)
- * crops at the right edge and drifts at 0.93, headline at 0.97. Its right
+ * Editorial left column over the Windsor band; the three.js globe (v3 step
+ * 05b) crops at the right edge and drifts at 0.93, headline at 0.97. Its right
  * offset scales with its width, so the sphere always clears the dim headline
- * span. Mobile (<900px): globe centered behind the text at 40% opacity. The
+ * span. Mobile (<900px): the globe's still frame, centred behind the text at 40% opacity. The
  * copy and its load sequence live in HeroHeadline. The section reads
  * completely with the globe removed.
  */
