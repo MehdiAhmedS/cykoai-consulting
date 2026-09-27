@@ -94,3 +94,4 @@
 - Still images mount with `loading="eager"` once the section is within one screen height. Native lazy loading never fetches inside a closed (clipped) row, so the 0.8 s fade would finish before the picture arrived.
 - The piece's fade keeps the study's 0.12 s delay (the prompt gives 0.8 s and no delay).
 - "Company profiles" is now "Landing pages" (`landing-pages`), per Mehdi on 27 Sep. Its still was renamed to match.
+- The captions under the pieces are removed, per Mehdi on 27 Sep. The "You get" copy carries what each piece shows, and the `caption` field is gone from `site.ts`.

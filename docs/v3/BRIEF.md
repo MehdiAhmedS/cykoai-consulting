@@ -261,6 +261,7 @@ Answered on 27 September:
 - The technologies Mehdi works with are listed under "Cykoai's real work".
 - The globe's arcs go to and fro: out from Muscat, back to Muscat, and between the other places, in turn, up to five at once. The phone still frame keeps Muscat's three client arcs.
 - The "Company profiles" offer is now "Landing pages" (id `landing-pages`): almost any kind of landing page, with the brand design to match.
+- The Offers pieces have no captions under them; the "You get" copy beside each piece carries what it shows.
 
 Still open; until answered, the value stays TBC in `site.ts` (or `projects.ts`) and is hidden in production:
 

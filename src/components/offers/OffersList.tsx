@@ -388,7 +388,8 @@ export default function OffersList({ items, labels }: OffersListProps) {
                   </p>
                   <p className="type-body max-w-[40ch] text-white">{offer.youGet}</p>
                 </div>
-                <figure className="offer-piece order-1 md:order-none md:col-start-3">
+                {/* The piece carries no caption (Mehdi, 27 Sep): the copy beside it says what it shows. */}
+                <div className="offer-piece order-1 md:order-none md:col-start-3">
                   <div aria-hidden className="relative aspect-[16/10] w-full">
                     {mode === "engine" && (
                       <canvas
@@ -412,11 +413,7 @@ export default function OffersList({ items, labels }: OffersListProps) {
                       />
                     )}
                   </div>
-                  <figcaption className="type-label mt-2.5 text-n300">
-                    {offer.caption.text}
-                    <DraftMark status={offer.caption.status} />
-                  </figcaption>
-                </figure>
+                </div>
               </div>
             </div>
           </div>
