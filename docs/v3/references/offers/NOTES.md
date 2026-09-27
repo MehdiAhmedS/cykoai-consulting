@@ -95,3 +95,4 @@
 - The piece's fade keeps the study's 0.12 s delay (the prompt gives 0.8 s and no delay).
 - "Company profiles" is now "Landing pages" (`landing-pages`), per Mehdi on 27 Sep. Its still was renamed to match.
 - The captions under the pieces are removed, per Mehdi on 27 Sep. The "You get" copy carries what each piece shows, and the `caption` field is gone from `site.ts`.
+- **Fix, after review:** scrolling stopped at Standards. Lenis watches `<html>` for size changes, but `<html>` is `h-full`, so it never grew when rows opened, and Lenis kept the page's old end (9,222px of 11,485 at 1440). `SmoothScroll.tsx` now also watches `<body>` and calls `lenis.resize()`. Wheel-scrolling production now reaches the bottom at 1440 and 390.

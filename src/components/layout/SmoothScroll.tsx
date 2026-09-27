@@ -35,6 +35,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     (window as typeof window & { __lenis?: Lenis }).__lenis = lenis;
     window.dispatchEvent(new Event("lenis:ready"));
 
+    // Lenis watches <html> for size changes, but <html> is h-full, so it never
+    // grows: when the page gets taller after load (Offers rows opening, step 06)
+    // Lenis kept its old limit and scrolling stopped short. <body> does grow.
+    const bodyObserver = new ResizeObserver(() => lenis.resize());
+    bodyObserver.observe(document.body);
+
     // One shared translator for every [data-speed] layer on the page
     // (no-op under reduced motion; scan happens after hydration so all
     // sections' layers are in the DOM).
@@ -86,6 +92,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     );
 
     return () => {
+      bodyObserver.disconnect();
       cleanupParallax();
       document.removeEventListener("click", onAnchorClick);
       fadeTweens.forEach((t) => {
