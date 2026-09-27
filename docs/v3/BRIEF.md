@@ -129,7 +129,7 @@ Content rules:
 **Amended in v3:**
 
 - **Glass on the navbar only.** Backdrop blur 16–20px, tint at least 72% opaque, a 1px hairline, and an `@supports not (backdrop-filter: blur(1px))` solid fallback. No inset highlight, no `saturate()`, no shadow, no `mix-blend-mode`.
-- **WebGL in the hero globe only.** Use cobe (about 6KB); arcs and graticule may be drawn on a 2D canvas overlay that shares the rotation. The globe shows real locations only, and the hero must read completely with the canvas removed.
+- **WebGL in the hero globe only.** It's built with three.js (plain three, named imports only), in its own chunk loaded after the headline, on viewports 900px and wider. Phones, reduced motion and browsers without WebGL get a still frame of the same scene instead. The globe shows only places from `site.ts`: confirmed clients, which are labelled, and Mehdi's decorative places, which never are. The hero must read completely with the globe removed.
 - **Numbers only as data:** dates, weeks, counts, coordinates, time zones. No ordinal section indices, numbered rows or numbered menus.
 - **Typography:** Archivo + Chivo Mono (see Type system), built in step 02. Until then, leave the fonts alone.
 - **Reveal timing:** the hero headline reveal may run up to 1200ms; other reveals stay at 500–800ms.
@@ -194,9 +194,9 @@ From the samples, work out when each element starts and stops moving, the stagge
 
 ## How to build and check every step
 
-Each step runs as two passes in one session: the study, then the build.
+Each step runs as two passes in one session: the study, then the build. Steps 05b and 11 have nothing to study: Mehdi starts them in plan mode, so skip item 2.
 
-1. **Read** this brief, the step's prompt, `CLAUDE.md`, and the files you'll touch. Then run `git status`. If `docs/v3/BRIEF.md` or anything in `docs/v3/prompts/` shows as modified, those are updates from the Cowork review: commit them on their own first, as `v3(docs): update brief and prompts`. If anything else is unexpected, stop and ask.
+1. **Read** this brief, the step's prompt, `CLAUDE.md`, and the files you'll touch. Then run `git status`. If `docs/v3/BRIEF.md`, anything in `docs/v3/prompts/`, or files the step's prompt says come from Cowork show as modified or new, those are updates from the Cowork review: commit them on their own first, as `v3(docs): update brief and prompts`. If anything else is unexpected, stop and ask.
 2. **Study (first pass).** Mehdi asks for part 1 of the prompt on its own: go through the references in Chrome, save the captures and write NOTES.md, as "How to study a reference" describes. Change no code in this pass. End with a short summary of what you learned and anything that should change how the rest of the prompt is built.
 3. **Plan (second pass).** Mehdi then switches to plan mode and asks for the build. Plan the rest of the prompt using what's in NOTES.md. Once the plan is approved, add it to the top of NOTES.md in a few lines.
 4. **Implement.** After step 01, all copy comes from `src/content/site.ts`.
@@ -220,7 +220,7 @@ All picked on 26 September 2026.
 | Typography | A: Archivo + Chivo Mono | 02 |
 | Navbar | A: inset glass bar; Linear's values on dark sections, Harvey's on light, switched per section | 03 |
 | Headline motion | A: line-mask rise in the heavy display, then a mono data line types on | 04 |
-| Globe | A: cobe sphere with a graticule and arcs to real client locations only | 05 |
+| Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, up to three at once, a slow sway, a still frame on phones | 05, 05b |
 | Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi | 06 |
 | Projects | A: engagement register with status; confidential rows shown as withheld | 07 |
 | Engagement | A: deliverable anatomy, with the team (and length, once confirmed) on a "cover" | 08 |
@@ -235,9 +235,15 @@ Answered on 26 September:
 - The pronunciation is "see-ko-ya".
 - Offers stay short, with no durations.
 
+Answered on 27 September:
+
+- Five decorative places (Saudi Arabia, India, Egypt, the UK and Singapore) get arcs but never labels. They are not clients.
+- The hero's Muscat data line is removed.
+- The globe is rebuilt in three.js (step 05b), with overlapping arcs, a sway instead of a spin, and a still frame on phones.
+
 Still open; until answered, the value stays TBC in `site.ts` and is hidden in production:
 
-- which country in Africa (05)
+- which country in Africa (the globe)
 - Cykoai's own projects to list: name, one line, capability, stack, year, link (07)
 - any credentials to show for the team (09, optional)
 - what a client should send for each offer (10, optional)

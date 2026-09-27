@@ -1,6 +1,6 @@
 # v3 build: how to run the prompts
 
-Twelve steps, one prompt each, run in order, with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A), so every prompt is ready.
+Thirteen steps, one prompt each, run in order (05b was added on 27 September to rebuild the globe), with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A), so every prompt is ready.
 
 ## Before each working session
 
@@ -13,7 +13,7 @@ Twelve steps, one prompt each, run in order, with a fresh context (`/clear`) for
 
 ## How to run a step
 
-Each step is two passes in one session. First Claude Code goes through the reference sites in Chrome and writes down how they look and move; then it plans and builds from what it found.
+Each step is two passes in one session. First Claude Code goes through the reference sites in Chrome and writes down how they look and move; then it plans and builds from what it found. Steps 05b and 11 have only the second pass (see the note after the list).
 
 1. **Fresh context.** Type `/clear`, then `/effort` to check it still says xhigh. Plan mode stays off for the study.
 2. **Study.** Paste this, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/01-structure.md. Do only the reference study in part 1, in Chrome as the brief describes: save the captures, write NOTES.md and summarise what you found. Don't change any code yet.`
@@ -30,9 +30,11 @@ Each step is two passes in one session. First Claude Code goes through the refer
    If the plan is off, say what to change before approving.
 5. **Approve** with the option that accepts edits automatically. Commands still ask first: approve the `npm`, `node`, `npx playwright` and `git` ones. "Don't ask again" is fine for `npm run` and `node scripts/`. Don't use bypass-permissions mode.
 6. **Review.** When it reports back, look at the screenshots in `docs/v3/after/<step>/`, or click around `localhost:3000`.
-7. **Checkpoints.** After steps 01, 02 and 05, tell Claude in Cowork "step NN done" and wait for the review before starting the next step. Between the other steps, carry on unless something looks wrong.
+7. **Checkpoints.** After steps 01, 02 and 05b, tell Claude in Cowork "step NN done" and wait for the review before starting the next step. Between the other steps, carry on unless something looks wrong.
 
-**Effort:** xhigh for every step. The prompts already make the design decisions, so the job is careful execution; max is slower, uses more of your plan and tends to overthink work that's already specified. Switch to `/effort max` for step 05, where the overlay has to match cobe's projection exactly, or when re-running a step that went wrong.
+**Steps with no study pass (05b and 11).** After `/clear`, set the effort, press Shift+Tab until the footer reads "plan mode on" and paste, changing the file name: `Read docs/v3/BRIEF.md and docs/v3/prompts/05b-globe-threejs.md. This step has no study pass, so plan the whole prompt, then carry it out exactly. Stop and ask if anything doesn't match what the prompt describes.` Then carry on from item 4.
+
+**Effort:** xhigh for every step. The prompts already make the design decisions, so the job is careful execution; max is slower, uses more of your plan and tends to overthink work that's already specified. Switch to `/effort max` for step 05b, where the globe's shaders and frame budget need the most care, or when re-running a step that went wrong.
 
 **If something goes wrong:** Esc stops Claude Code, and you can type a correction. `/rewind` (or Esc twice) rolls back its file edits in the current session, but not commands it ran. Each step is its own commit, so a finished step can be reverted on its own.
 
@@ -45,7 +47,8 @@ Each step is two passes in one session. First Claude Code goes through the refer
 | 02 · Typography | Archivo + Chivo Mono as shared `type-*` utilities across the page. | nothing |
 | 03 · Navbar | Inset glass bar, switched by section, new links, fixed anchor offsets. | nothing |
 | 04 · Hero headline | Line-mask rise, lede and CTAs, the Muscat data line types on. | nothing |
-| 05 · Globe | cobe sphere, graticule overlay, real locations only (Muscat, Pakistan, UAE, Germany). | which country in Africa (added when known) |
+| 05 · Globe | cobe sphere, graticule overlay and arcs; decorative places and a larger globe after review. Done 27 September; 05b replaces its engine. | nothing |
+| 05b · Globe in three.js | Rebuilds the globe in three.js from the Cowork study: a lit sphere, arcs that travel and land (up to three at once), a slow sway, and a still frame on phones. The study is already done, so skip the study pass and start in plan mode. | which country in Africa (added when known) |
 | 06 · Offers | Offer rows built on your six capabilities, short copy. | nothing |
 | 07 · Projects | Dark register: HDT Systems named, the rest withheld. | your own projects to list |
 | 08 · Engagement | Sticky "cover" with length, team, effort; five parts with what you receive. | typical length and effort (hidden until then) |
@@ -55,7 +58,7 @@ Each step is two passes in one session. First Claude Code goes through the refer
 
 Nothing blocks on your answers: unconfirmed content stays TBC, shows a DRAFT chip in dev and is hidden in production. Answering before the step just means the section ships complete.
 
-**Review checkpoints** (look properly before moving on): after 01 (is the structure right?), after 02 (is the type right?), and after 05 (is the hero right?). The rest can flow.
+**Review checkpoints** (look properly before moving on): after 01 (is the structure right?), after 02 (is the type right?), and after 05b (is the hero right?). The rest can flow.
 
 ## Why step by step and not one shot
 

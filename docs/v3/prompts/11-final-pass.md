@@ -19,7 +19,7 @@ Read `docs/v3/BRIEF.md` first. No new design in this step. It makes the seven se
 
 ## 2. Dead code
 
-Remove components and assets nothing imports any more. Likely candidates: `WhatWeDo`, `Services`, `Philosophy`, `EngagementNote`, `StatStrip`, `SectionLabel`, `DiagonalPlane`, `LedgerEntry` (if it came back), and unused `public/assets` files. Check every removal with a build. Keep `WorldCanvas` if it's the globe's fallback.
+Remove components and assets nothing imports any more. Likely candidates: `WhatWeDo`, `Services`, `Philosophy`, `EngagementNote`, `StatStrip`, `SectionLabel`, `DiagonalPlane`, `LedgerEntry` (if it came back), and unused `public/assets` files. Check every removal with a build. `WorldCanvas`, cobe and `public/assets/land-points.json` should already be gone after step 05b; remove them if not.
 
 ## 3. Content gate
 
@@ -40,7 +40,7 @@ Also update `layout.tsx` metadata. The title and description still describe "ent
   - accessibility 95 or higher
 
   Record the scores in FINAL.md.
-- **Bundle:** cobe sits in its own chunk and loads after idle; fonts are subset to Latin; there are no leftover dependencies. Remove anything unused from `package.json`.
+- **Bundle:** the globe's three.js chunk loads after idle on desktop only, and phones never request it; fonts are subset to Latin; there are no leftover dependencies. Remove anything unused from `package.json`.
 - **Accessibility:**
   - landmarks, and one `h1` with h2 → h3 order
   - focus visible everywhere
