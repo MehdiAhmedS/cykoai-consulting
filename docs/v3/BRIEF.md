@@ -235,7 +235,7 @@ All picked on 26 September 2026. The globe and Projects were revised on 27 Septe
 | Typography | A: Archivo + Chivo Mono | 02 |
 | Navbar | A: inset glass bar; Linear's values on dark sections, Harvey's on light, switched per section | 03 |
 | Headline motion | A: line-mask rise in the heavy display, then a mono data line types on | 04 |
-| Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, up to three at once, a slow sway, a still frame on phones | 05, 05b |
+| Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, a slow sway, a still frame on phones. Later that day, per Mehdi: arcs fly out from Muscat, back to it and between the other places, up to five at once | 05, 05b |
 | Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi. Revised on 27 September from the Cowork study: rows open on scroll, Cuberto-style, each with a three.js piece of the work | 06 |
 | Projects | A: engagement register (26 September). Replaced on 27 September by the showcase board's A, the stage: a sticky frame whose screen wipes to each project as it scrolls past, live captures of Mehdi's landing pages, confidential work as labelled illustrations, and the rest in a "More work" list | 07 |
 | Engagement | A: deliverable anatomy, with the team (and length, once confirmed) on a "cover" | 08 |
@@ -259,6 +259,7 @@ Answered on 27 September:
 - Eight of Mehdi's landing pages go in (see "Cykoai's real work").
 - Offers: the six offers stay as they are. Rows open as they scroll into view and fill with Windsor, each with its own 3D piece instead of a picture (Cowork study approved; the bot piece is the second version).
 - The technologies Mehdi works with are listed under "Cykoai's real work".
+- The globe's arcs go to and fro: out from Muscat, back to Muscat, and between the other places, in turn, up to five at once. The phone still frame keeps Muscat's three client arcs.
 
 Still open; until answered, the value stays TBC in `site.ts` (or `projects.ts`) and is hidden in production:
 

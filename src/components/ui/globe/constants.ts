@@ -131,11 +131,21 @@ export const LANDING = {
   bumpDuration: 0.8,
 } as const;
 
-export const CADENCE = { first: 0.9, every: 1.3, retry: 0.8, maxInFlight: 3 } as const;
+/** Up to five arcs in flight (Mehdi, 27 Sep; it was three). */
+export const CADENCE = { first: 0.9, every: 0.9, retry: 0.5, maxInFlight: 5 } as const;
+
+/**
+ * Which way the next arc flies, in turn: out from Muscat, back to Muscat,
+ * then between two other places. Places an arc from Muscat has just reached
+ * send the next ones back first, so arcs go to and fro.
+ */
+export const ROUTES = { order: ["out", "in", "between"] } as const;
 
 export const TARGET = {
+  /** The place an arc lands on. */
   minFacing: 0.3,
-  originMinFacing: 0.15,
+  /** The place an arc leaves from. */
+  fromMinFacing: 0.15,
   /** Space to spare inside the hero, in CSS px. */
   left: 16,
   right: 30,

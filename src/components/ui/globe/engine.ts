@@ -2,6 +2,7 @@
  * The hero globe's engine (v3 step 05b): plain three.js, ported from the
  * Cowork study (docs/v3/references/globe/study/index.html) with Mehdi's picks:
  * overlapping arcs, the sway, all nine places, neutral dots, a hairline rim.
+ * Arcs fly out from Muscat, back to it, and between the other places (27 Sep).
  *
  * Client-only. HeroGlobe loads it with a dynamic import() after the headline
  * settles, so three sits in its own chunk and phones never download it.
@@ -56,6 +57,7 @@ import {
   PULSE,
   RENDERER,
   RING,
+  ROUTES,
   RUN,
   SPHERE,
   STILL,
@@ -237,10 +239,12 @@ void main() {
   gl_FragColor = vec4(uColor, uOpacity * vA);
 }`;
 
+// uv.x runs from a route's first place to its second; uReverse flies it the other way.
 const ARC_VERT = /* glsl */ `
+uniform float uReverse;
 varying float vT;
 void main() {
-  vT = uv.x;
+  vT = mix(uv.x, 1.0 - uv.x, uReverse);
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }`;
 
@@ -275,10 +279,25 @@ interface Place {
   marker: Mesh;
   /** Elapsed time of the last landing here. */
   bump: number;
-  /** From the origin: the arc's path, its tube, and the headline guard's sample points. */
-  curve: CatmullRomCurve3 | null;
-  tube: TubeGeometry | null;
+}
+
+/** A great circle between two places, built once and flown either way. */
+interface Route {
+  a: Place;
+  b: Place;
+  /** Runs from a to b. */
+  curve: CatmullRomCurve3;
+  tube: TubeGeometry;
+  /** The headline guard's sample points (the same either way). */
   guard: Vector3[];
+}
+
+interface Flight {
+  route: Route;
+  from: Place;
+  to: Place;
+  /** Flown from b to a. */
+  reverse: boolean;
 }
 
 function buildWorld(locations: GlobeLocation[], land: ArrayBuffer) {
@@ -405,23 +424,27 @@ function buildWorld(locations: GlobeLocation[], land: ArrayBuffer) {
       marker.scale.setScalar(size);
       marker.renderOrder = DRAW_ORDER.markers;
       earth.add(marker);
-      return { loc, v, size, marker, bump: -Infinity, curve: null, tube: null, guard: [] };
+      return { loc, v, size, marker, bump: -Infinity };
     });
   const origin = places.find((pl) => pl.loc.role === "origin") ?? null;
-  const targets = origin ? places.filter((pl) => pl !== origin) : [];
+  const targets = origin ? places.filter((pl) => pl !== origin) : places;
 
-  // Arcs: great circles from the origin, higher the farther they go. Built once per place.
-  if (origin) {
-    for (const t of targets) {
-      const lift = Math.min(ARC.liftMax, Math.max(ARC.liftMin, ARC.liftPerRadian * origin.v.angleTo(t.v)));
+  // Arcs: one great circle per pair of places, higher the farther it goes. Built once, flown either way.
+  const routes: Route[] = [];
+  for (let i = 0; i < places.length; i++) {
+    for (let j = i + 1; j < places.length; j++) {
+      const a = places[i];
+      const b = places[j];
+      const lift = Math.min(ARC.liftMax, Math.max(ARC.liftMin, ARC.liftPerRadian * a.v.angleTo(b.v)));
       const pts: Vector3[] = [];
-      for (let i = 0; i < ARC.points; i++) {
-        const u = i / (ARC.points - 1);
-        pts.push(slerp(origin.v, t.v, u).multiplyScalar(ARC.baseRadius + lift * Math.sin(Math.PI * u)));
+      for (let k = 0; k < ARC.points; k++) {
+        const u = k / (ARC.points - 1);
+        pts.push(slerp(a.v, b.v, u).multiplyScalar(ARC.baseRadius + lift * Math.sin(Math.PI * u)));
       }
-      t.curve = new CatmullRomCurve3(pts, false, "centripetal");
-      t.tube = geo(new TubeGeometry(t.curve, ARC.tubularSegments, ARC.tubeRadius, ARC.radialSegments, false));
-      t.guard = Array.from({ length: GUARD.samples }, (_, k) => t.curve!.getPointAt(k / (GUARD.samples - 1)));
+      const curve = new CatmullRomCurve3(pts, false, "centripetal");
+      const tube = geo(new TubeGeometry(curve, ARC.tubularSegments, ARC.tubeRadius, ARC.radialSegments, false));
+      const guard = Array.from({ length: GUARD.samples }, (_, k) => curve.getPointAt(k / (GUARD.samples - 1)));
+      routes.push({ a, b, curve, tube, guard });
     }
   }
 
@@ -437,6 +460,7 @@ function buildWorld(locations: GlobeLocation[], land: ArrayBuffer) {
         uniforms: {
           uHead: { value: flat ? 1 : 0 },
           uTail: { value: 0 },
+          uReverse: { value: 0 },
           uAlpha: { value: 1 },
           uFlat: { value: flat ? 1 : 0 },
           uFlatAlpha: { value: STILL.arcOpacity },
@@ -459,6 +483,7 @@ function buildWorld(locations: GlobeLocation[], land: ArrayBuffer) {
     places,
     origin,
     targets,
+    routes,
     pulse,
     ringGeo,
     arcMaterial,
@@ -490,7 +515,7 @@ function discTexture() {
 interface ArcSlot {
   mesh: Mesh<BufferGeometry, ShaderMaterial>;
   head: Sprite;
-  place: Place | null;
+  flight: Flight | null;
   t0: number;
   landed: boolean;
 }
@@ -527,7 +552,7 @@ export function startGlobe(o: GlobeOptions): () => void {
   o.host.append(canvas);
 
   const world = buildWorld(o.places, o.land);
-  const { scene, camera, origin, targets, pulse } = world;
+  const { scene, camera, origin, targets, routes, pulse } = world;
   const caption = o.caption;
   const debug = o.debug;
 
@@ -554,7 +579,7 @@ export function startGlobe(o: GlobeOptions): () => void {
   const layer = { transparent: true, depthWrite: false } as const;
   const arcs: ArcSlot[] = Array.from({ length: CADENCE.maxInFlight }, () => {
     const mesh = new Mesh<BufferGeometry, ShaderMaterial>(
-      targets[0]?.tube ?? world.geo(new BufferGeometry()),
+      routes[0]?.tube ?? world.geo(new BufferGeometry()),
       world.arcMaterial(false)
     );
     mesh.renderOrder = DRAW_ORDER.arcs;
@@ -565,7 +590,7 @@ export function startGlobe(o: GlobeOptions): () => void {
     head.renderOrder = DRAW_ORDER.heads;
     head.visible = false;
     world.earth.add(head);
-    return { mesh, head, place: null, t0: 0, landed: false };
+    return { mesh, head, flight: null, t0: 0, landed: false };
   });
   const rings: RingSlot[] = Array.from({ length: CADENCE.maxInFlight }, () => {
     const mesh = new Mesh(world.ringGeo, world.mat(new MeshBasicMaterial({ color: LANDING.color, opacity: 0, ...layer })));
@@ -610,12 +635,12 @@ export function startGlobe(o: GlobeOptions): () => void {
     return out;
   };
 
-  /** Whether the arc to `p`, now or GUARD.ahead seconds on, passes over the headline. */
-  const crossesHeadline = (p: Place, boxes: DOMRect[], box: DOMRect) => {
+  /** Whether the route, now or GUARD.ahead seconds on, passes over the headline. */
+  const crossesHeadline = (route: Route, boxes: DOMRect[], box: DOMRect) => {
     if (!boxes.length) return false;
     const g = GUARD.grow;
     for (const m of [mNow, earthAt(frontAt(elapsed + GUARD.ahead), mAhead)]) {
-      for (const local of p.guard) {
+      for (const local of route.guard) {
         toCanvas(wp.copy(local).applyMatrix4(m));
         const x = box.left + pt.x;
         const y = box.top + pt.y;
@@ -632,51 +657,94 @@ export function startGlobe(o: GlobeOptions): () => void {
   let elapsed = 0;
   let front = frontAt(0);
   let nextLaunch: number = CADENCE.first;
-  let lastIndex = targets.length - 1;
-  let lastPlace: Place | null = null;
+
+  const routeOf = new Map<Place, Map<Place, Route>>();
+  for (const r of routes) {
+    if (!routeOf.has(r.a)) routeOf.set(r.a, new Map());
+    if (!routeOf.has(r.b)) routeOf.set(r.b, new Map());
+    routeOf.get(r.a)!.set(r.b, r);
+    routeOf.get(r.b)!.set(r.a, r);
+  }
+
+  type Kind = (typeof ROUTES.order)[number];
+  // Candidate pairs per kind, in site.ts order. "between" steps through every
+  // offset in turn, so consecutive picks rarely share a starting place.
+  const pairs: Record<Kind, [Place, Place][]> = {
+    out: origin ? targets.map((t): [Place, Place] => [origin, t]) : [],
+    in: origin ? targets.map((t): [Place, Place] => [t, origin]) : [],
+    between: [],
+  };
+  for (let d = 1; d < targets.length; d++) {
+    targets.forEach((a, i) => pairs.between.push([a, targets[(i + d) % targets.length]]));
+  }
+  const cursor: Record<Kind, number> = { out: -1, in: -1, between: -1 };
+  let kindAt = -1;
+  /** Places an arc from Muscat has reached: arcs back to Muscat start from these first. */
+  const returns: Place[] = [];
 
   /**
-   * The next place in site.ts order that faces the viewer, lands inside the
-   * hero with the study's margins, isn't in flight, wasn't the last one
-   * launched, and keeps off the headline.
+   * The next flight: kinds in ROUTES.order, each stepping through its pairs.
+   * A flight leaves a place that faces the viewer, lands on one that faces it
+   * inside the hero with the study's margins, keeps off the headline, and
+   * takes neither a route already in flight nor a place another arc is about
+   * to land on.
    */
-  const pickTarget = () => {
-    if (!origin || facing(wp.copy(origin.v).applyMatrix4(mNow)) < TARGET.originMinFacing) return null;
+  const pickFlight = (): Flight | null => {
     const box = o.host.getBoundingClientRect();
     const hero = o.hero.getBoundingClientRect();
     let boxes: DOMRect[] | null = null;
-    const n = targets.length;
-    for (let k = 1; k <= n; k++) {
-      const index = (lastIndex + k) % n;
-      const p = targets[index];
-      if (p === lastPlace && n > 1) continue;
-      if (arcs.some((s) => s.place === p)) continue;
-      wp.copy(p.v).applyMatrix4(mNow);
-      if (facing(wp) < TARGET.minFacing) continue;
+    const fly = (from: Place, to: Place): Flight | null => {
+      const route = routeOf.get(from)?.get(to);
+      if (!route) return null;
+      if (arcs.some((s) => s.flight && (s.flight.route === route || (!s.landed && s.flight.to === to)))) return null;
+      if (facing(wp.copy(from.v).applyMatrix4(mNow)) < TARGET.fromMinFacing) return null;
+      wp.copy(to.v).applyMatrix4(mNow);
+      if (facing(wp) < TARGET.minFacing) return null;
       toCanvas(wp);
       const x = box.left + pt.x;
       const y = box.top + pt.y;
-      if (x < hero.left + TARGET.left || x > hero.right - TARGET.right) continue;
-      if (y < hero.top + TARGET.top || y > hero.bottom - TARGET.bottom) continue;
+      if (x < hero.left + TARGET.left || x > hero.right - TARGET.right) return null;
+      if (y < hero.top + TARGET.top || y > hero.bottom - TARGET.bottom) return null;
       boxes ??= headlineBoxes();
-      if (crossesHeadline(p, boxes, box)) continue;
-      lastIndex = index;
-      return p;
+      if (crossesHeadline(route, boxes, box)) return null;
+      return { route, from, to, reverse: from !== route.a };
+    };
+    const kinds = ROUTES.order;
+    for (let k = 1; k <= kinds.length; k++) {
+      const kind = kinds[(kindAt + k) % kinds.length];
+      if (kind === "in" && origin) {
+        for (let i = 0; i < returns.length; i++) {
+          const f = fly(returns[i], origin);
+          if (!f) continue;
+          returns.splice(i, 1);
+          kindAt = (kindAt + k) % kinds.length;
+          return f;
+        }
+      }
+      const list = pairs[kind];
+      for (let j = 1; j <= list.length; j++) {
+        const index = (cursor[kind] + j) % list.length;
+        const f = fly(...list[index]);
+        if (!f) continue;
+        cursor[kind] = index;
+        kindAt = (kindAt + k) % kinds.length;
+        return f;
+      }
     }
     return null;
   };
 
-  const launch = (p: Place) => {
-    const s = arcs.find((a) => !a.place);
-    if (!s || !p.tube) return;
-    s.place = p;
+  const launch = (f: Flight) => {
+    const s = arcs.find((a) => !a.flight);
+    if (!s) return;
+    s.flight = f;
     s.t0 = elapsed;
     s.landed = false;
-    s.mesh.geometry = p.tube;
+    s.mesh.geometry = f.route.tube;
     s.mesh.material.uniforms.uHead.value = 0;
     s.mesh.material.uniforms.uTail.value = 0;
+    s.mesh.material.uniforms.uReverse.value = f.reverse ? 1 : 0;
     s.mesh.visible = true;
-    lastPlace = p;
   };
 
   /* ---- the label: one caption element, clients only ---- */
@@ -758,8 +826,10 @@ export function startGlobe(o: GlobeOptions): () => void {
 
   /* ---- one step of the scene ---- */
 
-  const land = (s: ArcSlot, p: Place) => {
+  const land = (s: ArcSlot, f: Flight) => {
+    const p = f.to;
     s.landed = true;
+    if (f.from === origin && !returns.includes(p)) returns.push(p);
     const r = rings.find((x) => !x.active);
     if (r) {
       r.active = true;
@@ -784,21 +854,22 @@ export function startGlobe(o: GlobeOptions): () => void {
         pulse.scale.setScalar(origin.size * (1 + (PULSE.scaleTo - 1) * easeOutCubic(ph)));
         pulse.material.opacity = PULSE.opacity * (1 - ph);
       }
-      if (elapsed >= nextLaunch && arcs.some((s) => !s.place)) {
-        const p = pickTarget();
-        if (p) {
-          launch(p);
-          nextLaunch = elapsed + CADENCE.every;
-        } else nextLaunch = elapsed + CADENCE.retry;
-      }
+    }
+
+    if (elapsed >= nextLaunch && arcs.some((s) => !s.flight)) {
+      const f = pickFlight();
+      if (f) {
+        launch(f);
+        nextLaunch = elapsed + CADENCE.every;
+      } else nextLaunch = elapsed + CADENCE.retry;
     }
 
     for (const s of arcs) {
-      const p = s.place;
-      if (!p?.curve) continue;
+      const f = s.flight;
+      if (!f) continue;
       const e = elapsed - s.t0;
       if (e >= ARC.life) {
-        s.place = null;
+        s.flight = null;
         s.mesh.visible = false;
         s.head.visible = false;
         continue;
@@ -809,10 +880,11 @@ export function startGlobe(o: GlobeOptions): () => void {
       s.mesh.material.uniforms.uTail.value = tail;
       s.head.visible = e < ARC.draw + HEAD.fade;
       if (s.head.visible) {
-        p.curve.getPointAt(Math.min(head, 1), s.head.position);
+        const u = Math.min(head, 1);
+        f.route.curve.getPointAt(f.reverse ? 1 - u : u, s.head.position);
         s.head.material.opacity = HEAD.opacity * (e < ARC.draw ? 1 : 1 - (e - ARC.draw) / HEAD.fade);
       }
-      if (!s.landed && e >= ARC.draw) land(s, p);
+      if (!s.landed && e >= ARC.draw) land(s, f);
     }
 
     for (const r of rings) {
@@ -921,7 +993,7 @@ export function startGlobe(o: GlobeOptions): () => void {
   const warm = () => {
     const s = arcs[0];
     const r = rings[0];
-    if (targets[0]?.tube) s.mesh.geometry = targets[0].tube;
+    if (routes[0]) s.mesh.geometry = routes[0].tube;
     s.mesh.material.uniforms.uAlpha.value = 0;
     s.head.material.opacity = 0;
     r.mesh.material.opacity = 0;
@@ -952,8 +1024,10 @@ export function startGlobe(o: GlobeOptions): () => void {
       const head = u.uHead.value as number;
       const tail = u.uTail.value as number;
       const local = new Vector3();
+      const f = s.flight!;
       return Array.from({ length: GUARD.samples }, (_, k) => {
-        s.place!.curve!.getPointAt(tail + ((head - tail) * k) / (GUARD.samples - 1), local);
+        const along = tail + ((head - tail) * k) / (GUARD.samples - 1);
+        f.route.curve.getPointAt(f.reverse ? 1 - along : along, local);
         toCanvas(wp.copy(local).applyMatrix4(mNow));
         return [box.left + pt.x, box.top + pt.y];
       });
@@ -976,8 +1050,13 @@ export function startGlobe(o: GlobeOptions): () => void {
           running,
           size: { w, h },
           arcs: arcs
-            .filter((s) => s.place)
-            .map((s) => ({ name: s.place!.loc.name, t: elapsed - s.t0, landed: s.landed, points: litPoints(s) })),
+            .filter((s) => s.flight)
+            .map((s) => ({
+              name: `${s.flight!.from.loc.name} → ${s.flight!.to.loc.name}`,
+              t: elapsed - s.t0,
+              landed: s.landed,
+              points: litPoints(s),
+            })),
           label: owner && captionLive ? { name: owner.place.loc.name, opacity: labelOpacity } : null,
         };
       },
@@ -1006,8 +1085,9 @@ export function startGlobe(o: GlobeOptions): () => void {
 
 /**
  * The still frame for phones, reduced motion and no WebGL: the same scene at
- * 72° east with the three client arcs drawn in full at 80%, no heads, rings,
- * pulse or labels, on a transparent background. Returns WebP data URLs at
+ * 72° east with the three client arcs from Muscat drawn in full at 80%, no
+ * heads, rings, pulse or labels, on a transparent background. (A still can't
+ * show direction, and the routes between clients bunch up over Germany.) Returns WebP data URLs at
  * 1600 and 800 px (dev only, via `?globe-still` and
  * scripts/render-globe-still.mjs), or null without WebGL 2.
  */
@@ -1020,9 +1100,10 @@ export function renderStill(places: GlobeLocation[], land: ArrayBuffer): Record<
   renderer.setSize(STILL.size, STILL.size, false);
   const world = buildWorld(places, land);
   world.earth.rotation.y = -STILL.front * D2R;
-  for (const p of world.targets) {
-    if (p.loc.role !== "client" || !p.tube) continue;
-    const arc = new Mesh(p.tube, world.arcMaterial(true));
+  for (const r of world.routes) {
+    const other = r.a === world.origin ? r.b : r.b === world.origin ? r.a : null;
+    if (other?.loc.role !== "client") continue;
+    const arc = new Mesh(r.tube, world.arcMaterial(true));
     arc.renderOrder = DRAW_ORDER.arcs;
     world.earth.add(arc);
   }

@@ -309,3 +309,33 @@ Measured in headless Google Chrome with the real GPU (`channel: "chrome"`), on d
 - **Captures:** `--frames --mobile` against production with real Chrome, in `frames/`.
 - **Still frame:** it matches the study's own reduced-motion frame (`study-still.png`). At 72° east the Germany arc climbs near the rim and curls into Germany, which faces at only 0.28 there. This is a question for Mehdi.
 - **Differences from the prompt:** no values differ. Two implementation choices are recorded in the plan at the top: three loads after the headline settles, and the head disc fills 76% of its sprite.
+
+## Arcs to and fro (27 Sep 2026, per Mehdi)
+
+**What changed:**
+- **Routes:** arcs no longer only leave Muscat. The engine builds one great circle per pair of confirmed places (36 routes for nine places) and flies each either way; a `uReverse` uniform flips the lit span.
+- **Order:** flights take turns out from Muscat, back to Muscat, then between two other places (`ROUTES.order`). A place Muscat has just reached sends the next arc back first, so arcs go to and fro.
+- **Cadence:** up to five arcs in flight (it was three), launched every 0.9 s (it was 1.3 s), with a 0.5 s retry.
+- **Kept:**
+  - the source faces at least 0.15, and the destination faces at least 0.3 and lands inside the hero margins;
+  - the headline guard;
+  - no route already in flight, and no place another arc is about to land on;
+  - labels for clients only;
+  - the draw, tail and landing timings.
+- **Still frame:** unchanged, with Muscat's three client arcs.
+  - Drawing every client route bunched the UAE, Pakistan and Muscat arcs to Germany into a knot, and a still can't show direction.
+  - `renderStill` now picks those three routes from the route list, so a re-render gives the same image.
+
+**Checks, in Chrome with the GPU (headless), with `?globe-debug`, over one full 48 s sway:**
+- **Flights:** 52 in all: 18 out from Muscat, 17 back to it, 17 between.
+- **To and fro:** return trips follow outbound ones, e.g. Muscat → Germany at 6.4 s, then Germany → Muscat at 10.1 s.
+- **In flight:** at most 4 at once, 3.3 on average; the 0.9 s cadence and 3.1 s life rarely reach five.
+- **Places:** every place except the United Kingdom flew. At 62–100° east the UK never faces the viewer enough.
+- **Headline:** no lit point fell on its line boxes.
+- **Labels:** Pakistan, the UAE and Germany only. The console was clean at 60 fps.
+
+**Production:** `verify-shots --full --section=#top` is console clean (`docs/v3/after/globe-arcs/`), and so is the production build in Chrome (`prod-1440-*.png`).
+
+**Lighthouse (three runs per preset):**
+- Mobile: 91, 92 and 92 (median 92, as after step 07). LCP 3.34 s, TBT 74 ms, CLS 0.
+- Desktop: 100, 100 and 100.
