@@ -70,3 +70,7 @@ Studied 26 Sep 2026 live in Chrome at 1440 (system theme dark), measured with th
 - **Shape:** the bar is a centred pill with `rounded-full`, and the "Talk to us" CTA is a pill too (`py-[7px]`, so it sits about 8px inside the round end). These are the radii exceptions, recorded in CLAUDE.md and the brief.
 - **Width:** from 900px it's `min(1000px, 100% − 48px)`, centred with `inset-x-0 mx-auto` and no transform, so the mobile overlay stays fixed to the viewport. At 1440 that leaves 220px each side. Below 900px it's full width less 8px each side, as before.
 - **Unchanged:** the height (56 / 52px), the top offset (12 / 8px), the 40px tone line, the anchor offsets and the glass values. The logo no longer lines up with the page's 1320px container.
+- **Silver glass, softer corners (27 Sep, per Mehdi):**
+  - Over dark sections the bar is a light silver glass: `rgba(226,230,237,0.8)`, blur 20px, a `white/40` hairline, with dark text (Windsor, links n700). It replaces Linear's dark values.
+  - Worst-case contrast, with Windsor under the glass: links 5.2:1, Windsor text 9.4:1.
+  - Corners: the bar is now 20px and the CTA 12px (concentric with the 8px gap), in place of full rounding.

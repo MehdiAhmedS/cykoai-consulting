@@ -339,18 +339,15 @@ body {
 }
 
 /* Navbar glass (v3 step 03): the only glass on the page. The header's
-   data-nav-tone follows the section under the bar; values are flat
-   (Linear's on dark, Harvey's on light). No shadow, saturate, gradient,
-   highlight or blend; backdrop-filter never transitions. */
+   data-nav-tone follows the section under the bar; values are flat.
+   Over dark sections the bar is a light silver glass (Mehdi, 27 Sep),
+   over light ones Harvey's white glass, so the text is dark on both.
+   No shadow, saturate, gradient, highlight or blend; backdrop-filter
+   never transitions. */
 .site-nav {
-  --nav-fg: var(--color-white);
-  --nav-link: var(--color-n300);
-  --nav-cta-hover-fg: var(--color-windsor);
-}
-.site-nav[data-nav-tone="light"] {
   --nav-fg: var(--color-windsor);
   /* n700, not n500: n500 drops to 2.54:1 when dark headings pass under
-     the 72% bar (Mehdi, 26 Sep) */
+     the 72% bar (Mehdi, 26 Sep). On the silver it holds 5.2:1 at worst. */
   --nav-link: var(--color-n700);
   --nav-cta-hover-fg: var(--color-white);
 }
@@ -363,10 +360,10 @@ body {
     color 200ms var(--ease-out-expo);
 }
 .site-nav[data-nav-tone="dark"] .nav-bar {
-  background-color: rgba(11, 21, 39, 0.8);
+  background-color: rgba(226, 230, 237, 0.8);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 .site-nav[data-nav-tone="light"] .nav-bar {
   background-color: rgba(255, 255, 255, 0.72);
@@ -376,7 +373,7 @@ body {
 }
 @supports not (backdrop-filter: blur(1px)) {
   .site-nav[data-nav-tone="dark"] .nav-bar {
-    background-color: rgba(11, 21, 39, 0.96);
+    background-color: rgba(226, 230, 237, 0.96);
   }
   .site-nav[data-nav-tone="light"] .nav-bar {
     background-color: rgba(255, 255, 255, 0.96);

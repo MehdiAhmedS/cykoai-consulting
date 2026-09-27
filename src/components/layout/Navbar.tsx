@@ -144,9 +144,9 @@ export default function Navbar() {
       data-nav-tone={tone}
       className="site-nav fixed inset-x-2 top-2 z-50 min-[900px]:inset-x-0 min-[900px]:top-3 min-[900px]:mx-auto min-[900px]:w-[min(1000px,calc(100%-48px))]"
     >
-      {/* A centred pill (Mehdi, 27 Sep): the navbar's rounded ends are the one
-          exception to the 2–8px radii besides the Projects phone outline. */}
-      <div className="nav-bar h-[52px] rounded-full min-[900px]:h-14">
+      {/* A centred, rounded bar (Mehdi, 27 Sep): its 20px corners, and the CTA's
+          12px, are the exceptions to the 2–8px radii besides the Projects phone outline. */}
+      <div className="nav-bar h-[52px] rounded-[20px] min-[900px]:h-14">
         <div className="h-full pl-5 pr-2 min-[900px]:pl-6">
           <div className="flex h-full items-center justify-between">
             <a
@@ -175,7 +175,7 @@ export default function Navbar() {
               <DraftMark status={linksStatus} className="-ml-2" />
               <a
                 href={cta.href}
-                className="type-small nav-cta rounded-full px-[18px] py-[7px] font-medium"
+                className="type-small nav-cta rounded-[12px] px-[18px] py-[7px] font-medium"
               >
                 {cta.label}
               </a>
