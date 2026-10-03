@@ -15,6 +15,9 @@ export const isTBC = (value: string) => value === TBC;
 /** Drafts and TBC values are visible in dev only. */
 export const SHOW_DRAFTS = process.env.NODE_ENV !== "production";
 
+/** For entries that production hides until Mehdi confirms them. */
+export const isShown = (status: Status) => SHOW_DRAFTS || status === "confirmed";
+
 export interface Text {
   text: string;
   status: Status;
@@ -53,6 +56,13 @@ export interface CoverRow {
 export interface Rule {
   title: string;
   text: string;
+  status: Status;
+}
+
+export interface TeamMember {
+  name: string;
+  role: string;
+  credentials: string;
   status: Status;
 }
 
@@ -247,34 +257,50 @@ export const site = {
       text: "What you can hold us to, and the frameworks we work to.",
       status: "draft",
     } as Text,
+    framing: { text: "Each one is something you can check.", status: "draft" } as Text,
+    // Production renders confirmed rules only. The first three: Mehdi, 3 Oct.
     rules: [
       {
         title: "Access ends at handover",
         text: "Least-privilege accounts for the engagement only, revoked on the last day.",
-        status: "draft",
+        status: "confirmed",
       },
       {
         title: "Every finding ships with a fix",
         text: "Each issue carries a severity and a remediation, never a bare list.",
-        status: "draft",
+        status: "confirmed",
       },
       {
         title: "Your findings stay yours",
         text: "Nothing is published without your written permission.",
-        status: "draft",
+        status: "confirmed",
       },
       {
-        title: "Every deliverable ships complete",
-        text: "The same structure every time, whatever the size of the engagement.",
+        title: "Security is part of the design",
+        text: "The security plan is written with the architecture, before anything is built.",
         status: "draft",
       },
     ] as Rule[],
+    // What Cykoai works with and implements controls for; not certificates it
+    // holds. Production renders confirmed items only (these four: Mehdi, 3 Oct).
     frameworks: {
-      items: ["ISO/IEC 27001", "Google Workspace", "Google Vertex AI", "Docker"],
-      status: "draft" as Status,
+      label: { text: "Frameworks and platforms", status: "draft" } as Text,
+      items: [
+        { text: "ISO/IEC 27001", status: "confirmed" },
+        { text: "Google Workspace", status: "confirmed" },
+        { text: "Google Vertex AI", status: "confirmed" },
+        { text: "Docker", status: "confirmed" },
+      ] as Text[],
     },
-    /** Team credentials; none confirmed yet, so the list stays empty and hidden. */
-    credentials: [] as Text[],
+    /** Who does the work. No one is confirmed yet, so production hides the slot. */
+    team: {
+      label: { text: "Who does the work", status: "draft" } as Text,
+      placeholder: {
+        text: "Needed from Mehdi: each person's name, role and credentials. Hidden in production until confirmed.",
+        status: "draft",
+      } as Text,
+      members: [] as TeamMember[],
+    },
   },
 
   name: {

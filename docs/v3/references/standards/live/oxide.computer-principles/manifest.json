@@ -1,0 +1,117 @@
+{
+  "url": "https://oxide.computer/principles",
+  "section": "standards",
+  "capturedAt": "2026-10-03T17:07:29.379Z",
+  "options": {
+    "at": "Our Principles",
+    "mobile": true,
+    "probe": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/desktop-at-0.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/desktop-at-1.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/desktop-at-2.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/mobile-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/mobile-at-0.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/mobile-at-1.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/standards/live/oxide.computer-principles/mobile-at-2.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "nav": {
+          "font-family": "SuisseIntl, -apple-system, \"system-ui\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "letter-spacing": "0.336px",
+          "line-height": "22px",
+          "font-stretch": "100%",
+          "color": "oklch(0.79 0.0011 260)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid oklch(0.316 0.006 260)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "60px",
+          "transition": "all",
+          "text": "ProductProductSolutionsSolutionsResourcesResourcesCompanyCompanyPodcastsPodcasts"
+        },
+        "h2": {
+          "font-family": "SuisseIntl, -apple-system, \"system-ui\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "36px",
+          "letter-spacing": "-0.468px",
+          "line-height": "42px",
+          "font-stretch": "100%",
+          "color": "oklch(0.9 0.0001 260)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid oklch(0.316 0.006 260)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "126px",
+          "transition": "all",
+          "text": "At Oxide, our mission, principles, and values are not mere corporate bromides; t"
+        }
+      },
+      "fonts": [
+        "GT America Mono 400 normal",
+        "SuisseIntl 400 normal",
+        "SuisseIntl 500 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "nav": {
+          "font-family": "SuisseIntl, -apple-system, \"system-ui\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "letter-spacing": "0.336px",
+          "line-height": "22px",
+          "font-stretch": "100%",
+          "color": "oklch(0.79 0.0011 260)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid oklch(0.316 0.006 260)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "60px",
+          "transition": "all",
+          "text": "ProductProductSolutionsSolutionsResourcesResourcesCompanyCompanyPodcastsPodcasts"
+        },
+        "h2": {
+          "font-family": "SuisseIntl, -apple-system, \"system-ui\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "letter-spacing": "0.252px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "oklch(0.9 0.0001 260)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid oklch(0.316 0.006 260)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "120px",
+          "transition": "all",
+          "text": "At Oxide, our mission, principles, and values are not mere corporate bromides; t"
+        }
+      },
+      "fonts": [
+        "GT America Mono 400 normal",
+        "SuisseIntl 400 normal",
+        "SuisseIntl 500 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}
