@@ -7,7 +7,7 @@ import { initParallax } from "@/lib/parallax";
 
 /**
  * Drives the whole page's smooth scroll via Lenis, synced to GSAP's ticker
- * so ScrollTrigger-based sections (the Engagement horizontal pin) stay
+ * so ScrollTrigger-based sections (the Projects stage, the Engagement rule) stay
  * perfectly in step with the virtual scroll position.
  */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {

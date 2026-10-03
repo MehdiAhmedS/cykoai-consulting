@@ -1,0 +1,180 @@
+{
+  "url": "https://thoughtbot.com/services/shaping-sprint",
+  "section": "engagement",
+  "capturedAt": "2026-10-03T16:37:30.201Z",
+  "options": {
+    "at": "What happens in a Shaping Sprint",
+    "mobile": true,
+    "probe": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/desktop-at-0.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/desktop-at-1.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/desktop-at-2.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/mobile-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/mobile-at-0.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/mobile-at-1.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/thoughtbot.com-services-shaping-sprint/mobile-at-2.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "PPMori, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "line-height": "27px",
+          "font-stretch": "100%",
+          "color": "rgb(234, 230, 228)",
+          "background-color": "rgb(32, 19, 19)",
+          "border-bottom": "0px none rgb(234, 230, 228)",
+          "border-radius": "0px",
+          "position": "sticky",
+          "top": "0px",
+          "height": "69.8438px",
+          "transition": "all",
+          "text": "Skip to main content\n\n  \n    \n      thoughtbot\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      thought"
+        },
+        "nav": {
+          "font-family": "PPMori, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "18px",
+          "line-height": "27px",
+          "font-stretch": "100%",
+          "color": "rgb(234, 230, 228)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(234, 230, 228)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "23.7656px",
+          "transition": "all",
+          "text": "Close Menu\n      \n\n      \n        \n          \n  \n    We're live\n  \n  \n    Live o"
+        },
+        "h1": {
+          "font-family": "Cosmica, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "700",
+          "font-size": "49.5px",
+          "letter-spacing": "-1.08px",
+          "line-height": "56.925px",
+          "font-stretch": "100%",
+          "color": "rgb(250, 249, 249)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(250, 249, 249)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "170.766px",
+          "transition": "all",
+          "text": "Build with clarity, confidence, and the right foundation from day one"
+        },
+        "h2": {
+          "font-family": "\"Jet Brains\", Monaco, Consolas, \"Lucida Console\", monospace",
+          "font-weight": "700",
+          "font-size": "18px",
+          "line-height": "20.7px",
+          "font-stretch": "100%",
+          "color": "rgb(193, 186, 183)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(193, 186, 183)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "20.6875px",
+          "transition": "all",
+          "text": "A strong foundation"
+        }
+      },
+      "fonts": [
+        "Cosmica 400 normal",
+        "Cosmica 700 normal",
+        "PPMori 700 normal",
+        "PPMori 400 normal",
+        "Jet Brains 700 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "PPMori, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(234, 230, 228)",
+          "background-color": "rgb(32, 19, 19)",
+          "border-bottom": "0px none rgb(234, 230, 228)",
+          "border-radius": "0px",
+          "position": "sticky",
+          "top": "0px",
+          "height": "67px",
+          "transition": "all",
+          "text": "Skip to main content\n\n  \n    \n      thoughtbot\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      thought"
+        },
+        "nav": {
+          "font-family": "PPMori, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(234, 230, 228)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(234, 230, 228)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": "Close Menu\n      \n\n      \n        \n          \n  \n    We're live\n  \n  \n    Live o"
+        },
+        "h1": {
+          "font-family": "Cosmica, \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "font-weight": "700",
+          "font-size": "36px",
+          "letter-spacing": "-0.96px",
+          "line-height": "41.4px",
+          "font-stretch": "100%",
+          "color": "rgb(250, 249, 249)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(250, 249, 249)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "206.953px",
+          "transition": "all",
+          "text": "Build with clarity, confidence, and the right foundation from day one"
+        },
+        "h2": {
+          "font-family": "\"Jet Brains\", Monaco, Consolas, \"Lucida Console\", monospace",
+          "font-weight": "700",
+          "font-size": "14.08px",
+          "line-height": "16.192px",
+          "font-stretch": "100%",
+          "color": "rgb(193, 186, 183)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px none rgb(193, 186, 183)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "16.1875px",
+          "transition": "all",
+          "text": "A strong foundation"
+        }
+      },
+      "fonts": [
+        "Cosmica 400 normal",
+        "Cosmica 700 normal",
+        "PPMori 700 normal",
+        "PPMori 400 normal",
+        "Jet Brains 700 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "none",
+  "consent-mobile": "none"
+}

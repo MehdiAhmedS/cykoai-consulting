@@ -38,6 +38,15 @@ export interface Offer {
 export interface Step {
   title: string;
   text: string;
+  /** What the client holds at the end of the stage. */
+  receive: Text;
+  status: Status;
+}
+
+/** A row on the Engagement cover. A TBC value hides the row in production. */
+export interface CoverRow {
+  label: string;
+  value: string;
   status: Status;
 }
 
@@ -186,30 +195,46 @@ export const site = {
       text: "What happens between your first message and the handover.",
       status: "draft",
     } as Text,
+    /** The cover (step 08). Team and Handover are derived from the Deploy and Sustain lines. */
+    cover: {
+      title: { text: "A typical engagement", status: "draft" } as Text,
+      rows: [
+        { label: "Length", value: TBC, status: "draft" },
+        { label: "Team", value: "Engineers and a strategist, inside your team", status: "draft" },
+        { label: "Effort", value: TBC, status: "draft" },
+        { label: "Handover", value: "Your team runs it", status: "draft" },
+      ] as CoverRow[],
+    },
+    receiveLabel: { text: "You receive", status: "draft" } as Text,
     steps: [
       {
         title: "Assess",
         text: "We map where your organization stands, technically, operationally and culturally, against where you intend to go.",
+        receive: { text: "A current-state map", status: "draft" },
         status: "confirmed",
       },
       {
         title: "Align",
         text: "Strategy and business case, built together with the executives who'll be accountable for the outcome.",
+        receive: { text: "Scope and business case", status: "draft" },
         status: "confirmed",
       },
       {
         title: "Design",
         text: "The architecture and delivery plan, including how it will be secured and run.",
+        receive: { text: "Architecture and security plan", status: "draft" },
         status: "draft",
       },
       {
         title: "Deploy",
         text: "Forward-deployed engineers and strategists work inside your teams, shipping the thing rather than presenting it.",
+        receive: { text: "A working system, built with your team", status: "draft" },
         status: "confirmed",
       },
       {
         title: "Sustain",
         text: "We instrument, measure, and hand off a system your teams can run and evolve long after the engagement ends.",
+        receive: { text: "Runbook, measures and handover", status: "draft" },
         status: "confirmed",
       },
     ] as Step[],

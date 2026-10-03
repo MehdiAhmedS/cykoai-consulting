@@ -1,0 +1,186 @@
+{
+  "url": "https://trailofbits.com/anatomy-of-a-report/",
+  "section": "engagement",
+  "capturedAt": "2026-10-03T16:35:39.093Z",
+  "options": {
+    "flow": "10",
+    "mobile": true,
+    "probe": true
+  },
+  "files": [
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/desktop-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/desktop-flow-01.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/desktop-flow-02.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/desktop-flow-03.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/desktop-flow-04.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/desktop-flow-05.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-top.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-01.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-02.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-03.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-04.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-05.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-06.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-07.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-08.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-09.jpg",
+    "/Users/mehdi/Documents/Personal/cykoai-consulting/docs/v3/references/engagement/live/trailofbits.com-anatomy-of-a-report/mobile-flow-10.jpg"
+  ],
+  "probes": {
+    "desktop": {
+      "elements": {
+        "header": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgb(250, 250, 250)",
+          "border-bottom": "1px solid rgb(235, 235, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": ""
+        },
+        "nav": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(24, 23, 23)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "611.625px",
+          "transition": "all",
+          "text": "Home         New      Patch thePlanet  (New)             Explore               S"
+        },
+        "h1": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "300",
+          "font-size": "68px",
+          "letter-spacing": "-1.7px",
+          "line-height": "66.64px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(24, 23, 23)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "133.25px",
+          "transition": "all",
+          "text": "Every part of the report does a job."
+        },
+        "h2": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "500",
+          "font-size": "18px",
+          "letter-spacing": "-0.18px",
+          "line-height": "21.6px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(24, 23, 23)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "21.5938px",
+          "transition": "all",
+          "text": "Largest engagements"
+        }
+      },
+      "fonts": [
+        "FH Lecturis 400 normal",
+        "Geist 100 900 normal",
+        "Geist Mono 100 900 normal",
+        "Geist 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    },
+    "mobile": {
+      "elements": {
+        "header": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgb(250, 250, 250)",
+          "border-bottom": "1px solid rgb(235, 235, 235)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "61px",
+          "transition": "all",
+          "text": ""
+        },
+        "nav": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "400",
+          "font-size": "16px",
+          "line-height": "24px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(24, 23, 23)",
+          "border-radius": "0px",
+          "position": "static",
+          "transition": "all",
+          "text": "Home         New      Patch thePlanet  (New)             Explore               S"
+        },
+        "h1": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "300",
+          "font-size": "40px",
+          "letter-spacing": "-1px",
+          "line-height": "39.2px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(24, 23, 23)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "78.375px",
+          "transition": "all",
+          "text": "Every part of the report does a job."
+        },
+        "h2": {
+          "font-family": "Geist, ui-sans-serif, system-ui, sans-serif",
+          "font-weight": "500",
+          "font-size": "18px",
+          "letter-spacing": "-0.18px",
+          "line-height": "21.6px",
+          "font-stretch": "100%",
+          "color": "rgb(24, 23, 23)",
+          "background-color": "rgba(0, 0, 0, 0)",
+          "border-bottom": "0px solid rgb(24, 23, 23)",
+          "border-radius": "0px",
+          "position": "static",
+          "height": "21.5938px",
+          "transition": "all",
+          "text": "Largest engagements"
+        }
+      },
+      "fonts": [
+        "FH Lecturis 400 normal",
+        "Geist 100 900 normal",
+        "Geist Mono 100 900 normal",
+        "Geist 400 normal"
+      ],
+      "tech": {
+        "canvas": 0,
+        "webgl": false,
+        "scripts": []
+      }
+    }
+  },
+  "errors": [],
+  "consent-desktop": "rejected",
+  "consent-mobile": "rejected"
+}
