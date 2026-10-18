@@ -2,7 +2,7 @@ import MonoLabel from "@/components/ui/MonoLabel";
 import SplitText from "@/components/ui/SplitText";
 import Reveal from "@/components/ui/Reveal";
 import DraftMark from "@/components/ui/DraftMark";
-import { SHOW_DRAFTS, isShown, site } from "@/content/site";
+import { isShown, site } from "@/content/site";
 
 const { label, heading, intro, framing, frameworks, team } = site.standards;
 
@@ -82,7 +82,7 @@ export default function Standards() {
           </Reveal>
         )}
 
-        {(members.length > 0 || SHOW_DRAFTS) && (
+        {members.length > 0 && (
           <div className="mt-[clamp(48px,8vh,88px)]">
             <p className="type-label text-n500">
               {team.label.text}
@@ -103,12 +103,6 @@ export default function Standards() {
                   </Reveal>
                 </li>
               ))}
-              {members.length === 0 && (
-                <li className="type-small border-t border-n150 py-5 text-n500">
-                  {team.placeholder.text}
-                  <DraftMark status={team.placeholder.status} />
-                </li>
-              )}
             </ul>
           </div>
         )}

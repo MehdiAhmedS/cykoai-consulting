@@ -1,5 +1,4 @@
 import LogoMark from "@/components/ui/LogoMark";
-import GenImage from "@/components/ui/GenImage";
 import DraftMark from "@/components/ui/DraftMark";
 import { site } from "@/content/site";
 
@@ -8,7 +7,7 @@ const COLUMNS = [columns.company, columns.connect];
 
 /**
  * Footer — Windsor band, oversized wordmark, one 45° diagonal entering
- * from the corner, mono legal line; AM-5 anchors the corner at 0.94.
+ * from the corner, mono legal line.
  */
 export default function Footer() {
   return (
@@ -22,19 +21,6 @@ export default function Footer() {
         aria-hidden="true"
         className="pointer-events-none absolute -right-[10%] bottom-[12%] h-px w-[70%] origin-bottom-right -rotate-45 bg-white/10"
       />
-
-      {/* AM-5 — the mark made physical, anchoring the corner */}
-      <div
-        data-speed="0.94"
-        className="pointer-events-none absolute -right-16 top-6 w-[240px] opacity-90 will-change-transform max-lg:hidden"
-      >
-        <GenImage
-          src="/assets/gen/am5-monogram-cube.png"
-          width={1024}
-          height={1024}
-          sizes="240px"
-        />
-      </div>
 
       <div className="relative mx-auto max-w-[1320px] px-[clamp(20px,4vw,56px)]">
         <div className="flex flex-col justify-between gap-14 lg:flex-row">
@@ -90,7 +76,6 @@ export default function Footer() {
 
         <div className="flex flex-col-reverse items-start justify-between gap-4 border-t border-white/10 py-8 type-label text-n300 sm:flex-row sm:items-center">
           <span>&copy; {new Date().getFullYear()} {legal.rights}</span>
-          <span>{legal.credit}</span>
         </div>
       </div>
     </footer>

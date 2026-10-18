@@ -3,6 +3,8 @@
  *
  * status: "confirmed" is v1 copy Mehdi has approved (or a line the step
  * prompt marks confirmed); "draft" is new wording awaiting his sign-off.
+ * Mehdi signed off every draft on 17 Oct (the sign-off sheet), so every
+ * entry is now confirmed. Engagement effort and the team are left off.
  * Unknown values are the string "TBC". Nothing here is invented: drafts
  * are transcribed from docs/v3/prompts/01-structure.md.
  */
@@ -85,10 +87,10 @@ export interface GlobeLocation {
 }
 
 const SECTION_LINKS: Link[] = [
-  { label: "Offers", href: "#offers", status: "draft" },
-  { label: "Projects", href: "#projects", status: "draft" },
-  { label: "Engagement", href: "#engagement", status: "draft" },
-  { label: "Standards", href: "#standards", status: "draft" },
+  { label: "Our Craft", href: "#offers", status: "confirmed" },
+  { label: "Projects", href: "#projects", status: "confirmed" },
+  { label: "Engagement", href: "#engagement", status: "confirmed" },
+  { label: "Standards", href: "#standards", status: "confirmed" },
 ];
 
 const TALK_TO_US: Link = { label: "Talk to us", href: "#contact", status: "confirmed" };
@@ -104,21 +106,21 @@ export const site = {
   },
 
   hero: {
-    eyebrow: { text: "Security · AI automation · Engineering", status: "draft" } as Text,
+    eyebrow: { text: "Security · AI automation · Software Engineering", status: "confirmed" } as Text,
     headline: {
       text: "The future moves faster than",
       dim: "your organization.",
       status: "confirmed" as Status,
     },
     lede: {
-      text: "Cybersecurity, AI automation, mobile apps, API integrations and company websites, from one team.",
-      status: "draft",
+      text: "Cybersecurity, AI automation, mobile apps, API integrations and Company Branding, from one team.",
+      status: "confirmed",
     } as Text,
     primaryCta: TALK_TO_US,
-    secondaryCta: { label: "See what we do", href: "#offers", status: "draft" } as Link,
+    secondaryCta: { label: "See what we do", href: "#offers", status: "confirmed" } as Link,
   },
 
-  // Clients are real (Mehdi, 26 Sep). Only confirmed entries are drawn.
+  // Clients are real (Mehdi, 26 Sep; Kenya and Tanzania, 17 Oct). Only confirmed entries are drawn.
   globe: {
     locations: [
       // Arcs visit these in order (skipping any not in view). Decorative places are
@@ -130,21 +132,19 @@ export const site = {
       { name: "India", lat: 28.61, lng: 77.21, role: "decorative", status: "confirmed" }, // New Delhi
       { name: "Germany", lat: 52.52, lng: 13.4, role: "client", status: "confirmed" }, // Berlin
       { name: "Egypt", lat: 30.04, lng: 31.24, role: "decorative", status: "confirmed" }, // Cairo
+      { name: "Kenya", lat: -1.29, lng: 36.82, role: "client", status: "confirmed" }, // Nairobi
+      { name: "Tanzania", lat: -6.16, lng: 35.75, role: "client", status: "confirmed" }, // Dodoma
       { name: "United Kingdom", lat: 51.51, lng: -0.13, role: "decorative", status: "confirmed" }, // London
       { name: "Singapore", lat: 1.35, lng: 103.82, role: "decorative", status: "confirmed" },
     ] as GlobeLocation[],
-    // Clients in Africa are confirmed, but not the country: it joins `locations` once Mehdi names it.
-    pending: {
-      text: "Clients in Africa: the country is TBC, so it is not on the globe yet.",
-      status: "draft",
-    } as Text,
   },
 
   offers: {
-    label: { text: "Offers", status: "draft" } as Text,
-    heading: { text: "What you can hire us for.", status: "draft" } as Text,
-    intro: { text: "Six ways to work with us. Pick one, or combine them.", status: "draft" } as Text,
-    fields: { for: "For", youGet: "You get", status: "draft" as Status },
+    // Matches the menu link (Mehdi, 17 Oct).
+    label: { text: "Our Craft", status: "confirmed" } as Text,
+    heading: { text: "What you can hire us for.", status: "confirmed" } as Text,
+    intro: { text: "Six ways to work with us. Pick one, or combine them.", status: "confirmed" } as Text,
+    fields: { for: "For", youGet: "You get", status: "confirmed" as Status },
     items: [
       {
         id: "security-reviews",
@@ -152,7 +152,7 @@ export const site = {
         practice: "Security",
         for: "Apps about to launch, including AI-built ones",
         youGet: "Architecture and design review and penetration testing, with findings by severity and fixes",
-        status: "draft",
+        status: "confirmed",
       },
       {
         id: "workspace-hardening",
@@ -160,7 +160,7 @@ export const site = {
         practice: "Security",
         for: "Organisations on Google Workspace",
         youGet: "A hardened configuration, a review of contractor and freelancer access, and controls mapped to ISO/IEC 27001",
-        status: "draft",
+        status: "confirmed",
       },
       {
         id: "ai-automation",
@@ -168,7 +168,7 @@ export const site = {
         practice: "AI",
         for: "Teams with repetitive, manual work",
         youGet: "AI workflows that remove manual steps, including private AI on Google Vertex",
-        status: "draft",
+        status: "confirmed",
       },
       {
         id: "mobile-iot",
@@ -176,7 +176,7 @@ export const site = {
         practice: "Engineering",
         for: "Products that talk to hardware",
         youGet: "Mobile applications with API integrations to devices and IoT hardware",
-        status: "draft",
+        status: "confirmed",
       },
       {
         id: "apis-bots",
@@ -184,7 +184,7 @@ export const site = {
         practice: "Engineering",
         for: "Teams connecting systems",
         youGet: "API integrations and Docker-based bot deployments",
-        status: "draft",
+        status: "confirmed",
       },
       {
         // Renamed from "Company profiles" (Mehdi, 27 Sep): almost any kind of landing page.
@@ -193,72 +193,72 @@ export const site = {
         practice: "Design",
         for: "Companies that need a presence",
         youGet: "Landing pages of almost any kind, with the brand design to match, built from the ground up",
-        status: "draft",
+        status: "confirmed",
       },
     ] as Offer[],
   },
 
   engagement: {
-    label: { text: "Engagement", status: "draft" } as Text,
-    heading: { text: "How an engagement runs.", status: "draft" } as Text,
+    label: { text: "Engagement", status: "confirmed" } as Text,
+    heading: { text: "How an engagement runs.", status: "confirmed" } as Text,
     intro: {
       text: "What happens between your first message and the handover.",
-      status: "draft",
+      status: "confirmed",
     } as Text,
     /** The cover (step 08). Team and Handover are derived from the Deploy and Sustain lines. */
     cover: {
-      title: { text: "A typical engagement", status: "draft" } as Text,
+      title: { text: "A typical engagement", status: "confirmed" } as Text,
       rows: [
-        { label: "Length", value: TBC, status: "draft" },
-        { label: "Team", value: "Engineers and a strategist, inside your team", status: "draft" },
-        { label: "Effort", value: TBC, status: "draft" },
-        { label: "Handover", value: "Your team runs it", status: "draft" },
+        { label: "Length", value: "6 weeks", status: "confirmed" },
+        { label: "Team", value: "Engineers and a strategist, inside your team", status: "confirmed" },
+        // Effort is left off (Mehdi, 17 Oct). Add a row here to show it.
+        { label: "Handover", value: "Your team runs it", status: "confirmed" },
       ] as CoverRow[],
     },
-    receiveLabel: { text: "You receive", status: "draft" } as Text,
+    receiveLabel: { text: "You receive", status: "confirmed" } as Text,
     steps: [
       {
         title: "Assess",
         text: "We map where your organization stands, technically, operationally and culturally, against where you intend to go.",
-        receive: { text: "A current-state map", status: "draft" },
+        receive: { text: "A current-state map", status: "confirmed" },
         status: "confirmed",
       },
       {
         title: "Align",
         text: "Strategy and business case, built together with the executives who'll be accountable for the outcome.",
-        receive: { text: "Scope and business case", status: "draft" },
+        receive: { text: "Scope and business case", status: "confirmed" },
         status: "confirmed",
       },
       {
         title: "Design",
         text: "The architecture and delivery plan, including how it will be secured and run.",
-        receive: { text: "Architecture and security plan", status: "draft" },
-        status: "draft",
+        receive: { text: "Architecture and security plan", status: "confirmed" },
+        status: "confirmed",
       },
       {
         title: "Deploy",
         text: "Forward-deployed engineers and strategists work inside your teams, shipping the thing rather than presenting it.",
-        receive: { text: "A working system, built with your team", status: "draft" },
+        receive: { text: "A working system, built with your team", status: "confirmed" },
         status: "confirmed",
       },
       {
         title: "Sustain",
         text: "We instrument, measure, and hand off a system your teams can run and evolve long after the engagement ends.",
-        receive: { text: "Runbook, measures and handover", status: "draft" },
+        receive: { text: "Runbook, measures and handover", status: "confirmed" },
         status: "confirmed",
       },
     ] as Step[],
   },
 
   standards: {
-    label: { text: "Standards", status: "draft" } as Text,
-    heading: { text: "The rules we work by.", status: "draft" } as Text,
+    label: { text: "Standards", status: "confirmed" } as Text,
+    heading: { text: "The rules we work by.", status: "confirmed" } as Text,
     intro: {
       text: "What you can hold us to, and the frameworks we work to.",
-      status: "draft",
+      status: "confirmed",
     } as Text,
-    framing: { text: "Each one is something you can check.", status: "draft" } as Text,
-    // Production renders confirmed rules only. The first three: Mehdi, 3 Oct.
+    framing: { text: "Each one is something you can check.", status: "confirmed" } as Text,
+    // Production renders confirmed rules only. The first three: Mehdi, 3 Oct; the fourth, 17 Oct.
     rules: [
       {
         title: "Access ends at handover",
@@ -278,13 +278,13 @@ export const site = {
       {
         title: "Security is part of the design",
         text: "The security plan is written with the architecture, before anything is built.",
-        status: "draft",
+        status: "confirmed",
       },
     ] as Rule[],
     // What Cykoai works with and implements controls for; not certificates it
     // holds. Production renders confirmed items only (these four: Mehdi, 3 Oct).
     frameworks: {
-      label: { text: "Frameworks and platforms", status: "draft" } as Text,
+      label: { text: "Frameworks and platforms", status: "confirmed" } as Text,
       items: [
         { text: "ISO/IEC 27001", status: "confirmed" },
         { text: "Google Workspace", status: "confirmed" },
@@ -292,36 +292,32 @@ export const site = {
         { text: "Docker", status: "confirmed" },
       ] as Text[],
     },
-    /** Who does the work. No one is confirmed yet, so production hides the slot. */
+    /** Who does the work. Left off for now (Mehdi, 17 Oct): the block renders only once members are listed. */
     team: {
-      label: { text: "Who does the work", status: "draft" } as Text,
-      placeholder: {
-        text: "Needed from Mehdi: each person's name, role and credentials. Hidden in production until confirmed.",
-        status: "draft",
-      } as Text,
+      label: { text: "Who does the work", status: "confirmed" } as Text,
       members: [] as TeamMember[],
     },
   },
 
   name: {
-    label: { text: "The name", status: "draft" } as Text,
+    label: { text: "The name", status: "confirmed" } as Text,
     word: { text: "cykoai", status: "confirmed" } as Text,
     pronunciation: { text: "see-ko-ya", status: "confirmed" } as Text,
     parts: [
       {
         syllable: "cy",
         text: "From cybersecurity. The part of the work that comes first.",
-        status: "draft",
+        status: "confirmed",
       },
       {
         syllable: "ko",
         text: "The koi, which moves with the current, and the sequoia, which outlasts it.",
-        status: "draft",
+        status: "confirmed",
       },
       {
         syllable: "ai",
         text: "Applied intelligence: models put to work on real operations.",
-        status: "draft",
+        status: "confirmed",
       },
     ] as NamePart[],
     closing: { text: "Cykoai creates clarity.", status: "confirmed" } as Text,
@@ -362,7 +358,6 @@ export const site = {
     bigWordmark: "CYKOAI",
     legal: {
       rights: "CYKOAI CONSULTING. ALL RIGHTS RESERVED.",
-      credit: "DESIGNED AND BUILT IN-HOUSE.",
       status: "confirmed" as Status,
     },
   },

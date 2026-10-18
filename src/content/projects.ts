@@ -1,5 +1,5 @@
 import "server-only";
-import { TBC, type Status, type Text } from "./site";
+import { type Status, type Text } from "./site";
 
 /**
  * Projects (v3 step 07): the stage, then "More work".
@@ -12,6 +12,7 @@ import { TBC, type Status, type Text } from "./site";
  *
  * Nothing here is invented: entries are transcribed from the step 07 prompt.
  * Unknown values are TBC; unconfirmed clients and links are "draft".
+ * Mehdi signed off every entry, client and link on 17 Oct (the sign-off sheet).
  */
 
 export type ProjectScreen =
@@ -32,7 +33,7 @@ export interface Project {
   year?: string; // landing pages
   since?: string; // engagements
   state?: "In progress" | "Ongoing";
-  stack: string;
+  stack?: string; // left out when unknown
   link?: string;
   linkStatus?: Status;
   screen: ProjectScreen;
@@ -41,21 +42,21 @@ export interface Project {
 }
 
 export const projectsCopy = {
-  label: { text: "Projects", status: "draft" } as Text,
-  heading: { text: "What we've built, and what we're building.", status: "draft" } as Text,
+  label: { text: "Projects", status: "confirmed" } as Text,
+  heading: { text: "What we've built, and what we're building.", status: "confirmed" } as Text,
   intro: {
     text: "Sites we've designed and built, and the engagements under way now. Confidential clients aren't named, and their work is shown as illustrations.",
-    status: "draft",
+    status: "confirmed",
   } as Text,
-  moreWork: { text: "More work", status: "draft" } as Text,
+  moreWork: { text: "More work", status: "confirmed" } as Text,
   labels: {
     illustration: "Illustration",
     visit: "Visit the live page",
     newTab: "(opens in a new tab)",
-    status: "draft" as Status,
+    status: "confirmed" as Status,
   },
-  summary: { project: "project", projects: "projects", inProgress: "in progress", status: "draft" as Status },
-  facts: { client: "Client", year: "Year", since: "Since", state: "Status", stack: "Stack", status: "draft" as Status },
+  summary: { project: "project", projects: "projects", inProgress: "in progress", status: "confirmed" as Status },
+  facts: { client: "Client", year: "Year", since: "Since", state: "Status", stack: "Stack", status: "confirmed" as Status },
   /** Strings inside the illustrations. They show the kind of work only: no names, counts, dates, states or results. */
   mockups: {
     accessReview: {
@@ -80,7 +81,7 @@ export const projectsCopy = {
     workflow: {
       steps: ["Request arrives", "AI reads and extracts", "Checked against rules", "A person approves", "Records updated"],
     },
-    status: "draft" as Status,
+    status: "confirmed" as Status,
   },
 };
 
@@ -100,14 +101,14 @@ export const projects: Project[] = [
     practice: "Design",
     type: "Landing page, Arabic",
     client: "Bukhait Sefrar, Muscat",
-    clientStatus: "draft",
-    year: TBC,
+    clientStatus: "confirmed",
+    year: "2025",
     stack: LANDING_STACK,
     link: "https://v0-bukhait-sefrar-landing-page.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "bukhait-sefrar", label: "Bukhait Sefrar" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "hdt-systems",
@@ -118,12 +119,12 @@ export const projects: Project[] = [
     type: "Workspace hardening",
     client: "HDT Systems, Germany",
     clientStatus: "confirmed",
-    since: TBC,
+    since: "May 2026",
     state: "In progress",
     stack: "Google Workspace · ISO/IEC 27001 controls",
     screen: { kind: "mockup", mockup: "access-review", label: "Access review" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "rabia-al-basri",
@@ -132,14 +133,15 @@ export const projects: Project[] = [
     line: "An interactive autobiography of the eighth-century mystic.",
     practice: "Design",
     type: "Interactive story",
-    client: TBC,
-    year: TBC,
+    client: "Withheld",
+    clientStatus: "confirmed", // a client's page, shown and linked without naming them (Mehdi, 17 Oct)
+    year: "2025",
     stack: LANDING_STACK,
     link: "https://v0-rabia-al-basri-website.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "rabia-al-basri", label: "Rabia Al Basri" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "launch-audits",
@@ -149,12 +151,12 @@ export const projects: Project[] = [
     practice: "Security",
     type: "Security review",
     client: "Withheld",
-    since: TBC,
+    since: "June 2026",
     state: "Ongoing",
     stack: "Architecture and design review",
     screen: { kind: "mockup", mockup: "launch-readiness", label: "Launch readiness" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "mono",
@@ -163,14 +165,15 @@ export const projects: Project[] = [
     line: "A landing page for sustainable modular homes.",
     practice: "Design",
     type: "Landing page",
-    client: TBC,
-    year: TBC,
+    client: "Withheld",
+    clientStatus: "confirmed", // a client's page, shown and linked without naming them (Mehdi, 17 Oct)
+    year: "2026",
     stack: LANDING_STACK,
     link: "https://v0-mono-housing-landing.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "mono", label: "MONO" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "device-app",
@@ -180,12 +183,12 @@ export const projects: Project[] = [
     practice: "Engineering",
     type: "Mobile app, IoT",
     client: "Withheld",
-    since: TBC,
+    since: "July 2026",
     state: "Ongoing",
     stack: "Mobile · device APIs · IoT",
     screen: { kind: "phone-shell" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "ai-workflows",
@@ -195,12 +198,12 @@ export const projects: Project[] = [
     practice: "AI",
     type: "AI automation",
     client: "Withheld",
-    since: TBC,
+    since: "July 2026",
     state: "In progress",
-    stack: TBC,
+    stack: "Python · TensorFlow · Hugging Face",
     screen: { kind: "mockup", mockup: "workflow", label: "Workflow" },
     featured: true,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "asaan-nikah",
@@ -210,14 +213,14 @@ export const projects: Project[] = [
     practice: "Engineering",
     type: "Web app and landing page",
     client: "Asaan Nikah",
-    clientStatus: "draft",
-    year: TBC,
-    stack: TBC,
+    clientStatus: "confirmed",
+    year: "2025",
+    stack: "Laravel · MySQL · Next.js",
     link: "https://v0-asaan-nikah-landing-page.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "asaan-nikah", label: "Asaan Nikah" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "private-ai",
@@ -227,12 +230,12 @@ export const projects: Project[] = [
     practice: "AI",
     type: "AI platform",
     client: "Withheld",
-    since: TBC,
+    since: "July 2026",
     state: "In progress",
     stack: "Google Vertex AI",
     screen: { kind: "none" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "pentests",
@@ -242,12 +245,11 @@ export const projects: Project[] = [
     practice: "Security",
     type: "Penetration test",
     client: "Withheld",
-    since: TBC,
+    since: "July 2026",
     state: "Ongoing",
-    stack: TBC,
     screen: { kind: "none" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "optimus",
@@ -256,14 +258,15 @@ export const projects: Project[] = [
     line: "A landing page for an AI platform.",
     practice: "Design",
     type: "Landing page",
-    client: TBC,
-    year: TBC,
+    client: "Withheld",
+    clientStatus: "confirmed", // a client's page, shown and linked without naming them (Mehdi, 17 Oct)
+    year: "2026",
     stack: LANDING_STACK,
     link: "https://v0-optimus-the-ai-landing.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "optimus", label: "Optimus" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "gigi-energy",
@@ -272,14 +275,15 @@ export const projects: Project[] = [
     line: "A landing page for an energy drink.",
     practice: "Design",
     type: "Landing page",
-    client: TBC,
-    year: TBC,
+    client: "Withheld",
+    clientStatus: "confirmed", // a client's page, shown and linked without naming them (Mehdi, 17 Oct)
+    year: "2026",
     stack: LANDING_STACK,
     link: "https://v0-energy-drink-landing-gigi.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "gigi-energy", label: "GiGi Energy" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "voss-architects",
@@ -288,14 +292,15 @@ export const projects: Project[] = [
     line: "A landing page for an architecture studio.",
     practice: "Design",
     type: "Landing page",
-    client: TBC,
-    year: TBC,
+    client: "Withheld",
+    clientStatus: "confirmed", // a client's page, shown and linked without naming them (Mehdi, 17 Oct)
+    year: "2026",
     stack: LANDING_STACK,
     link: "https://v0-minimal-architecture-landing.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "voss-architects", label: "Voss Architects" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
   {
     id: "hously",
@@ -304,13 +309,14 @@ export const projects: Project[] = [
     line: "A landing page for an architecture and interiors studio.",
     practice: "Design",
     type: "Landing page",
-    client: TBC,
-    year: TBC,
+    client: "Withheld",
+    clientStatus: "confirmed", // a client's page, shown and linked without naming them (Mehdi, 17 Oct)
+    year: "2026",
     stack: LANDING_STACK,
     link: "https://v0-hously-modern-architecture-landing.vercel.app/",
-    linkStatus: "draft",
+    linkStatus: "confirmed",
     screen: { kind: "capture", slug: "hously", label: "Hously" },
     featured: false,
-    status: "draft",
+    status: "confirmed",
   },
 ];

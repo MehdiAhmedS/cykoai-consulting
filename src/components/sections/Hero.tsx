@@ -1,7 +1,6 @@
 import HeroGlobe from "@/components/ui/HeroGlobe";
-import DraftMark from "@/components/ui/DraftMark";
 import HeroHeadline from "@/components/sections/HeroHeadline";
-import { SHOW_DRAFTS, site } from "@/content/site";
+import { site } from "@/content/site";
 
 const { globe } = site;
 
@@ -33,16 +32,6 @@ export default function Hero() {
       </div>
 
       <HeroHeadline />
-
-      {/* dev only: a known client location that is not on the globe yet */}
-      {SHOW_DRAFTS && (
-        <div className="absolute inset-x-0 bottom-6 z-[2]">
-          <p className="type-label mx-auto max-w-[1320px] px-[clamp(20px,4vw,56px)] text-n300">
-            <DraftMark status={globe.pending.status} className="ml-0 mr-2" />
-            {globe.pending.text}
-          </p>
-        </div>
-      )}
     </section>
   );
 }
