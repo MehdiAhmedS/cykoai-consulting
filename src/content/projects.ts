@@ -17,7 +17,8 @@ import { type Status, type Text } from "./site";
 
 export type ProjectScreen =
   | { kind: "capture"; slug: string; label: string }
-  | { kind: "mockup"; mockup: "access-review" | "launch-readiness" | "workflow"; label: string }
+  | { kind: "mockup"; mockup: "launch-readiness" | "workflow"; label: string }
+  | { kind: "piece"; piece: "hdt" } // a three.js piece on the stage, frameless, with no text or tag (07b)
   | { kind: "phone-shell" }
   | { kind: "none" }; // More work only; an entry needs a screen before it can be featured
 
@@ -59,13 +60,6 @@ export const projectsCopy = {
   facts: { client: "Client", year: "Year", since: "Since", state: "Status", stack: "Stack", status: "confirmed" as Status },
   /** Strings inside the illustrations. They show the kind of work only: no names, counts, dates, states or results. */
   mockups: {
-    accessReview: {
-      rail: ["Accounts", "Groups", "Sharing", "Devices", "Controls"],
-      columns: ["Account", "Type", "Access", "2-step", "Decision"],
-      legend: ["Keep", "Reduce", "Remove"],
-      controlsTitle: "Controls",
-      controls: ["Organizational", "People", "Physical", "Technological"],
-    },
     launchReadiness: {
       title: "Launch-readiness review",
       severity: ["Critical", "High", "Medium", "Low"],
@@ -122,7 +116,7 @@ export const projects: Project[] = [
     since: "May 2026",
     state: "In progress",
     stack: "Google Workspace · ISO/IEC 27001 controls",
-    screen: { kind: "mockup", mockup: "access-review", label: "Access review" },
+    screen: { kind: "piece", piece: "hdt" },
     featured: true,
     status: "confirmed",
   },

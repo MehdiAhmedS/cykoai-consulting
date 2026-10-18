@@ -1,8 +1,8 @@
 /**
- * The Offers pieces' engine (v3 step 06): one WebGL renderer, not in the DOM,
- * draws each open, on-screen row's scene and copies it into that row's own 2D
- * canvas, so the page never holds more than two WebGL contexts (this and the
- * globe's). Ported from the Cowork study's loop.
+ * The Offers pieces' engine (v3 step 06): the shared renderer (./renderer),
+ * not in the DOM, draws each open, on-screen row's scene and copies it into
+ * that row's own 2D canvas, so the page never holds more than two WebGL
+ * contexts (that and the globe's). Ported from the Cowork study's loop.
  *
  * Client-only. OffersList loads it with a dynamic import() once the section
  * is near and the globe has started. Imports from "three" by name only, so
@@ -10,19 +10,17 @@
  */
 import {
   ColorManagement,
-  LinearSRGBColorSpace,
-  WebGLRenderer,
-  getConsoleFunction,
-  setConsoleFunction,
-  type BufferGeometry,
-  type Material,
-  type Object3D,
   type Scene,
 } from "three";
 import { gsap } from "@/lib/gsap";
 import { whenIdle } from "@/lib/idle";
 import { CAMERA, DRAW, STILL, type PieceKey } from "./constants";
+import { acquire, createRenderer, disposeTree, drawInto, release } from "./renderer";
 import { builders, type Piece } from "./scenes";
+
+// The Projects stage piece's engine ships in this chunk too: one dynamic import
+// for both keeps the scenes and the shared renderer in a single copy.
+export { renderStageStill, startStage } from "./stage";
 
 // Hex values render as written. The three module is shared with the globe,
 // which may not have run yet.
@@ -56,58 +54,6 @@ export interface OffersOptions {
   onLost: () => void;
 }
 
-/**
- * Creates the WebGL 2 context itself and hands it to three, so a missing
- * context never makes three log an error (verify-shots fails on any). Anything
- * three reports while it starts is downgraded to a warning. (The globe
- * engine's, copied: importing it would pull the globe into this chunk.)
- */
-function createRenderer(canvas: HTMLCanvasElement, preserveDrawingBuffer: boolean) {
-  const attributes: WebGLContextAttributes = {
-    alpha: true,
-    depth: true,
-    stencil: false,
-    antialias: true,
-    premultipliedAlpha: true,
-    preserveDrawingBuffer,
-    powerPreference: "high-performance",
-  };
-  let gl: WebGL2RenderingContext | null = null;
-  try {
-    gl = canvas.getContext("webgl2", attributes);
-  } catch {
-    return null;
-  }
-  if (!gl) return null;
-  const previous = getConsoleFunction();
-  setConsoleFunction((type, message, ...params) => (type === "log" ? console.log : console.warn)(message, ...params));
-  try {
-    const renderer = new WebGLRenderer({ canvas, context: gl, ...attributes });
-    renderer.outputColorSpace = LinearSRGBColorSpace;
-    renderer.setPixelRatio(1);
-    renderer.setClearColor(0x000000, 0);
-    return renderer;
-  } catch {
-    gl.getExtension("WEBGL_lose_context")?.loseContext();
-    return null;
-  } finally {
-    setConsoleFunction(previous);
-  }
-}
-
-/** Every geometry and material under `root`, each disposed once. */
-function disposeTree(root: Object3D) {
-  const geometries = new Set<BufferGeometry>();
-  const materials = new Set<Material>();
-  root.traverse((o) => {
-    const node = o as Object3D & { geometry?: BufferGeometry; material?: Material | Material[] };
-    if (node.geometry) geometries.add(node.geometry);
-    if (node.material) for (const m of Array.isArray(node.material) ? node.material : [node.material]) materials.add(m);
-  });
-  geometries.forEach((g) => g.dispose());
-  materials.forEach((m) => m.dispose());
-}
-
 interface Slot {
   view: OfferView;
   row: HTMLElement | null;
@@ -125,15 +71,13 @@ interface Slot {
  * before its scene is warm gets it built on the spot.
  */
 export function startOffers(o: OffersOptions): { stop: () => void; state: () => OffersEngineState } {
-  const gl = document.createElement("canvas");
-  const renderer = createRenderer(gl, false);
-  if (!renderer) {
+  const shared = acquire();
+  if (!shared) {
     o.onFail();
     return { stop: () => {}, state: () => ({ fps: 0, frameCost: { n: 0, mean: 0, p95: 0 }, calls: {}, drawing: [], frame: 0, built: [] }) };
   }
+  const { renderer, canvas: gl } = shared;
   let stopped = false;
-  let glW = 0;
-  let glH = 0;
 
   const slots: Slot[] = o.views.map((view) => ({
     view,
@@ -167,17 +111,7 @@ export function startOffers(o: OffersOptions): { stop: () => void; state: () => 
   const build = (s: Slot) => (s.piece ??= builders[s.view.key](false));
 
   const draw = (s: Slot, piece: Piece) => {
-    if (glW !== s.w || glH !== s.h) {
-      renderer.setSize(s.w, s.h, false);
-      glW = s.w;
-      glH = s.h;
-    }
-    piece.camera.aspect = s.w / s.h;
-    piece.camera.updateProjectionMatrix();
-    renderer.render(piece.scene, piece.camera);
-    // Copied 1:1 in the same task, while the drawing buffer still holds the frame.
-    s.ctx?.clearRect(0, 0, s.w, s.h);
-    s.ctx?.drawImage(gl, 0, 0);
+    drawInto(s, piece.scene, piece.camera);
     if (!s.ready) {
       s.ready = true;
       s.view.canvas.dataset.piece = "ready";
@@ -264,8 +198,7 @@ export function startOffers(o: OffersOptions): { stop: () => void; state: () => 
       if (s.piece) disposeTree(s.piece.scene);
       delete s.view.canvas.dataset.piece;
     }
-    renderer.dispose();
-    renderer.forceContextLoss();
+    release();
   };
 
   const state = (): OffersEngineState => {

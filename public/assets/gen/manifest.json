@@ -100,6 +100,18 @@
       "scene": "each Cowork study scene at its still time (security 1.4 s, workspace 8.5 s, automation 0 s after its pre-run, mobile 0.6 s, bot 0.8 s with the visor snapped, profile 3.8 s), transparent background",
       "px": "1600x1000",
       "credits": 0
+    },
+    {
+      "id": "project-hdt-still",
+      "file": "project-hdt-1600.webp",
+      "status": "pending review",
+      "role": "HDT Systems' Projects stage piece (v3 step 07b) as a still, for phones (the chapter's inline screen, frameless, 16:10), reduced motion, no WebGL 2 and ?offers-fallback, shown with next/image (decorative, no tag)",
+      "motif": "offers",
+      "model": "none: rendered by the site's own stage engine (src/components/ui/offers3d/stage.ts, renderStageStill), encoded to WebP by Chrome at quality 0.8",
+      "script": "scripts/render-offer-stills.mjs --only=stage (opens http://localhost:3000/?offers-still with npm run dev running)",
+      "scene": "the Cowork study's control rings (docs/v3/references/projects/hdt-piece/) at its still time, 7.4 s: rings locked and gold, the shield filled with its check mark; transparent background",
+      "px": "1600x1000",
+      "credits": 0
     }
   ],
   "retired": [

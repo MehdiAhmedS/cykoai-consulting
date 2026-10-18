@@ -1,9 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import Image from "next/image";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 import type { MockupCopy, ProjectScreen } from "@/content/projects";
+import { STILL, stagePieceStill } from "@/components/ui/offers3d/constants";
+import type { StageEngine, StageEngineState } from "@/components/ui/offers3d/stage";
 import BrowserFrame from "./BrowserFrame";
 import CaptureScreen from "./CaptureScreen";
 import MockupScaler from "./MockupScaler";
@@ -39,13 +42,42 @@ const travel = (viewport: number) => -(1 - viewport / (2700 / 1440)) * 100;
 const FRAME_AREA = "min(58vh, 480px)";
 const FRAME_WIDTH = `min(100%, calc((${FRAME_AREA} - 32px) * 1.6 + 2px))`;
 
-function subscribeDesktop(callback: () => void) {
-  const mql = matchMedia(DESKTOP);
-  mql.addEventListener("change", callback);
-  return () => mql.removeEventListener("change", callback);
+function subscribeMedia(callback: () => void) {
+  const mqls = [matchMedia(DESKTOP), matchMedia(MOTION)];
+  mqls.forEach((mql) => mql.addEventListener("change", callback));
+  return () => mqls.forEach((mql) => mql.removeEventListener("change", callback));
 }
 const getDesktop = () => matchMedia(DESKTOP).matches;
-const getServerDesktop = () => false;
+const getServerFalse = () => false;
+
+let flags: { fallback: boolean; still: boolean; debug: boolean } | null = null;
+
+/** The Offers pieces' dev-only query flags, which the stage piece follows too. Read once. */
+function readFlags() {
+  if (!flags) {
+    const params = new URLSearchParams(window.location.search);
+    const dev = process.env.NODE_ENV !== "production";
+    flags = {
+      fallback: dev && params.has("offers-fallback"),
+      still: dev && params.has("offers-still"),
+      debug: dev && params.has("offers-debug"),
+    };
+  }
+  return flags;
+}
+
+/** The stage piece runs from 1024px with motion allowed; otherwise it's its still image. */
+const getPieceLive = () => {
+  const f = readFlags();
+  return matchMedia(DESKTOP).matches && matchMedia(MOTION).matches && !f.fallback && !f.still;
+};
+
+declare global {
+  interface Window {
+    __stagePiece?: { state: () => StageEngineState | undefined };
+    __stagePieceStills?: Record<string, string> | { error: string };
+  }
+}
 
 /**
  * Projects stage (v3 step 07, showcase board A): one frame sticks beside the
@@ -56,12 +88,32 @@ const getServerDesktop = () => false;
  * their page while fully uncovered. Reduced motion: screens switch when their
  * chapter becomes active, and nothing moves. Below 1024px there is no stage;
  * chapters show their own screens.
+ *
+ * A piece screen (HDT Systems, step 07b) is a three.js piece drawn by
+ * ../ui/offers3d/stage (loaded with the Offers engine's chunk) through the
+ * Offers pieces' shared renderer. It rises
+ * with its wipe, whose progress the wipe's ScrollTrigger reports, and starts
+ * halfway through it. Reduced motion, no WebGL 2 and `?offers-fallback` show
+ * its still image.
  */
 export default function ProjectsStage({ items, illustration, mockups, children }: ProjectsStageProps) {
   const root = useRef<HTMLDivElement>(null);
-  const isDesktop = useSyncExternalStore(subscribeDesktop, getDesktop, getServerDesktop);
+  const isDesktop = useSyncExternalStore(subscribeMedia, getDesktop, getServerFalse);
+  const pieceLive = useSyncExternalStore(subscribeMedia, getPieceLive, getServerFalse);
   const [near, setNear] = useState(false);
   const [active, setActive] = useState(0);
+
+  // The stage piece: its index, canvas, engine, and its wipes' progress by layer.
+  const pieceIndex = items.findIndex((item) => item.screen.kind === "piece");
+  const piece = pieceIndex >= 0 ? (items[pieceIndex].screen as Extract<ProjectScreen, { kind: "piece" }>).piece : null;
+  const frameRef = useRef<HTMLDivElement>(null);
+  const pieceCanvas = useRef<HTMLCanvasElement>(null);
+  const pieceEngine = useRef<StageEngine | null>(null);
+  const wipes = useRef<number[]>([]);
+  const activeRef = useRef(active);
+  // No WebGL 2, or the context was lost: the still from then on.
+  const [pieceFailed, setPieceFailed] = useState(false);
+  const pieceMode = pieceLive && !pieceFailed ? "engine" : "still";
 
   const captures = useMemo(
     () => items.flatMap((item, i) => (item.screen.kind === "capture" && item.hasCapture ? [i] : [])),
@@ -137,8 +189,21 @@ export default function ProjectsStage({ items, illustration, mockups, children }
         // GSAP reads the class's translateY(100%) as pixels.
         if (i > 0) {
           const inner = layer.querySelector("[data-stage-inner]");
+          // The stage piece reads each wipe's progress from here: no second trigger.
+          const report = (self: ScrollTrigger) => {
+            wipes.current[i] = self.progress;
+          };
           gsap
-            .timeline({ scrollTrigger: { trigger: title, start: "top 98%", end: "top 58%", scrub: true } })
+            .timeline({
+              scrollTrigger: {
+                trigger: title,
+                start: "top 98%",
+                end: "top 58%",
+                scrub: true,
+                onUpdate: report,
+                onRefresh: report,
+              },
+            })
             .fromTo(layer, { y: 0, yPercent: 100 }, { yPercent: 0, ease: "none" }, 0)
             .fromTo(inner, { yPercent: -100 }, { yPercent: 0, ease: "none" }, 0);
         }
@@ -168,6 +233,9 @@ export default function ProjectsStage({ items, illustration, mockups, children }
           }
         );
       });
+      return () => {
+        wipes.current = [];
+      };
     });
 
     // Below 1024px each inline capture scrolls through its page as its chapter crosses the viewport.
@@ -198,6 +266,73 @@ export default function ProjectsStage({ items, illustration, mockups, children }
     };
   }, [go]);
 
+  /* ---- the stage piece ---- */
+
+  useEffect(() => {
+    if (pieceMode !== "engine" || !near || !piece) return;
+    let disposed = false;
+    const fail = () => {
+      pieceEngine.current?.stop();
+      pieceEngine.current = null;
+      if (!disposed) setPieceFailed(true);
+    };
+    import("@/components/ui/offers3d/engine")
+      .then((m) => {
+        const canvas = pieceCanvas.current;
+        const frame = frameRef.current;
+        if (disposed || !canvas || !frame) return;
+        pieceEngine.current = m.startStage({
+          key: piece,
+          canvas,
+          frame,
+          wipes: () => ({ enter: wipes.current[pieceIndex] ?? 0, cover: wipes.current[pieceIndex + 1] ?? 0 }),
+          onFail: fail,
+          onLost: fail,
+        });
+        // The chapter before it is already active: ready it now.
+        if (activeRef.current >= pieceIndex - 1) pieceEngine.current?.prepare();
+      })
+      .catch(fail);
+    return () => {
+      disposed = true;
+      pieceEngine.current?.stop();
+      pieceEngine.current = null;
+    };
+  }, [pieceMode, near, piece, pieceIndex]);
+
+  // When the chapter before it becomes active, the piece builds, compiles and draws its first frame.
+  useEffect(() => {
+    activeRef.current = active;
+    if (pieceIndex >= 0 && active >= pieceIndex - 1) pieceEngine.current?.prepare();
+  }, [active, pieceIndex]);
+
+  // `?offers-debug` (dev): the piece's clocks.
+  useEffect(() => {
+    if (!readFlags().debug) return;
+    window.__stagePiece = { state: () => pieceEngine.current?.state() };
+    return () => {
+      delete window.__stagePiece;
+    };
+  }, []);
+
+  // `?offers-still` (dev): renders the piece's still for scripts/render-offer-stills.mjs.
+  useEffect(() => {
+    if (!readFlags().still || !piece) return;
+    let cancelled = false;
+    import("@/components/ui/offers3d/engine")
+      .then((m) => {
+        if (cancelled) return;
+        const url = m.renderStageStill(piece);
+        window.__stagePieceStills = typeof url === "string" ? { [piece]: url } : url;
+      })
+      .catch((e) => {
+        window.__stagePieceStills = { error: String(e) };
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [piece]);
+
   return (
     <div
       ref={root}
@@ -205,7 +340,7 @@ export default function ProjectsStage({ items, illustration, mockups, children }
     >
       <div className="hidden lg:block">
         <div aria-hidden className="sticky top-[12vh] flex h-[76vh] flex-col justify-center">
-          <div className="relative overflow-hidden" style={{ height: FRAME_AREA }}>
+          <div ref={frameRef} className="relative overflow-hidden" style={{ height: FRAME_AREA }}>
             {items.map((item, i) => (
               <div
                 key={item.id}
@@ -217,12 +352,21 @@ export default function ProjectsStage({ items, illustration, mockups, children }
                 )}
               >
                 <div data-stage-inner className="absolute inset-0 flex items-center justify-center">
-                  <StageScreen
-                    item={item}
-                    show={isDesktop && near && mounted.has(i)}
-                    illustration={illustration}
-                    mockups={mockups}
-                  />
+                  {item.screen.kind === "piece" ? (
+                    <PieceScreen
+                      piece={item.screen.piece}
+                      mode={pieceMode}
+                      show={isDesktop && near}
+                      canvasRef={pieceCanvas}
+                    />
+                  ) : (
+                    <StageScreen
+                      item={item}
+                      show={isDesktop && near && mounted.has(i)}
+                      illustration={illustration}
+                      mockups={mockups}
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -247,6 +391,43 @@ export default function ProjectsStage({ items, illustration, mockups, children }
   );
 }
 
+/**
+ * The stage piece's box: FRAME_WIDTH wide and FRAME_AREA tall, centred where
+ * the browser frames sit, with no frame and no tag. Its canvas is transparent,
+ * so the layer's Windsor shows through. The still is the same camera at 16:10,
+ * so covering the box crops it as the live piece is framed.
+ */
+function PieceScreen({
+  piece,
+  mode,
+  show,
+  canvasRef,
+}: {
+  piece: Extract<ProjectScreen, { kind: "piece" }>["piece"];
+  mode: "engine" | "still";
+  show: boolean;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+}) {
+  return (
+    <div className="relative" style={{ width: FRAME_WIDTH, height: FRAME_AREA }}>
+      {mode === "engine" && <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />}
+      {mode === "still" && show && (
+        <Image
+          src={stagePieceStill(piece)}
+          width={STILL.width}
+          height={STILL.height}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          quality={70}
+          alt=""
+          loading="eager"
+          data-gen-asset=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
+    </div>
+  );
+}
+
 function StageScreen({
   item,
   show,
@@ -259,6 +440,7 @@ function StageScreen({
   mockups: MockupCopy;
 }) {
   const { screen } = item;
+  if (screen.kind === "piece") return null; // PieceScreen
   if (screen.kind === "phone-shell") return <PhoneShell tag={illustration} variant="stage" />;
   if (screen.kind === "mockup") {
     return (

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import MonoLabel from "@/components/ui/MonoLabel";
 import SplitText from "@/components/ui/SplitText";
 import Reveal from "@/components/ui/Reveal";
@@ -8,6 +9,7 @@ import MockupScaler from "@/components/projects/MockupScaler";
 import Mockup from "@/components/projects/mockups/Mockup";
 import PhoneShell from "@/components/projects/PhoneShell";
 import ProjectsStage, { type StageItem } from "@/components/projects/ProjectsStage";
+import { STILL, stagePieceStill } from "@/components/ui/offers3d/constants";
 import { SHOW_DRAFTS, isTBC, type Status } from "@/content/site";
 import { projects, projectsCopy as copy, type Project } from "@/content/projects";
 import captureFiles from "@/content/project-captures.json";
@@ -93,6 +95,21 @@ function InlineScreen({ p }: { p: Project }) {
           </MockupScaler>
         </BrowserFrame>
       )}
+      {/* The stage piece's still: frameless, with no tag. */}
+      {screen.kind === "piece" && (
+        <div className="relative aspect-[16/10]">
+          <Image
+            src={stagePieceStill(screen.piece)}
+            width={STILL.width}
+            height={STILL.height}
+            sizes="(min-width: 768px) 90vw, 100vw"
+            quality={70}
+            alt=""
+            data-gen-asset=""
+            className="absolute inset-0 h-full w-full"
+          />
+        </div>
+      )}
       {screen.kind === "phone-shell" && <PhoneShell tag={copy.labels.illustration} variant="inline" />}
     </div>
   );
@@ -105,7 +122,11 @@ function Chapter({ p, index }: { p: Project; index: number }) {
       id={`project-${p.id}`}
       className={
         "flex flex-col gap-4 max-lg:not-first:mt-[clamp(40px,8vw,64px)] max-lg:not-first:border-t max-lg:not-first:border-white/12 max-lg:not-first:pt-[clamp(40px,8vw,64px)] lg:justify-center " +
-        (p.screen.kind === "capture" ? "lg:min-h-[120vh]" : "lg:min-h-[75vh]")
+        (p.screen.kind === "capture"
+          ? "lg:min-h-[120vh]"
+          : p.screen.kind === "piece"
+            ? "lg:min-h-[100vh]"
+            : "lg:min-h-[75vh]")
       }
     >
       <InlineScreen p={p} />

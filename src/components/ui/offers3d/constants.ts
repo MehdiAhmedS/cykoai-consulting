@@ -35,6 +35,8 @@ export const SOLID = {
   device: { lit: "#2C4574", shade: "#101B31" },
   bot: { lit: "#3E5F99", shade: "#13203A" },
   page: { lit: "#22365C", shade: "#101B31" },
+  /** HDT Systems' locked rings and shield: Driftwood-soft, and the gold's shade. */
+  gold: { lit: COLOR.driftwoodSoft, shade: "#6E5530" },
 } as const;
 
 /**
@@ -85,3 +87,16 @@ export const PIECES: Record<string, PieceKey> = {
   "apis-bots": "bot",
   "landing-pages": "profile",
 };
+
+/* ---- The Projects stage piece (v3 step 07b) ---- */
+
+export type StagePieceKey = "hdt";
+
+export const stagePieceStill = (key: StagePieceKey) => `/assets/gen/project-${key}-1600.webp`;
+
+export const STAGE = {
+  /** The sequence clock starts when the layer's wipe reaches this. */
+  startAt: 0.5,
+  /** The piece draws while the stage is within this many CSS px of the viewport. */
+  edge: 40,
+} as const;

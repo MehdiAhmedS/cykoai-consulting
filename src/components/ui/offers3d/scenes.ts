@@ -5,6 +5,10 @@
  * returns its scene, camera, an update(t, dt) in seconds of elapsed time,
  * and the time of its still pose. `snap` lands eased state on its pose at
  * once (the study's reduced-motion path), for the still images.
+ *
+ * Also HDT Systems' Projects stage piece (step 07b), ported the same way from
+ * docs/v3/references/projects/hdt-piece/index.html; its update takes the
+ * stage's clocks instead.
  */
 import {
   BoxGeometry,
@@ -24,6 +28,7 @@ import {
   Group,
   IcosahedronGeometry,
   InstancedMesh,
+  LatheGeometry,
   Line,
   LineBasicMaterial,
   LineCurve3,
@@ -44,6 +49,7 @@ import {
   ShaderMaterial,
   SphereGeometry,
   TorusGeometry,
+  Vector2,
   Vector3,
   type Side,
 } from "three";
@@ -65,6 +71,7 @@ const smooth = (a: number, b: number, v: number) => {
 };
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+const mod = (a: number, n: number) => ((a % n) + n) % n;
 const C = (h: string) => new Color(h);
 const LIGHT = new Vector3(...RAMP.light).normalize();
 
@@ -854,6 +861,347 @@ function sceneProfile(): Piece {
   }
   return { scene, camera, update, still: 3.8 };
 }
+
+/* ---------- HDT Systems on the Projects stage (v3 step 07b): control rings ---------- */
+
+/** The stage's clocks: ts the sequence, ta the ambient motion, enter the layer's wipe (0 to 1). */
+export interface StageClocks {
+  ts: number;
+  ta: number;
+  enter: number;
+}
+
+export interface StagePiece {
+  scene: Scene;
+  camera: PerspectiveCamera;
+  /** update(T): the study's 11 s loop (the still uses it). update(0, clocks): the stage. */
+  update: (t: number, o?: StageClocks) => void;
+  /** The still image's time: the secured state. */
+  still: number;
+}
+
+function mulberry32(a: number) {
+  return () => {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** The shield's face: the same two-tone shading, cut off above uFill, with a bright edge at the fill line. */
+export function fillMaterial() {
+  return new ShaderMaterial({
+    uniforms: {
+      uLit: { value: C(SOLID.gold.lit) },
+      uShade: { value: C(SOLID.gold.shade) },
+      uRim: { value: C(RAMP.rimColor) },
+      uRimAmt: { value: 0.3 },
+      uLight: { value: LIGHT },
+      uFill: { value: -1 },
+    },
+    vertexShader: /* glsl */ `
+      varying vec3 vN; varying vec3 vV; varying float vY;
+      void main(){
+        vY = position.y;
+        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform vec3 uLit; uniform vec3 uShade; uniform vec3 uRim; uniform vec3 uLight;
+      uniform float uRimAmt; uniform float uFill;
+      varying vec3 vN; varying vec3 vV; varying float vY;
+      void main(){
+        if (vY > uFill) discard;
+        vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;
+        float hl = dot(n, uLight) * 0.5 + 0.5;
+        vec3 c = mix(uShade, uLit, smoothstep(${RAMP.from.toFixed(2)}, ${RAMP.to.toFixed(2)}, hl));
+        float f = 1.0 - max(dot(n, normalize(vV)), 0.0);
+        c = mix(c, uRim, smoothstep(${RAMP.rimFrom.toFixed(2)}, ${RAMP.rimTo.toFixed(2)}, f) * uRimAmt);
+        c = mix(c, uRim, smoothstep(uFill - 0.035, uFill, vY) * 0.55 * step(uFill, 0.39));
+        gl_FragColor = vec4(c, 1.0);
+      }`,
+  });
+}
+
+/**
+ * Google Workspace as a rack of servers, four rings (ISO/IEC 27001's control
+ * themes), each carrying a person, that lock into line around it one by one,
+ * and a shield that fills with gold above it. The study's sceneControls.
+ */
+function sceneHdt(): StagePiece {
+  const scene = new Scene();
+  const camera = makeCam([0, 1.75, 5.6], [0, 0.05, 0]);
+  const root = new Group();
+  scene.add(root);
+  const TAU = Math.PI * 2;
+  const LOOP = 11;
+  const w = TAU / LOOP;
+  const L = [1.0, 1.85, 2.7, 3.55];
+  const LD = 1.05;
+  const DONE = L[3] + LD;
+  const R0 = 9.3;
+  const R1 = 10.7;
+  const look = new Vector3(0, 0.05, 0);
+  const navyLit = C(SOLID.base.lit);
+  const navyShade = C(SOLID.base.shade);
+  const goldLit = C(SOLID.gold.lit);
+  const goldShade = C(SOLID.gold.shade);
+  const greyC = C(COLOR.n500);
+  const accC = C(COLOR.driftwoodSoft);
+  const lineC = C(COLOR.white);
+  const col = new Color();
+  const rnd = mulberry32(11);
+  const V = (x: number, y: number, z: number) => new Vector3(x, y, z);
+
+  // The servers: a three-unit rack between two plates, with vents, a bay and status lights.
+  const rack = new Group();
+  root.add(rack);
+  const unitGeo = new BoxGeometry(0.62, 0.12, 0.42);
+  const unitMat = ramp({ ...SOLID.base, rim: 0.3 });
+  const unitLine = lineMat(COLOR.white, 0.42);
+  const UY = [-0.15, 0, 0.15];
+  const ZF = 0.212;
+  const detail: Vector3[] = [];
+  for (const y of UY) {
+    const m = new Mesh(unitGeo, unitMat);
+    m.position.y = y;
+    rack.add(m);
+    const e = edges(unitGeo, unitLine);
+    e.position.y = y;
+    rack.add(e);
+    for (let k = 0; k < 6; k++) {
+      const x = -0.26 + k * 0.026;
+      detail.push(V(x, y - 0.03, ZF), V(x, y + 0.03, ZF));
+    }
+    const [x0, x1, y0, y1] = [-0.07, 0.1, y - 0.033, y + 0.033];
+    detail.push(V(x0, y0, ZF), V(x1, y0, ZF), V(x1, y0, ZF), V(x1, y1, ZF), V(x1, y1, ZF), V(x0, y1, ZF), V(x0, y1, ZF), V(x0, y0, ZF));
+  }
+  rack.add(new LineSegments(new BufferGeometry().setFromPoints(detail), lineMat(COLOR.white, 0.3)));
+  const plateGeo = new BoxGeometry(0.74, 0.03, 0.52);
+  for (const y of [-0.235, 0.235]) {
+    const m = new Mesh(plateGeo, unitMat);
+    m.position.y = y;
+    rack.add(m);
+    const e = edges(plateGeo, unitLine);
+    e.position.y = y;
+    rack.add(e);
+  }
+  const postGeo = new BoxGeometry(0.024, 0.44, 0.024);
+  for (const x of [-0.34, 0.34])
+    for (const z of [-0.24, 0.24]) {
+      const m = new Mesh(postGeo, unitMat);
+      m.position.set(x, 0, z);
+      rack.add(m);
+    }
+  const leds = new InstancedMesh(new CircleGeometry(0.014, 14), basic(COLOR.white), 9);
+  const ledRate: [number, number][] = [];
+  UY.forEach((y, u) =>
+    [0.17, 0.21, 0.25].forEach((x, k) => {
+      const i = u * 3 + k;
+      setInst(leds, i, x, y, ZF + 0.002);
+      leds.setColorAt(i, greyC);
+      ledRate.push([w * (5 + ((i * 3) % 4)), rnd() * TAU]);
+    })
+  );
+  rack.add(leds);
+
+  const pulseGeo = new RingGeometry(0.975, 1, 128);
+  pulseGeo.rotateX(-Math.PI / 2);
+  const pulseMat = basic(COLOR.driftwoodSoft, 0);
+  pulseMat.side = DoubleSide;
+  const pulse = new Mesh(pulseGeo, pulseMat);
+  root.add(pulse);
+
+  // The rings, each carrying one person. Locked, the people fan out across the front.
+  const RADII = [1.32, 1.1, 0.89, 0.69];
+  const FAN = [-0.43, 0.52, -0.23, 0.29];
+  const bodyGeo = new LatheGeometry(
+    [
+      [0, 0],
+      [0.05, 0],
+      [0.053, 0.012],
+      [0.049, 0.04],
+      [0.037, 0.064],
+      [0, 0.075],
+    ].map(([x, y]) => new Vector2(x, y)),
+    20
+  );
+  const headGeo = new SphereGeometry(0.034, 16, 12);
+  const Y = V(0, 1, 0);
+  const rings = RADII.map((R, i) => {
+    const g = new Group();
+    root.add(g);
+    const tor = new TorusGeometry(R, 0.018, 10, 200);
+    tor.rotateX(Math.PI / 2);
+    const mat = ramp({ ...SOLID.base, rim: 0.45 });
+    g.add(new Mesh(tor, mat));
+    const tp: Vector3[] = [];
+    const nT = 48;
+    for (let k = 0; k < nT; k++) {
+      const a = (k / nT) * TAU;
+      const r0 = R + 0.035;
+      const r1 = R + (k % 4 === 0 ? 0.09 : 0.06);
+      tp.push(V(Math.sin(a) * r0, 0, Math.cos(a) * r0), V(Math.sin(a) * r1, 0, Math.cos(a) * r1));
+    }
+    const tickMat = lineMat(COLOR.white, 0.2);
+    g.add(new LineSegments(new BufferGeometry().setFromPoints(tp), tickMat));
+    const personMat = basic(COLOR.n500);
+    const person = new Group();
+    person.position.set(0, 0.016, R);
+    person.scale.setScalar(1.3);
+    g.add(person);
+    person.add(new Mesh(bodyGeo, personMat));
+    const head = new Mesh(headGeo, personMat);
+    head.position.y = 0.118;
+    person.add(head);
+    const axis = V(Math.cos(i * 1.9 + 0.4), 0, Math.sin(i * 1.9 + 0.4)).normalize();
+    return {
+      g,
+      mat,
+      personMat,
+      tickMat,
+      tilt: new Quaternion().setFromAxisAngle(axis, 0.7 + 0.2 * i),
+      lock: new Quaternion().setFromAxisAngle(Y, FAN[i]),
+      spin: (i % 2 ? -1 : 1) * w * (i < 2 ? 1 : 2),
+      prec: (i % 2 ? 1 : -1) * w,
+    };
+  });
+
+  // The shield: an outline that draws itself, then a gold face with a check mark.
+  const SHY = 1.0;
+  const shape = new Shape();
+  shape.moveTo(-0.27, 0.25);
+  shape.quadraticCurveTo(0, 0.36, 0.27, 0.25);
+  shape.lineTo(0.27, 0.02);
+  shape.quadraticCurveTo(0.25, -0.22, 0, -0.37);
+  shape.quadraticCurveTo(-0.25, -0.22, -0.27, 0.02);
+  shape.lineTo(-0.27, 0.25);
+  const shield = new Group();
+  root.add(shield);
+  const shieldGeo = new ExtrudeGeometry(shape, {
+    depth: 0.05,
+    bevelEnabled: true,
+    bevelThickness: 0.012,
+    bevelSize: 0.012,
+    bevelSegments: 2,
+    curveSegments: 20,
+  });
+  shieldGeo.translate(0, 0, -0.025);
+  const faceMat = fillMaterial();
+  shield.add(new Mesh(shieldGeo, faceMat));
+  const outlinePts = shape.getPoints(30).map((p) => V(p.x, p.y, 0.04));
+  const outlineGeo = new BufferGeometry().setFromPoints(outlinePts);
+  shield.add(new Line(outlineGeo, lineMat(COLOR.driftwoodSoft, 0.95)));
+  const insetMat = lineMat(SOLID.base.shade, 0.75);
+  shield.add(lineFrom(shape.getPoints(30).map((p) => V(p.x * 0.8, p.y * 0.8 + 0.005, 0.041)), insetMat));
+  const checkMat = basic(SOLID.base.shade);
+  const check = new Group();
+  check.position.z = 0.045;
+  shield.add(check);
+  const stroke = (x0: number, y0: number, x1: number, y1: number) => {
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    const m = new Mesh(new BoxGeometry(len + 0.03, 0.034, 0.012), checkMat);
+    m.position.set((x0 + x1) / 2, (y0 + y1) / 2, 0);
+    m.rotation.z = Math.atan2(y1 - y0, x1 - x0);
+    check.add(m);
+  };
+  stroke(-0.095, -0.005, -0.025, -0.075);
+  stroke(-0.025, -0.075, 0.115, 0.085);
+
+  // Gold flowing up from the rings into the shield's outline.
+  const NB = 36;
+  const beads = new InstancedMesh(new SphereGeometry(0.02, 10, 8), basic(COLOR.driftwoodSoft), NB);
+  root.add(beads);
+  const flow = Array.from({ length: NB }, (_, b) => {
+    const R = RADII[b % 4];
+    const a0 = rnd() * TAU;
+    const tp = outlinePts[Math.floor((b / NB) * outlinePts.length) % outlinePts.length];
+    const tx = tp.x;
+    const ty = SHY + tp.y;
+    const tz = 0.04;
+    const at = Math.atan2(tx, tz);
+    let d = at - a0;
+    d = mod(d + Math.PI, TAU) - Math.PI;
+    return { R, a0, d: d + (b % 2 ? 0.9 : -0.9), rt: Math.hypot(tx, tz), ty, start: DONE + 0.1 + (b / NB) * 0.6 + rnd() * 0.15 };
+  });
+
+  const Qa = new Quaternion();
+  const Qb = new Quaternion();
+  const Qc = new Quaternion();
+  // update(T): the 11 s loop. update(T, { ts, ta, enter }): the stage. The sequence (ts) plays once and holds
+  // the secured state; ambient motion runs on ta; enter (0 to 1, the layer's wipe) lifts the piece into place.
+  function update(T: number, o?: StageClocks) {
+    const ta = o ? o.ta : mod(T, LOOP);
+    const t = o ? Math.min(o.ts, R0 - 0.4) : ta;
+    const enter = o ? clamp(o.enter) : 1;
+    const r = smooth(R0, R1, t);
+    const fade = 1 - smooth(R0, R0 + 0.6, t);
+    root.rotation.y = 0.1 * Math.sin(ta * w);
+    root.position.y = -0.6 * (1 - easeOut(enter));
+    look.y = lerp(0.05, 0.42, smooth(DONE - 0.3, DONE + 1.5, t) * (1 - r));
+    camera.lookAt(look);
+
+    rings.forEach((rg, i) => {
+      Qa.setFromAxisAngle(Y, rg.prec * ta);
+      Qb.setFromAxisAngle(Y, rg.spin * ta);
+      Qc.copy(Qa).multiply(rg.tilt).multiply(Qb);
+      const seat = easeInOut(clamp((t - L[i]) / LD));
+      rg.g.quaternion.copy(Qc).slerp(rg.lock, seat * (1 - r));
+      const gk = smooth(0.8, 1, seat) * fade;
+      rg.mat.uniforms.uLit.value.copy(navyLit).lerp(goldLit, gk * 0.9);
+      rg.mat.uniforms.uShade.value.copy(navyShade).lerp(goldShade, gk * 0.9);
+      rg.personMat.color.copy(greyC).lerp(accC, gk);
+      rg.tickMat.opacity = 0.2 + 0.22 * gk;
+    });
+
+    const secure = smooth(DONE, DONE + 0.5, t) * fade;
+    for (let i = 0; i < 9; i++) {
+      const [rate, ph] = ledRate[i];
+      const blink = Math.sin(ta * rate + ph) > 0.55 ? 1 : 0;
+      col.copy(greyC).lerp(lineC, blink * 0.8).lerp(accC, secure);
+      leds.setColorAt(i, col);
+    }
+    leds.instanceColor!.needsUpdate = true;
+
+    const pa = t - DONE;
+    const pk = clamp(pa / 1.3);
+    pulse.visible = pa > 0 && pa < 1.3;
+    pulse.scale.setScalar(lerp(0.3, 1.65, easeOut(pk)));
+    pulseMat.opacity = 0.75 * (1 - pk);
+
+    for (let b = 0; b < NB; b++) {
+      const f = flow[b];
+      const u = clamp((t - f.start) / 0.95);
+      const on = u > 0 && u < 1 && t < R0;
+      const e = easeInOut(u);
+      const th = f.a0 + f.d * e;
+      const rr = lerp(f.R, f.rt, easeInOut(Math.min(1, u * 1.2)));
+      setInst(beads, b, Math.sin(th) * rr, f.ty * e, Math.cos(th) * rr, on ? 1 - 0.5 * smooth(0.75, 1, u) : 0.0001);
+    }
+    beads.instanceMatrix.needsUpdate = true;
+
+    // outline draws, gold fills from the tip up, the check pops; on release it drains and undraws
+    const draw = smooth(DONE + 0.5, DONE + 1.4, t) * (1 - smooth(R0 + 0.3, R0 + 0.9, t));
+    outlineGeo.setDrawRange(0, Math.round(outlinePts.length * draw));
+    const fill = smooth(DONE + 1.0, DONE + 1.9, t) * (1 - smooth(R0 - 0.2, R0 + 0.5, t));
+    faceMat.uniforms.uFill.value = lerp(-0.4, 0.4, fill);
+    insetMat.opacity = 0.75 * smooth(0.85, 1, fill);
+    const pop = easeOut(clamp((t - (DONE + 1.9)) / 0.35)) * (1 - smooth(R0 - 0.2, R0 + 0.1, t));
+    check.scale.setScalar(Math.max(pop, 0.0001));
+    check.visible = pop > 0.002;
+    const hold = smooth(DONE + 2.0, DONE + 2.8, t) * (1 - smooth(R0, R0 + 0.6, t));
+    shield.visible = draw > 0.001 || fill > 0.001;
+    shield.position.y = lerp(SHY - 0.12, SHY, smooth(DONE + 0.5, DONE + 1.8, t)) + 0.025 * Math.sin(ta * w * 3) * hold;
+    shield.rotation.y = 0.28 * Math.sin(ta * w * 2) * hold;
+  }
+  return { scene, camera, update, still: 7.4 };
+}
+
+/** The Projects stage's piece builders, by piece. */
+export const stageBuilders = { hdt: sceneHdt };
 
 /** The six builders, by piece. */
 export const builders: Record<PieceKey, (snap: boolean) => Piece> = {

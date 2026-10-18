@@ -211,3 +211,31 @@ Darkroom's flow captures (0.9 viewport steps) never land mid-wipe, so the left i
   - `--tiles`: Rabia Al Basri 83 KB, MONO 162 KB, Optimus 98 KB.
     - Rabia's full-page capture had a dark blank band. MONO's was blank below its first screen. Optimus's caught its typed headline half-way.
     - Rabia's second and third screens show its scroll-linked story panel, whose text is dim until scrolled through. That's how the page looks at those points.
+
+## Step 07b: HDT Systems' stage piece (18 Oct 2026)
+
+**Plan (as built).**
+- **Renderer:** the Offers engine's renderer moved to `src/components/ui/offers3d/renderer.ts`: `createRenderer`, a reference-counted `acquire`/`release` singleton with the size cache, `drawInto` (resize if needed, render, copy into the 2D canvas in the same task) and `disposeTree`. The Offers engine uses it unchanged.
+- **Scene:** the study's `sceneControls` and `fillMaterial` are ported into `scenes.ts` as the `hdt` stage builder, with its colours in `constants.ts` (`SOLID.base`, and `SOLID.gold`: Driftwood-soft over `#6E5530`).
+- **Stage engine:** `offers3d/stage.ts` ports `stageFrame`: the `ta` and `ts` clocks, `enter` from the wipe's own ScrollTrigger (`onUpdate`/`onRefresh`), a draw only while the layer is partly uncovered and the frame is within 40px, and a reset on each return. It's re-exported from `engine.ts`, so both callers load one chunk. Turbopack had copied `scenes.ts` and the renderer into two chunks when the stage had its own import (+10 KB gzipped).
+- **Stage:** `{ kind: "piece"; piece: "hdt" }` renders as a frameless box `FRAME_WIDTH` × `FRAME_AREA` inside `data-stage-inner`, so the wipe is unchanged. The chapter is `lg:min-h-[100vh]`. It's prepared (built, compiled in idle time, first frame drawn) when the chapter before it is active.
+- **Stills:** `public/assets/gen/project-hdt-1600.webp` at 7.4 s, from `?offers-still` and `node scripts/render-offer-stills.mjs --only=stage`. It's shown at 16:10 below 1024px and covers the box on the stage (same camera, so the crop matches the live framing).
+- **Clean-up:** `AccessReview.tsx`, its `Mockup` case, `"access-review"` and `mockups.accessReview` are gone.
+
+**Baselines (before any code change).** Production build of `0d6da15` plus the uncommitted 17 Oct content edits, served on :3100; Lighthouse 12, three runs per preset, medians.
+- Mobile: 90, LCP 3.56 s, TBT 88 ms, CLS 0. Desktop: 100, LCP 0.73 s, TBT 0 ms, CLS 0.
+- `.next/static/chunks`: 430,151 B gzipped. three's chunk (`__THREE__`): 585,459 B, 146,042 B gzipped.
+
+**Checks (headless Chromium, 1440 × 900, dev and production).**
+- **Entry:** with HDT's title at 90% the layer is at 20% of its wipe and only `ta` runs. `ts` starts at 50%. By 58% the rings lock one by one and turn gold, then the pulse, the beads, the outline, the fill and the check follow. At +7 s it holds the shield with gentle motion (`hdt-*.png` in `docs/v3/after/07b-hdt-piece/`).
+- **Never blank:** while Bukhait Sefrar is active the scene is built and its first frame is drawn (one frame, then nothing until the wipe starts).
+- **Restart:** with Rabia Al Basri's layer over it, it stops drawing. As that layer uncovers it, scrolling back up, both clocks restart at 0 from loose rings.
+- **Contexts:** two live WebGL contexts throughout (the globe's and the shared one), with the Offers pieces drawing and then HDT's, on dev and on production. The two extra contexts created are the WebGL 2 probes, which are lost at once.
+- **Fallbacks:** at 390px the chapter shows the still, frameless, at 16:10 with no tag. At 1440 with reduced motion and with `?offers-fallback` the stage shows the still, and no canvas is made.
+- **verify-shots:** `--full --section=#projects` with `--scroll` at 90%, 70% and 58%, and `--full`: console clean.
+- **`npm run refs -- _self … --at="HDT Systems"`:** it matched the stage's index strip and captured Bukhait Sefrar's layer, so the entry shots above are from the check script. `_self` was deleted.
+
+**Performance after.**
+- `.next/static/chunks`: 433,735 B gzipped (+3,584 B). three is still in one chunk: 586,820 B, 146,454 B gzipped (+412 B, the lathe and extrude geometry).
+- Mobile: 90, LCP 3.57 s, TBT 101 ms, CLS 0. Desktop: 100, LCP 0.73 s, TBT 1 ms, CLS 0.
+- TBT and CLS are within step 11's limits. Mobile LCP is over 2.5 s, as it was before this step: the LCP element is the hero lede, which this step doesn't touch.
