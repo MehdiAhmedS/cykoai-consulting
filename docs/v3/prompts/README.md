@@ -1,6 +1,6 @@
 # v3 build: how to run the prompts
 
-Fourteen steps, one prompt each, run in order (05b was added on 27 September to rebuild the globe, 07 now runs before 06, and 07b was added on 18 October for HDT Systems' stage piece), with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A). On 27 September Projects was picked again, on the showcase board (A, the stage). Every prompt is ready.
+Fifteen steps, one prompt each, run in order (05b was added on 27 September to rebuild the globe, 07 now runs before 06, 07b was added on 18 October for HDT Systems' stage piece, and 03b the same day to restyle the navbar after Raycast's), with a fresh context (`/clear`) for each step. Every prompt starts from `docs/v3/BRIEF.md`, so each session has the same context without carrying the previous step's clutter. All ten design decisions were picked on the reference board on 26 September 2026 (all option A). On 27 September Projects was picked again, on the showcase board (A, the stage). Every prompt is ready.
 
 ## Before each working session
 
@@ -46,6 +46,7 @@ Each step is two passes in one session. First Claude Code goes through the refer
 | 01 · Structure | Seven sections with one job each, one content file, light/dark tones, no 01–07 numbering. | nothing |
 | 02 · Typography | Archivo + Chivo Mono as shared `type-*` utilities across the page. | nothing |
 | 03 · Navbar | Inset glass bar, switched by section, new links, fixed anchor offsets. | nothing |
+| 03b · Navbar, Raycast's glass | Restyles the bar after raycast.com: dark Windsor glass on every section with a hairline and an inner top highlight, lined up with the content column, 14px links, and a light "key" CTA. Has a short study of raycast.com first. Run it whenever you like. | nothing |
 | 04 · Hero headline | Line-mask rise, lede and CTAs, the Muscat data line types on. | nothing |
 | 05 · Globe | cobe sphere, graticule overlay and arcs; decorative places and a larger globe after review. Done 27 September; 05b replaces its engine. | nothing |
 | 05b · Globe in three.js | Rebuilds the globe in three.js from the Cowork study: a lit sphere, arcs that travel and land (up to three at once), a slow sway, and a still frame on phones. The study is already done, so skip the study pass and start in plan mode. | which country in Africa (added when known) |
