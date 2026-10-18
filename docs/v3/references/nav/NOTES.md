@@ -74,3 +74,41 @@ Studied 26 Sep 2026 live in Chrome at 1440 (system theme dark), measured with th
   - Over dark sections the bar is a light silver glass: `rgba(226,230,237,0.8)`, blur 20px, a `white/40` hairline, with dark text (Windsor, links n700). It replaces Linear's dark values.
   - Worst-case contrast, with Windsor under the glass: links 5.2:1, Windsor text 9.4:1.
   - Corners: the bar is now 20px and the CTA 12px (concentric with the 8px gap), in place of full rounding.
+
+## Step 03b: Raycast's glass (18 Oct 2026)
+
+**Build plan.**
+- **Bar:** the header floats 16px from the top (8px below 900px), `min(1208px, 100% − 32px)` wide, so its edges meet the content column (116px to 1324px at 1440). 76px tall with 16px corners (56px and 14px below 900px). `--nav-top` and `--nav-h` in `globals.css` drive the header, the bar and the overlay's top.
+- **Surface:** the bar carries the blur. Its fill sits on two pseudo-elements: `::after` is the dark-section fill with the hairline and the top highlight (as inset box-shadows), always on; `::before`, beneath it, adds the light-section density (`rgba(11,21,39,.5714)` → `rgba(7,14,27,.6)`) and fades in by opacity over 200ms. Stacked over the base they composite to exactly 88% → 96%.
+  - Why not two full fills cross-fading: two translucent layers at half opacity each composite to about 64% mid-fade, thinner than either end. That reads as a flicker.
+- **Tone lines:** the observer now reads three 1px lines from the bar's own box. The tone is light if the top or the bottom edge of the text band (bar centre ± 8px) is over a light surface; the active link follows the centre line. Before this, with one line, the tag dropped to 4.26:1 for a few frames while a white section slid under the lower half of the bar.
+- **Type:** a new `type-nav` utility (Archivo 14px/500, +0.2px) for the links and the CTA.
+- **Hero:** its top padding now matches the bar's bottom edge: 92px from 900px, 64px below.
+
+**Studied** on 18 Oct 2026 with headless Chromium (Playwright) at 1440 × 726 and 390 × 844, not with Claude in Chrome. Captures and `measured.json` are in `raycast/`.
+
+**Raycast** (dark site throughout)
+- Every value in the prompt's table matches the live site: a fixed full-width wrapper with 16px padding; the bar 1204 × 76 at x 118, padding 16px 32px, 16px corners; the 137° gradient; `blur(5px)`; the `white/6` border; the inset top highlight.
+- Nothing changes on scroll: the bar is identical at 0, 900, 2400 and 4200px.
+- Links: Inter 14px/500, +0.2px, `#9C9C9D`, padding 12px 8px, 6px corners, white on hover. Their transition is 200ms ease-in-out; we use 150ms, per the prompt.
+- Download: 36px, padding 8px 12px, 8px corners, `#E6E6E6` with `#2F3031` text, and the four shadows. On hover the background turns white over 200ms.
+- **Differences from the prompt** (none change the build; the prompt's values are kept):
+  - Keyboard focus on a link showed the browser's default outline and no `white/5` background.
+  - Pressing Download showed no `translateY` and no change to the glow in headless Chromium.
+  - At 390 the bar is 16px from the top and sides and 58px tall. The prompt keeps our 8px and 56px.
+  - The phone menu grows the same glass bar down to hold the links (`390-menu-open.png`). We keep our full-screen Windsor overlay, per the prompt.
+
+## Step 03b checks (18 Oct 2026)
+- **Geometry at 1440:** the bar is 1208 × 76 at (116, 16), the same as the content column. Padding 0 16px 0 32px, 16px corners. The CTA is 36px tall, 12px after the last link.
+- **Geometry at 390:** 374 × 56 at (8, 8), 14px corners, padding 0 8px 0 16px. The overlay starts at 72px, 8px below the bar.
+- **Contrast**, n300 (`#B4B9C4`) for the links and the tag:
+  - against the light-section fill composited over white: 6.64:1 at the gradient's start (88%) and 9.07:1 at its end (96%). **The worst case is 6.64:1.**
+  - For comparison, the dark-section fill (72%) over white would give 3.73:1. The tone lines keep that from happening behind the text.
+  - On real pixels (text hidden, the brightest pixel behind each label, every 40px of scroll down the whole page): links 7.03:1 at worst at 1440. The tag is 5.23:1 at worst at 390, and **4.32:1 at 1440 in the hero**, where the white headline passes under the 72% dark fill. That is a dark section, so it isn't covered by the prompt's light-section rule. Raised with Mehdi.
+- **Tone changes** while scrolling down at 1440: Offers (light), an open Offers row (dark), Offers (light), Projects (dark), Engagement (light), The name (dark), Contact (light). Each is a single change, with no back-and-forth. Only the density layer's opacity and the blur change. The blur switches at once, by design.
+- **States:** a hovered link turns white. The hovered CTA turns white. The pressed CTA moves 1px down and its glow drops to `white/10`.
+- **Keyboard:** Tab goes from the logo to the 4 links to the CTA, each with the 2px Driftwood ring. Links also get the `white/5` background.
+- **Below 900px:** Enter opens the overlay and focuses its first link. Tab stays inside it. Escape closes it and focus returns to the menu button. The burger's lines are white.
+- **Fallback:** the build has `@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px)))` with the density layer hidden and a solid `#0b1527f5` fill.
+- **Anchors** (unchanged since step 03): sections still land 80px from the top. That is now 12px above the bar's bottom edge, and the bar's tone and active link still show the previous section after a jump. This was the case before 03b too. Raised with Mehdi.
+- No console errors. Lint (no new warnings) and build pass. Reduced motion: the global rule cuts the fades, and the CTA doesn't move when pressed.

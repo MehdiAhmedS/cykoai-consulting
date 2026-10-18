@@ -13,7 +13,7 @@ The site must demonstrate calm: if a change adds visual noise, it is wrong.
 
 ## Hard rules (short form)
 - Flat fields only: no gradients, glows, grain, tilt, magnetic effects or custom cursors. Glass on the navbar only (see BRIEF).
-- Radii 2–8px. Exceptions: the Projects phone outline (a picture of a device) and the navbar's rounded bar (20px) and its CTA (12px) (Mehdi, 27 Sep). Hairlines not shadows. Windsor #0B1527 / white / Driftwood #AD8752 (sparingly)
+- Radii 2–8px. Exceptions: the Projects phone outline (a picture of a device) and the navbar's bar (16px, 14px below 900px) and its CTA (8px) (Mehdi, 18 Oct). Hairlines not shadows. Windsor #0B1527 / white / Driftwood #AD8752 (sparingly)
 - Type: Archivo (display 104–112% width, text 100%) + Chivo Mono (labels, data). Use the type-* utilities; no ad-hoc font sizes, weights or tracking.
 - Sentence case. No emoji/hype
 - Numbers only as data: no ordinal section indices, numbered rows or numbered menus.

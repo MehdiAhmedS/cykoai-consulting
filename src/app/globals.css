@@ -146,6 +146,16 @@ body {
   letter-spacing: 0;
 }
 
+/* Navbar links and the CTA (step 03b, after Raycast's). */
+@utility type-nav {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-stretch: 100%;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+
 @utility type-label {
   font-family: var(--font-mono);
   font-weight: 500;
@@ -338,70 +348,134 @@ body {
   }
 }
 
-/* Navbar glass (v3 step 03): the only glass on the page. The header's
-   data-nav-tone follows the section under the bar; values are flat.
-   Over dark sections the bar is a light silver glass (Mehdi, 27 Sep),
-   over light ones Harvey's white glass, so the text is dark on both.
-   No shadow, saturate, gradient, highlight or blend; backdrop-filter
-   never transitions. */
+/* Navbar glass (v3 step 03b, after Raycast's): the only glass on the page.
+   One dark Windsor bar on every section. The header's data-nav-tone
+   follows the section under the bar and changes only the fill's density
+   and the blur; the text stays light on both. Gradients can't transition,
+   so the fill is two layers: ::after is the dark-section fill with the
+   hairline and the top highlight, always on; ::before, beneath it, adds
+   the extra density over light sections and fades in by opacity. Stacked,
+   they composite to exactly 88% → 96%. (Cross-fading two full fills would
+   dip to about 64% mid-fade and read as a flicker.) No saturate, no drop
+   shadow, no blend; backdrop-filter never transitions. */
 .site-nav {
-  --nav-fg: var(--color-windsor);
-  /* n700, not n500: n500 drops to 2.54:1 when dark headings pass under
-     the 72% bar (Mehdi, 26 Sep). On the silver it holds 5.2:1 at worst. */
-  --nav-link: var(--color-n700);
-  --nav-cta-hover-fg: var(--color-white);
+  --nav-top: 8px;
+  --nav-h: 56px;
+}
+@media (min-width: 900px) {
+  .site-nav {
+    --nav-top: 16px;
+    --nav-h: 76px;
+  }
 }
 .nav-bar {
-  border: 1px solid transparent;
-  color: var(--nav-fg);
-  transition:
-    background-color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo),
-    color 200ms var(--ease-out-expo);
+  position: relative;
+  isolation: isolate;
+  color: var(--color-white);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
-.site-nav[data-nav-tone="dark"] .nav-bar {
-  background-color: rgba(226, 230, 237, 0.8);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border-color: rgba(255, 255, 255, 0.4);
+.nav-bar::before,
+.nav-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+}
+/* Over light sections: 1 − (1 − a)(1 − 0.72) = 0.88 and
+   1 − (1 − a)(1 − 0.9) = 0.96 give a = 0.5714 and 0.6. */
+.nav-bar::before {
+  background-image: linear-gradient(
+    137deg,
+    rgba(11, 21, 39, 0.5714) 5%,
+    rgba(7, 14, 27, 0.6) 76%
+  );
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out-expo);
+}
+.nav-bar::after {
+  background-image: linear-gradient(
+    137deg,
+    rgba(11, 21, 39, 0.72) 5%,
+    rgba(7, 14, 27, 0.9) 76%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 .site-nav[data-nav-tone="light"] .nav-bar {
-  background-color: rgba(255, 255, 255, 0.72);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  border-color: rgba(11, 21, 39, 0.08);
+}
+.site-nav[data-nav-tone="light"] .nav-bar::before {
+  opacity: 1;
 }
 @supports not (backdrop-filter: blur(1px)) {
-  .site-nav[data-nav-tone="dark"] .nav-bar {
-    background-color: rgba(226, 230, 237, 0.96);
+  .nav-bar::before {
+    display: none;
   }
-  .site-nav[data-nav-tone="light"] .nav-bar {
-    background-color: rgba(255, 255, 255, 0.96);
+  .nav-bar::after {
+    background-image: none;
+    background-color: rgba(11, 21, 39, 0.96);
   }
 }
+.nav-tag {
+  color: var(--color-n300);
+}
 .nav-link {
-  color: var(--nav-link);
-  transition: color 200ms var(--ease-out-expo);
+  border-radius: 6px;
+  padding: 12px 8px;
+  color: var(--color-n300);
+  transition:
+    color 150ms var(--ease-out-expo),
+    background-color 150ms var(--ease-out-expo);
 }
 .nav-link:hover,
 .nav-link[aria-current="true"] {
-  color: var(--nav-fg);
+  color: var(--color-white);
+}
+.nav-link:focus-visible {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 .nav-link[aria-current="true"] {
   text-decoration: underline 1px var(--color-driftwood);
   text-underline-offset: 6px;
 }
+/* The CTA is a light key, as Raycast's Download is. Its shadows are the
+   one exception to "hairlines, not shadows" (brief, 18 Oct). */
 .nav-cta {
-  border: 1px solid var(--nav-fg);
-  color: var(--nav-fg);
+  --nav-cta-glow: rgba(255, 255, 255, 0.19);
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background-color: #e9ebef;
+  color: var(--color-windsor);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.5),
+    0 0 14px var(--nav-cta-glow),
+    inset 0 -1px 0.4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0.4px #fff;
   transition:
-    background-color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo),
-    color 200ms var(--ease-out-expo);
+    background-color 150ms var(--ease-out-expo),
+    box-shadow 150ms var(--ease-out-expo),
+    transform 100ms var(--ease-out-expo);
 }
 .nav-cta:hover {
-  background-color: var(--nav-fg);
-  color: var(--nav-cta-hover-fg);
+  background-color: var(--color-white);
+}
+.nav-cta:active {
+  --nav-cta-glow: rgba(255, 255, 255, 0.1);
+  transform: translateY(1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-cta:active {
+    transform: none;
+  }
 }
 
 /* Hero load sequence (v3 step 04). With JS, reveal elements start hidden

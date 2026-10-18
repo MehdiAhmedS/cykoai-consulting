@@ -134,7 +134,7 @@ Content rules:
 **Kept from §1:**
 
 - Palette: Windsor #0B1527, white, and Driftwood #AD8752, used sparingly (rules, links, focus, about one highlight per screen).
-- Flat fields; hairlines, not shadows; radii 2–8px. The exceptions: the Projects phone outline (a picture of a device) and the navbar, a centred bar with 20px corners and a 12px-radius CTA (Mehdi, 27 Sep).
+- Flat fields; hairlines, not shadows; radii 2–8px. The exceptions: the Projects phone outline (a picture of a device) and the navbar, a floating bar with 16px corners (14px below 900px) and an 8px-radius CTA (Mehdi, 18 Oct).
 - Sentence case; no emoji or hype.
 - Motion: GSAP + ScrollTrigger + Lenis only; transforms and opacity only; at most 2 pins per page; a full reduced-motion fallback.
 - Imagery only from `public/assets/gen/`, and the page must work with every image removed.
@@ -142,7 +142,13 @@ Content rules:
 
 **Amended in v3:**
 
-- **Glass on the navbar only.** Backdrop blur 16–20px, tint at least 72% opaque, a 1px hairline, and an `@supports not (backdrop-filter: blur(1px))` solid fallback. No inset highlight, no `saturate()`, no shadow, no `mix-blend-mode`.
+- **Glass on the navbar only,** after Raycast's (step 03b):
+  - a Windsor gradient fill at 137°, from 72% to 90% opaque over dark sections and from 88% to 96% over light ones;
+  - blur 5px over dark sections and 16px over light ones;
+  - a `white/6` hairline and a 1px inner top highlight at `white/15`;
+  - an `@supports not (backdrop-filter: blur(1px))` solid fallback at 96%;
+  - the CTA may carry its key shadows (a 2px dark ring, a soft white glow and two inner edges);
+  - still no `saturate()`, no drop shadow under the bar and no `mix-blend-mode`.
 - **WebGL in the hero globe and the Offers pieces only.** Both use three.js (plain three, named imports only), which loads after the headline in one chunk they share, on viewports 900px and wider. The Offers pieces share a single renderer. Phones, reduced motion and browsers without WebGL get still images of the same scenes instead. The globe shows only places from `site.ts`: confirmed clients, which are labelled, and Mehdi's decorative places, which never are. The hero must read completely with the globe removed.
 - **Project captures.** Projects may show captures of Mehdi's own live pages from `public/assets/projects/`, made by `scripts/capture-projects.mjs` (step 07). They're the only imagery outside `public/assets/gen/`, and the page must still work without them.
 - **Numbers only as data:** dates, weeks, counts, coordinates, time zones. No ordinal section indices, numbered rows or numbered menus.
@@ -233,7 +239,7 @@ All picked on 26 September 2026. The globe and Projects were revised on 27 Septe
 |---|---|---|
 | Page structure | A: seven sections, one job each | 01 |
 | Typography | A: Archivo + Chivo Mono | 02 |
-| Navbar | A: inset glass bar; Linear's values on dark sections, Harvey's on light, switched per section | 03 |
+| Navbar | A: inset glass bar; Linear's values on dark sections, Harvey's on light, switched per section. Restyled on 18 October after Raycast's glass: dark on every section, a light key CTA (03b) | 03, 03b |
 | Headline motion | A: line-mask rise in the heavy display, then a mono data line types on | 04 |
 | Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, a slow sway, a still frame on phones. Later that day, per Mehdi: arcs fly out from Muscat, back to it and between the other places, up to five at once | 05, 05b |
 | Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi. Revised on 27 September from the Cowork study: rows open on scroll, Cuberto-style, each with a three.js piece of the work | 06 |
@@ -262,7 +268,12 @@ Answered on 27 September:
 - The globe's arcs go to and fro: out from Muscat, back to Muscat, and between the other places, in turn, up to five at once. The phone still frame keeps Muscat's three client arcs.
 - The "Company profiles" offer is now "Landing pages" (id `landing-pages`): almost any kind of landing page, with the brand design to match.
 - The Offers pieces have no captions under them; the "You get" copy beside each piece carries what it shows.
-- The navbar is a centred bar with 20px corners, at most 1000px wide from 900px (full width less 8px each side below), with a 12px-radius CTA. Over dark sections it is a light silver glass (`rgba(226,230,237,0.8)`, blur 20px, a `white/40` hairline) with dark text, replacing Linear's dark values. It keeps its height, top offset and tone switching.
+- The navbar (restyled on 18 October, step 03b, after Raycast's) is a dark Windsor glass bar on every section:
+  - from 900px it floats 16px from the top, `min(1208px, 100% − 32px)` wide and centred so its edges meet the content column, 76px tall, with 16px corners;
+  - below 900px it sits 8px from the top and sides, 56px tall, with 14px corners;
+  - the fill is `linear-gradient(137deg, rgba(11,21,39,0.72) 5%, rgba(7,14,27,0.9) 76%)` with blur 5px over dark sections, and 88% → 96% with blur 16px over light ones; the text stays light on both;
+  - links are Archivo 14px/500 at +0.2px in n300, white on hover, with the 1px Driftwood underline on the active one;
+  - the CTA is a light key: 36px tall, 8px corners, `#E9EBEF` with Windsor text, white on hover, 1px down when pressed.
 
 Answered at sign-off on 17 October (every draft line approved or edited; `site.ts` and `projects.ts` hold no draft or TBC):
 
