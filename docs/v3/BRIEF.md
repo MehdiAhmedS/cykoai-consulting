@@ -38,7 +38,7 @@ An audit of every statement on the current page (v1 copy, September 2026) found 
 | Engagement | `engagement` | What happens after I get in touch? | Team shape, what you receive at each stage, how handover works; length once Mehdi confirms it. | Process + "Skin in the game" |
 | Standards | `standards` | Why trust you with access to our systems? | The frameworks Cykoai works to, the rules it keeps, who does the work. | Why Cykoai |
 | The name | `name` | Why "Cykoai"? | The word only: how it's said, its three parts, what each means. | Name story + Philosophy's last line |
-| Contact | `contact` | What's the first step? | What to send, what happens next, how fast. | Contact |
+| Contact | `contact` | What's the first step? | What happens next, and how fast. | Contact |
 
 The page order is Hero, Offers, Projects, Engagement, Standards, The name, Contact.
 
@@ -115,7 +115,7 @@ Bukhait Sefrar and Asaan Nikah are real organisations, so neither is named until
 
 **Technologies Mehdi works with** (27 September): Flutter, Swift, Kotlin, React Native, the LAMP stack, Next.js, Django, Python, API integrations, React, MongoDB, MySQL and Frappe. A technologies section before The name is planned; its prompt is still to come.
 
-**Where clients are:** Muscat (Oman, also Cykoai's origin), Pakistan, the UAE, Germany, and a country in Africa (which one is TBC).
+**Where clients are:** Muscat (Oman, also Cykoai's origin), Pakistan, the UAE, Germany, Kenya and Tanzania.
 
 **The name:** "Cykoai" is pronounced "see-ko-ya".
 
@@ -125,7 +125,7 @@ Content rules:
 
 - **Never invent.** Clients, metrics, dates, prices, credentials and quotes are never invented. Anything unconfirmed stays in `src/content/site.ts` (or `projects.ts`, from step 07) with `status: "draft"` or the value `"TBC"`.
 - **Confidential clients read "Withheld".** Naming a client needs that client's consent, which Mehdi confirms. A capture of a client's page names the client too, so it needs the same consent.
-- **Illustrations.** Confidential work is shown with UI mockups tagged "Illustration". They show the kind of work only: the labels of its parts, and redaction bars where a client's data would be. They carry no names, counts, scores, dates, states or outcomes.
+- **Illustrations.** Confidential work is shown with UI mockups tagged "Illustration". They show the kind of work only: the labels of its parts, and redaction bars where a client's data would be. They carry no names, counts, scores, dates, states or outcomes. HDT Systems' screen is the exception: a three.js piece (step 07b) with no tag and no text (Mehdi, 18 October).
 - **Two things leave the page:** the "Illustrative" engagement note, and the stat strip (2–4 people, <90 days, 100%), whose numbers are unverified.
 - **Voice:** sentence case and short declarative sentences. Use numbers only when they're real.
 
@@ -209,7 +209,7 @@ From the samples, work out when each element starts and stops moving, the stagge
 
 ## How to build and check every step
 
-Each step runs as two passes in one session: the study, then the build. Steps 05b, 06 and 11 have nothing to study: Mehdi starts them in plan mode, so skip item 2.
+Each step runs as two passes in one session: the study, then the build. Steps 05b, 06, 07b and 11 have nothing to study: Mehdi starts them in plan mode, so skip item 2.
 
 1. **Read** this brief, the step's prompt, `CLAUDE.md`, and the files you'll touch. Then run `git status`. If `docs/v3/BRIEF.md`, anything in `docs/v3/prompts/`, or files the step's prompt says come from Cowork show as modified or new, those are updates from the Cowork review: commit them on their own first, as `v3(docs): update brief and prompts`. If anything else is unexpected, stop and ask.
 2. **Study (first pass).** Mehdi asks for part 1 of the prompt on its own: go through the references in Chrome, save the captures and write NOTES.md, as "How to study a reference" describes. Change no code in this pass. End with a short summary of what you learned and anything that should change how the rest of the prompt is built.
@@ -237,7 +237,7 @@ All picked on 26 September 2026. The globe and Projects were revised on 27 Septe
 | Headline motion | A: line-mask rise in the heavy display, then a mono data line types on | 04 |
 | Globe | A: cobe sphere with a graticule and arcs (05). Rebuilt in three.js on 27 September: arcs that travel and land, a slow sway, a still frame on phones. Later that day, per Mehdi: arcs fly out from Muscat, back to it and between the other places, up to five at once | 05, 05b |
 | Offers | A: offer rows with terms (who it's for, what you get); no length, per Mehdi. Revised on 27 September from the Cowork study: rows open on scroll, Cuberto-style, each with a three.js piece of the work | 06 |
-| Projects | A: engagement register (26 September). Replaced on 27 September by the showcase board's A, the stage: a sticky frame whose screen wipes to each project as it scrolls past, live captures of Mehdi's landing pages, confidential work as labelled illustrations, and the rest in a "More work" list | 07 |
+| Projects | A: engagement register (26 September). Replaced on 27 September by the showcase board's A, the stage: a sticky frame whose screen wipes to each project as it scrolls past, live captures of Mehdi's landing pages, confidential work as labelled illustrations, and the rest in a "More work" list. On 18 October HDT Systems' illustration became a three.js piece: servers, control rings that lock into line and a shield, with no text or tag | 07, 07b |
 | Engagement | A: deliverable anatomy, with the team (and length, once confirmed) on a "cover" | 08 |
 | Standards | A: rules as constraints plus a frameworks strip | 09 |
 | The name | A: dictionary entry (pronunciation, three parts, one closing line) | 10 |
@@ -264,12 +264,17 @@ Answered on 27 September:
 - The Offers pieces have no captions under them; the "You get" copy beside each piece carries what it shows.
 - The navbar is a centred bar with 20px corners, at most 1000px wide from 900px (full width less 8px each side below), with a 12px-radius CTA. Over dark sections it is a light silver glass (`rgba(226,230,237,0.8)`, blur 20px, a `white/40` hairline) with dark text, replacing Linear's dark values. It keeps its height, top offset and tone switching.
 
-Still open; until answered, the value stays TBC in `site.ts` (or `projects.ts`) and is hidden in production:
+Answered at sign-off on 17 October (every draft line approved or edited; `site.ts` and `projects.ts` hold no draft or TBC):
 
-- which country in Africa (the globe)
-- for each landing page: made for a client or as a concept, whether the client can be named, and the year (07)
-- whether to link to the live landing pages (07)
-- real screens for the device app, with data blurred (07, later)
-- HDT Systems' landing page, once it's finished (07, later)
-- any credentials to show for the team (09, optional)
-- what a client should send for each offer (10, optional)
+- The menu's first link and the Offers section label are now "Our Craft". The hero's eyebrow and lede were edited.
+- The clients in Africa are in Kenya and Tanzania, both on the globe.
+- A typical engagement lasts 6 weeks. The Effort row is left off.
+- Bukhait Sefrar and Asaan Nikah can be named. The other six landing pages were made for clients who aren't named: they show "Withheld" as the client, keep their captures, and are linked.
+- Every live landing page is linked.
+- The team block is left off, and there's no "What to send" list in Contact.
+
+Still open, for later:
+
+- real screens for the device app, with data blurred (07)
+- HDT Systems' landing page, once it's finished (07)
+- the penetration-testing entry's stack (left off until Mehdi gives it)

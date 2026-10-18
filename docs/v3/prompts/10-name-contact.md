@@ -3,7 +3,7 @@
 Read `docs/v3/BRIEF.md` first. Two sections, each with a single job:
 
 - **The name** explains the word "cykoai" and nothing else: how it's said, its three parts, and one closing line.
-- **Contact** says what to send and what happens next.
+- **Contact** says what happens next, and how fast.
 
 ## 1. Study the references
 
@@ -31,7 +31,7 @@ For Contact, note Evil Martians' "From you" / "From us" split.
 - **The entry:**
   - The word "cykoai" in the display face at hero weight: 760 on dark, 112% width, `clamp(3.5rem, 11vw, 8.5rem)`, leading 0.9.
   - Beside it on desktop, or under it on mobile, in `type-data` Driftwood: the pronunciation from `site.ts` (confirmed: "see-ko-ya"), set as `[see·ko·ya] · noun`.
-- **The three parts:** a three-column grid under a 1px `rgba(255,255,255,0.14)` rule, one column on mobile. Each column has the syllable ("cy", "ko", "ai") in `type-label` Driftwood and its line from `site.ts` in `type-body` (`#D5DAE3`). These lines are drafts. Columns are divided by hairlines. No numbers.
+- **The three parts:** a three-column grid under a 1px `rgba(255,255,255,0.14)` rule, one column on mobile. Each column has the syllable ("cy", "ko", "ai") in `type-label` Driftwood and its line from `site.ts` in `type-body` (`#D5DAE3`). Mehdi approved these lines on 17 October. Columns are divided by hairlines. No numbers.
 - **Closing line:** "Cykoai creates clarity." (confirmed) in `type-h3` white, under the parts.
 - **RingField:** keep v1's `RingField` as a quiet background (≤15% opacity) only if it doesn't compete with the word. Otherwise remove it and note why.
 - **Motion,** triggered when the section enters (no pin):
@@ -45,7 +45,7 @@ For Contact, note Evil Martians' "From you" / "From us" split.
 ## 3. Contact (`id="contact"`, light)
 
 - Keep v1's form, email line and response-time sentence (all confirmed). Don't touch `src/app/api/contact`.
-- **Add "What to send" above the form:** a compact list, one line per offer from `site.ts`, with the offer name in `type-label` and what to send in `type-small`. Add a `whatToSend` field to each offer, all "TBC" (Mehdi supplies these). Hide the whole list in production until at least three are confirmed, and show DRAFT in dev. Example of the shape only, not content: "Security reviews: the app's URL and repo access."
+- **No "What to send" list.** Mehdi left it out at sign-off (17 October). Don't add a `whatToSend` field or any other new copy: every string this step uses is already confirmed, and nothing should show a DRAFT chip, in dev or production.
 - The heading and intro stay as v1's confirmed copy, restyled with `type-h2` and `type-lead`.
 
 ## 4. Check, commit, report
@@ -55,10 +55,10 @@ Run the brief's check list (verify-shots into `docs/v3/after/10-name-contact`, w
 - Capture the name animation with `npm run refs -- _self http://localhost:3000 --at="Cykoai creates clarity" --mobile`. The three `at` captures, taken on arrival, +0.7s and +2.2s, show the sequence. Confirm the syllables separate calmly and nothing overlaps at 390px, then delete `_self`.
 - Check the form still submits: the API route is untouched, and a manual test is enough.
 
-Commit: `v3(10): the name as a dictionary entry; contact with what to send`.
+Commit: `v3(10): the name as a dictionary entry; contact restyled`.
 
 ## Acceptance
 
 - The name section explains only the word: pronunciation `[see·ko·ya]`, three parts and the closing line. The syllable animation is transform only, with a static reduced-motion state.
-- Contact keeps the form and API unchanged, and the "What to send" list stays hidden in production until confirmed.
+- Contact keeps the form and API unchanged and adds no new copy. No DRAFT chip appears anywhere in either section.
 - No numbering, and no claims repeated from other sections.

@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HDT Piece Reference</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Chivo+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column of copy, then the four stage frames two-up; each frame is the Projects stage screen at 16:10. */
+:root {
+  --bg: #0B1527;        /* Windsor: the stage layer */
+  --panel: #13203A;     /* windsor-2 */
+  --ink: #FFFFFF;
+  --muted: #B4B9C4;     /* n300 */
+  --hair: rgba(255, 255, 255, 0.10);
+  --faint: rgba(255, 255, 255, 0.16);
+  --accent: #D4B483;    /* driftwood-soft */
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Chivo Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+:root[data-palette="next"] {
+  --bg: #0E1D61;        /* Deep Atlas Navy */
+  --panel: #15257A;
+  --ink: #F4EFE6;
+  --muted: #CFC7B8;
+  --hair: rgba(232, 224, 210, 0.14);
+  --faint: rgba(232, 224, 210, 0.22);
+  --accent: #D2B77E;    /* gold, lifted for navy */
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1.55;
+  transition: background-color 0.4s ease;
+}
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(32px, 6vw, 72px) 64px;
+}
+@media (min-width: 720px) {
+  .page { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); }
+}
+.eyebrow, .label, .chip, button, .tag, .ov { font-family: var(--mono); }
+.eyebrow { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+h1 {
+  margin: 0;
+  font-weight: 760;
+  font-stretch: 112%;
+  font-size: clamp(2.1rem, 5.4vw, 3.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.lead { margin: 20px 0 0; max-width: 64ch; color: var(--muted); font-size: 1.05rem; }
+.lead strong { color: var(--ink); font-weight: 600; }
+
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center;
+  margin: 32px 0 40px; padding-top: 20px; border-top: 1px solid var(--hair);
+}
+.group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.label { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--faint); border-radius: 999px; padding: 2px; }
+.seg button { border-radius: 999px; }
+button {
+  appearance: none; border: 0; background: transparent; color: var(--muted);
+  font-size: 11.5px; letter-spacing: 0.04em; padding: 6px 12px; cursor: pointer; line-height: 1.2;
+}
+button:hover { color: var(--ink); }
+button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px 36px; }
+.grid.one { max-width: 760px; }
+code { font-family: var(--mono); font-size: 0.9em; color: var(--ink); }
+@media (min-width: 1000px) { .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+
+.card { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.stage {
+  position: relative; aspect-ratio: 16 / 10; max-width: 100%;
+  background: var(--bg); border: 1px solid var(--hair); border-radius: 8px; overflow: hidden;
+  transition: background-color 0.4s ease;
+}
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tag {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  border: 1px solid var(--faint); border-radius: 2px; padding: 0 6px; line-height: 16px;
+}
+.ov { position: absolute; z-index: 2; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); pointer-events: none; transition: opacity 0.3s ease; }
+body.no-labels .ov { opacity: 0; }
+.ov-legend { left: 14px; bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
+.ov-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.sw { display: inline-block; flex: none; }
+.sw.keep { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--accent); }
+.sw.reduce { width: 7px; height: 9px; border: 1px solid var(--muted); border-top-width: 2px; }
+.sw.remove { width: 11px; height: 11px; border: 1px dashed var(--accent); }
+.ov-controls { left: 14px; top: 12px; margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.ov-controls li { display: flex; align-items: center; gap: 8px; transition: color 0.35s ease; }
+.ov-controls li i { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); transition: background-color 0.35s ease; }
+.ov-controls li.on { color: var(--ink); }
+.ov-controls li.hd { color: var(--ink); margin-bottom: 4px; padding-bottom: 5px; border-bottom: 1px solid var(--faint); }
+.ov-controls li.on i { background: var(--accent); }
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); font-size: 14px; }
+
+.head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.letter { font-weight: 800; font-stretch: 125%; font-size: 1.6rem; line-height: 1; color: var(--accent); }
+h2 { margin: 0; font-weight: 680; font-stretch: 108%; font-size: 1.45rem; line-height: 1.15; }
+.controls { margin-left: auto; display: flex; gap: 4px; }
+.controls button { border: 1px solid var(--faint); border-radius: 999px; padding: 5px 11px; }
+.shows { margin: 0; max-width: 60ch; }
+.facts { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; }
+.facts dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.facts dd { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.facts dd b { color: var(--ink); font-weight: 600; }
+
+
+.preview { margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--hair); }
+.preview h3 { margin: 0; font-weight: 700; font-stretch: 112%; font-size: 1.3rem; }
+.pv-intro { margin: 10px 0 20px; max-width: 70ch; color: var(--muted); }
+.pv {
+  --pvh: min(78vh, 620px); --fa: calc(var(--pvh) * 0.6);
+  --fw: min(100%, calc((var(--fa) - 32px) * 1.6 + 2px));
+  height: var(--pvh); overflow-y: auto; overscroll-behavior: contain;
+  border: 1px solid var(--hair); border-radius: 8px; background: var(--bg);
+}
+.pv:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pv-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 0 clamp(20px, 4vw, 56px); padding-inline: clamp(16px, 3vw, 36px); }
+.pv-stage { position: sticky; top: 0; align-self: start; height: var(--pvh); display: flex; flex-direction: column; justify-content: center; }
+.pv-frame { position: relative; overflow: hidden; height: var(--fa); }
+.pv-layer { position: absolute; inset: 0; overflow: hidden; background: var(--bg); will-change: transform; }
+.pv-layer[data-layer] { transform: translateY(100%); }
+.pv-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; will-change: transform; }
+.pv-bf { width: var(--fw); border: 1px solid var(--hair); border-radius: 8px; overflow: hidden; background: var(--panel); }
+.pv-bar { height: 30px; display: flex; align-items: center; gap: 12px; padding: 0 12px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.pv-dots { display: flex; gap: 5px; }
+.pv-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.pv-vp { aspect-ratio: 16 / 10; overflow: hidden; }
+.pv-vp img { width: 100%; display: block; }
+.pv-piece { position: relative; width: var(--fw); height: 100%; }
+.pv-piece canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.pv-index { margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.pv-index span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--faint); padding-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pv-index span.on { color: var(--ink); border-top-color: var(--accent); }
+.pv-chapters { display: grid; gap: calc(var(--pvh) * 0.55); padding-block: calc(var(--pvh) * 0.42) calc(var(--pvh) * 0.75); }
+.pv-chapters h4 { margin: 0 0 10px; font-weight: 700; font-stretch: 112%; font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.05; }
+.pv-chapters p { margin: 0; color: var(--muted); max-width: 40ch; }
+.pv-chapters .pv-facts { margin-top: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+@media (max-width: 760px) {
+  .pv { --fa: 220px; }
+  .pv-grid { grid-template-columns: minmax(0, 1fr); }
+  .pv-stage { height: auto; padding-block: 14px; z-index: 2; background: var(--bg); }
+  .pv-chapters { padding-block: 40px calc(var(--pvh) * 0.8); gap: calc(var(--pvh) * 0.5); }
+}
+.pick {
+  margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--hair);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 48px;
+}
+@media (min-width: 900px) { .pick { grid-template-columns: 240px minmax(0, 1fr); } }
+.pick h3 { margin: 0; font-weight: 700; font-stretch: 112%; font-size: 1.3rem; }
+.pick p { margin: 0 0 12px; max-width: 66ch; color: var(--muted); }
+.pick p strong { color: var(--ink); font-weight: 600; }
+.note { margin-top: 40px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); max-width: 90ch; }
+
+@media (max-width: 560px) {
+  .controls { margin-left: 0; width: 100%; }
+  .ov { font-size: 8.5px; }
+  .ov-legend { gap: 10px; left: 10px; bottom: 8px; }
+  .ov-controls { gap: 2px; left: 10px; top: 8px; }
+  .tag { top: 8px; right: 8px; font-size: 8.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body, .stage, .ov, .ov-controls li, .ov-controls li i { transition: none; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="page">
+  <header>
+    <p class="eyebrow">Cykoai · v3 step 07b · approved 18 October</p>
+    <h1>HDT Systems: the stage piece</h1>
+    <p class="lead">The approved design for HDT Systems' screen on the Projects stage (concept B of the Cowork study, "Control rings"). The card plays the sequence as an 11-second loop so it can be watched; the site plays it once, as the preview below shows. Port <code>sceneControls</code>, <code>fillMaterial</code>, <code>stageWipe</code> and <code>stageFrame</code> from the module script. The layout and copy around them are a sketch.</p>
+  </header>
+
+  <div class="toolbar" role="group" aria-label="Study settings">
+    <div class="group">
+      <span class="label" id="lbl-mot">Frames</span>
+      <span class="seg" role="group" aria-labelledby="lbl-mot">
+        <button type="button" id="mot-move" aria-pressed="true">Moving</button>
+        <button type="button" id="mot-still" aria-pressed="false">Still frames</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="grid one">
+    
+
+    <article class="card" data-scene="controls">
+      <div class="stage">
+        <canvas aria-label="Animation: four rings, each carrying a person, spin loose around a server rack, lock into line one by one and turn gold; then gold flows up from the rings into a shield above the servers." role="img"></canvas>
+      </div>
+      <div class="head">
+        <h2>Control rings</h2>
+        <span class="controls"><button type="button" data-act="play" aria-pressed="false">Pause</button><button type="button" data-act="replay">Replay</button><button type="button" data-act="still" aria-pressed="false">Still</button></span>
+      </div>
+      <p class="shows">The company's Google Workspace as a rack of servers, with four rings around it, one for each of ISO/IEC 27001's control themes, each carrying a person. The rings swing loose, then one by one settle into line, turn gold and lock. The servers' lights go steady, and gold flows up from the rings into a shield above them.</p>
+      <dl class="facts">
+        <dt>Tells</dt><dd><b>Securing the workspace, with controls working toward ISO/IEC 27001.</b> The strongest single image at small sizes.</dd>
+        <dt>Labels</dt><dd>None. The picture carries no text and no tag.</dd>
+        <dt>Loop</dt><dd>11 seconds here. On the stage it plays once as HDT comes into view, then holds the shield: see the preview below.</dd>
+      </dl>
+    </article>
+
+    
+
+    
+  </div>
+
+
+  <section class="preview" aria-labelledby="pv-h">
+    <h3 id="pv-h">B on the Projects stage</h3>
+    <p class="pv-intro">Scroll inside the box. As HDT Systems' title rises, its screen wipes up over Bukhait Sefrar's, the piece rises with the wipe, and the sequence starts halfway through it. It plays once, then holds the locked rings and the shield, gently moving, while the chapter is read. Scroll back up past it and it plays again.</p>
+    <div class="pv" id="pv" tabindex="0" aria-label="A scrollable preview of the Projects stage">
+      <div class="pv-grid">
+        <div class="pv-stage" aria-hidden="true">
+          <div class="pv-frame">
+            <div class="pv-layer"><div class="pv-inner">
+              <div class="pv-bf"><div class="pv-bar"><span class="pv-dots"><i></i><i></i><i></i></span><span>Bukhait Sefrar</span></div><div class="pv-vp"><img alt="" src="/public/assets/projects/bukhait-sefrar.webp"></div></div>
+            </div></div>
+            <div class="pv-layer" data-layer="1"><div class="pv-inner">
+              <div class="pv-piece"><canvas></canvas></div>
+            </div></div>
+            <div class="pv-layer" data-layer="2"><div class="pv-inner">
+              <div class="pv-bf"><div class="pv-bar"><span class="pv-dots"><i></i><i></i><i></i></span><span>Rabia Al Basri</span></div><div class="pv-vp"><img alt="" src="/public/assets/projects/rabia-al-basri.webp"></div></div>
+            </div></div>
+          </div>
+          <div class="pv-index"><span data-mark>Bukhait Sefrar</span><span data-mark>HDT Systems</span><span data-mark>Rabia Al Basri</span></div>
+        </div>
+        <div class="pv-chapters">
+          <article><h4>Bukhait Sefrar</h4><p>A right-to-left Arabic site for a law firm and legal consultancy in Muscat.</p><p class="pv-facts">Bukhait Sefrar, Muscat · 2025</p></article>
+          <article><h4 data-ch>HDT Systems</h4><p>Google Workspace hardening, a review of freelancers' access, and controls working toward ISO/IEC 27001.</p><p class="pv-facts">HDT Systems, Germany · Since May 2026 · In progress</p></article>
+          <article><h4 data-ch>Rabia Al Basri</h4><p>An interactive autobiography of the eighth-century mystic.</p><p class="pv-facts">Withheld · 2025</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <p class="note">Built with three.js 0.186.1, the site's version, in the Offers pieces' style: one shared renderer, flat two-tone shading, hairline edges. On phones and with reduced motion the site would show the still frame. Colours are the current site's.</p>
+</div>
+
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.186.1/+esm";
+
+THREE.ColorManagement.enabled = false;
+const TAU = Math.PI * 2;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const mod = (a, n) => ((a % n) + n) % n;
+const C = (h) => new THREE.Color(h);
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const LIGHT = V(-0.55, 0.62, 0.56).normalize();
+function invEase(y) { let a = 0, b = 1; for (let i = 0; i < 40; i++) { const m = (a + b) / 2; if (easeInOut(m) < y) a = m; else b = m; } return (a + b) / 2; }
+function mulberry32(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+const PALETTES = {
+  current: { lit: "#2A4170", shade: "#101B31", panelLit: "#1A2A48", panelShade: "#0D172A", rim: "#B4B9C4", line: "#FFFFFF", accent: "#D4B483", accentShade: "#6E5530", staff: "#B4B9C4", grey: "#6B7385" },
+};
+let pal = PALETTES.current;
+
+/* ---------- shared materials (as in the Offers pieces) ---------- */
+function ramp({ lit = pal.lit, shade = pal.shade, rim = 0.26, opacity = 1, side = THREE.FrontSide } = {}) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uLit: { value: C(lit) }, uShade: { value: C(shade) }, uRim: { value: C(pal.rim) },
+      uRimAmt: { value: rim }, uOpacity: { value: opacity }, uLight: { value: LIGHT },
+    },
+    vertexShader: `
+      varying vec3 vN; varying vec3 vV;
+      void main(){
+        vec4 p = vec4(position, 1.0); vec3 nn = normal;
+        #ifdef USE_INSTANCING
+          p = instanceMatrix * p; nn = mat3(instanceMatrix) * nn;
+        #endif
+        vec4 mv = modelViewMatrix * p;
+        vN = normalize(normalMatrix * nn); vV = normalize(-mv.xyz);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      uniform vec3 uLit; uniform vec3 uShade; uniform vec3 uRim; uniform vec3 uLight;
+      uniform float uRimAmt; uniform float uOpacity;
+      varying vec3 vN; varying vec3 vV;
+      void main(){
+        vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;
+        float hl = dot(n, uLight) * 0.5 + 0.5;
+        vec3 c = mix(uShade, uLit, smoothstep(0.15, 0.95, hl));
+        float f = 1.0 - max(dot(n, normalize(vV)), 0.0);
+        c = mix(c, uRim, smoothstep(0.55, 1.0, f) * uRimAmt);
+        gl_FragColor = vec4(c, uOpacity);
+      }`,
+    transparent: opacity < 1, depthWrite: opacity >= 1, side,
+  });
+}
+/* The shield's face: the same two-tone shading, cut off above uFill, with a bright edge at the fill line. */
+function fillMaterial() {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uLit: { value: C(pal.accent) }, uShade: { value: C(pal.accentShade) }, uRim: { value: C(pal.rim) },
+      uRimAmt: { value: 0.3 }, uLight: { value: LIGHT }, uFill: { value: -1 },
+    },
+    vertexShader: `
+      varying vec3 vN; varying vec3 vV; varying float vY;
+      void main(){
+        vY = position.y;
+        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      uniform vec3 uLit; uniform vec3 uShade; uniform vec3 uRim; uniform vec3 uLight;
+      uniform float uRimAmt; uniform float uFill;
+      varying vec3 vN; varying vec3 vV; varying float vY;
+      void main(){
+        if (vY > uFill) discard;
+        vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;
+        float hl = dot(n, uLight) * 0.5 + 0.5;
+        vec3 c = mix(uShade, uLit, smoothstep(0.15, 0.95, hl));
+        float f = 1.0 - max(dot(n, normalize(vV)), 0.0);
+        c = mix(c, uRim, smoothstep(0.55, 1.0, f) * uRimAmt);
+        c = mix(c, uRim, smoothstep(uFill - 0.035, uFill, vY) * 0.55 * step(uFill, 0.39));
+        gl_FragColor = vec4(c, 1.0);
+      }`,
+  });
+}
+const lineMat = (color, opacity = 0.3) => new THREE.LineBasicMaterial({ color, transparent: true, opacity, depthWrite: false });
+const basic = (color, opacity = 1) => new THREE.MeshBasicMaterial({ color, transparent: opacity < 1, opacity, depthWrite: opacity >= 1 });
+const edges = (geo, mat, thr = 20) => new THREE.LineSegments(new THREE.EdgesGeometry(geo, thr), mat);
+const lineFrom = (pts, mat, loop = false) => {
+  const g = new THREE.BufferGeometry().setFromPoints(pts);
+  return loop ? new THREE.LineLoop(g, mat) : new THREE.Line(g, mat);
+};
+const rectXZ = (w, d, y = 0) => [V(-w / 2, y, -d / 2), V(w / 2, y, -d / 2), V(w / 2, y, d / 2), V(-w / 2, y, d / 2)];
+function makeCam(pos, look = [0, 0, 0]) {
+  const cam = new THREE.PerspectiveCamera(30, 1.6, 0.1, 60);
+  cam.position.set(...pos); cam.lookAt(V(...look));
+  return cam;
+}
+const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), S3 = new THREE.Vector3(), P3 = new THREE.Vector3(), E = new THREE.Euler();
+const setInst = (mesh, i, x, y, z, s = 1) => { P3.set(x, y, z); S3.set(s, s, s); Q.identity(); M4.compose(P3, Q, S3); mesh.setMatrixAt(i, M4); };
+
+/* ---------- B. Control rings: servers, people on the rings, a shield rising ---------- */
+function sceneControls() {
+  const scene = new THREE.Scene();
+  const camera = makeCam([0, 1.75, 5.6], [0, 0.05, 0]);
+  const root = new THREE.Group(); scene.add(root);
+  const LOOP = 11, w = TAU / LOOP, L = [1.0, 1.85, 2.7, 3.55], LD = 1.05, DONE = L[3] + LD, R0 = 9.3, R1 = 10.7;
+  const look = V(0, 0.05, 0);
+  const navyLit = C(pal.lit), navyShade = C(pal.shade), goldLit = C(pal.accent), goldShade = C(pal.accentShade);
+  const greyC = C(pal.grey), accC = C(pal.accent), lineC = C(pal.line), col = new THREE.Color();
+  const rnd = mulberry32(11);
+
+  // The servers: a three-unit rack between two plates, with vents, a bay and status lights.
+  const rack = new THREE.Group(); root.add(rack);
+  const unitGeo = new THREE.BoxGeometry(0.62, 0.12, 0.42);
+  const unitMat = ramp({ lit: pal.lit, shade: pal.shade, rim: 0.3 });
+  const unitLine = lineMat(pal.line, 0.42);
+  const UY = [-0.15, 0, 0.15], ZF = 0.212, detail = [];
+  for (const y of UY) {
+    const m = new THREE.Mesh(unitGeo, unitMat); m.position.y = y; rack.add(m);
+    const e = edges(unitGeo, unitLine); e.position.y = y; rack.add(e);
+    for (let k = 0; k < 6; k++) { const x = -0.26 + k * 0.026; detail.push(V(x, y - 0.03, ZF), V(x, y + 0.03, ZF)); }
+    const [x0, x1, y0, y1] = [-0.07, 0.1, y - 0.033, y + 0.033];
+    detail.push(V(x0, y0, ZF), V(x1, y0, ZF), V(x1, y0, ZF), V(x1, y1, ZF), V(x1, y1, ZF), V(x0, y1, ZF), V(x0, y1, ZF), V(x0, y0, ZF));
+  }
+  rack.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(detail), lineMat(pal.line, 0.3)));
+  const plateGeo = new THREE.BoxGeometry(0.74, 0.03, 0.52);
+  for (const y of [-0.235, 0.235]) {
+    const m = new THREE.Mesh(plateGeo, unitMat); m.position.y = y; rack.add(m);
+    const e = edges(plateGeo, unitLine); e.position.y = y; rack.add(e);
+  }
+  const postGeo = new THREE.BoxGeometry(0.024, 0.44, 0.024);
+  for (const x of [-0.34, 0.34]) for (const z of [-0.24, 0.24]) { const m = new THREE.Mesh(postGeo, unitMat); m.position.set(x, 0, z); rack.add(m); }
+  const leds = new THREE.InstancedMesh(new THREE.CircleGeometry(0.014, 14), basic("#FFFFFF"), 9);
+  const ledRate = [];
+  UY.forEach((y, u) => [0.17, 0.21, 0.25].forEach((x, k) => {
+    const i = u * 3 + k; setInst(leds, i, x, y, ZF + 0.002); leds.setColorAt(i, greyC);
+    ledRate.push([w * (5 + ((i * 3) % 4)), rnd() * TAU]);
+  }));
+  rack.add(leds);
+
+  const pulseGeo = new THREE.RingGeometry(0.975, 1, 128); pulseGeo.rotateX(-Math.PI / 2);
+  const pulseMat = basic(pal.accent, 0); pulseMat.side = THREE.DoubleSide;
+  const pulse = new THREE.Mesh(pulseGeo, pulseMat); root.add(pulse);
+
+  // The rings, each carrying one person. Locked, the people fan out across the front.
+  const RADII = [1.32, 1.1, 0.89, 0.69], FAN = [-0.43, 0.52, -0.23, 0.29];
+  const bodyGeo = new THREE.LatheGeometry([[0, 0], [0.05, 0], [0.053, 0.012], [0.049, 0.04], [0.037, 0.064], [0, 0.075]].map(([x, y]) => new THREE.Vector2(x, y)), 20);
+  const headGeo = new THREE.SphereGeometry(0.034, 16, 12);
+  const Y = V(0, 1, 0);
+  const rings = RADII.map((R, i) => {
+    const g = new THREE.Group(); root.add(g);
+    const tor = new THREE.TorusGeometry(R, 0.018, 10, 200); tor.rotateX(Math.PI / 2);
+    const mat = ramp({ lit: pal.lit, shade: pal.shade, rim: 0.45 });
+    g.add(new THREE.Mesh(tor, mat));
+    const tp = [], nT = 48;
+    for (let k = 0; k < nT; k++) {
+      const a = (k / nT) * TAU, r0 = R + 0.035, r1 = R + (k % 4 === 0 ? 0.09 : 0.06);
+      tp.push(V(Math.sin(a) * r0, 0, Math.cos(a) * r0), V(Math.sin(a) * r1, 0, Math.cos(a) * r1));
+    }
+    const tickMat = lineMat(pal.line, 0.2);
+    g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(tp), tickMat));
+    const personMat = basic(pal.grey);
+    const person = new THREE.Group(); person.position.set(0, 0.016, R); person.scale.setScalar(1.3); g.add(person);
+    const body = new THREE.Mesh(bodyGeo, personMat); person.add(body);
+    const head = new THREE.Mesh(headGeo, personMat); head.position.y = 0.118; person.add(head);
+    const axis = V(Math.cos(i * 1.9 + 0.4), 0, Math.sin(i * 1.9 + 0.4)).normalize();
+    return {
+      g, mat, personMat, tickMat, R,
+      tilt: new THREE.Quaternion().setFromAxisAngle(axis, 0.7 + 0.2 * i),
+      lock: new THREE.Quaternion().setFromAxisAngle(Y, FAN[i]),
+      spin: (i % 2 ? -1 : 1) * w * (i < 2 ? 1 : 2), prec: (i % 2 ? 1 : -1) * w,
+    };
+  });
+
+  // The shield: an outline that draws itself, then a gold face with a check mark.
+  const SHY = 1.0;
+  const shape = new THREE.Shape();
+  shape.moveTo(-0.27, 0.25);
+  shape.quadraticCurveTo(0, 0.36, 0.27, 0.25);
+  shape.lineTo(0.27, 0.02);
+  shape.quadraticCurveTo(0.25, -0.22, 0, -0.37);
+  shape.quadraticCurveTo(-0.25, -0.22, -0.27, 0.02);
+  shape.lineTo(-0.27, 0.25);
+  const shield = new THREE.Group(); root.add(shield);
+  const shieldGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.05, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 2, curveSegments: 20 });
+  shieldGeo.translate(0, 0, -0.025);
+  const faceMat = fillMaterial();
+  shield.add(new THREE.Mesh(shieldGeo, faceMat));
+  const outlinePts = shape.getPoints(30).map((p) => V(p.x, p.y, 0.04));
+  const outlineGeo = new THREE.BufferGeometry().setFromPoints(outlinePts);
+  const outlineMat = lineMat(pal.accent, 0.95);
+  shield.add(new THREE.Line(outlineGeo, outlineMat));
+  const insetMat = lineMat(pal.shade, 0.75);
+  shield.add(lineFrom(shape.getPoints(30).map((p) => V(p.x * 0.8, p.y * 0.8 + 0.005, 0.041)), insetMat));
+  const checkMat = basic(pal.shade);
+  const check = new THREE.Group(); check.position.z = 0.045; shield.add(check);
+  const stroke = (x0, y0, x1, y1) => {
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    const m = new THREE.Mesh(new THREE.BoxGeometry(len + 0.03, 0.034, 0.012), checkMat);
+    m.position.set((x0 + x1) / 2, (y0 + y1) / 2, 0); m.rotation.z = Math.atan2(y1 - y0, x1 - x0);
+    check.add(m);
+  };
+  stroke(-0.095, -0.005, -0.025, -0.075); stroke(-0.025, -0.075, 0.115, 0.085);
+
+  // Gold flowing up from the rings into the shield's outline.
+  const NB = 36;
+  const beads = new THREE.InstancedMesh(new THREE.SphereGeometry(0.02, 10, 8), basic(pal.accent), NB);
+  root.add(beads);
+  const flow = Array.from({ length: NB }, (_, b) => {
+    const R = RADII[b % 4], a0 = rnd() * TAU;
+    const tp = outlinePts[Math.floor((b / NB) * outlinePts.length) % outlinePts.length];
+    const tx = tp.x, ty = SHY + tp.y, tz = 0.04;
+    const at = Math.atan2(tx, tz);
+    let d = at - a0; d = mod(d + Math.PI, TAU) - Math.PI;
+    return { R, a0, d: d + (b % 2 ? 0.9 : -0.9), rt: Math.hypot(tx, tz), ty, start: DONE + 0.1 + (b / NB) * 0.6 + rnd() * 0.15 };
+  });
+
+  const Qa = new THREE.Quaternion(), Qb = new THREE.Quaternion(), Qc = new THREE.Quaternion();
+  // update(T): the 11 s loop. update(T, { ts, ta, enter }): the stage. The sequence (ts) plays once and holds
+  // the secured state; ambient motion runs on ta; enter (0 to 1, the layer's wipe) lifts the piece into place.
+  function update(T, o) {
+    const ta = o ? o.ta : mod(T, LOOP);
+    const t = o ? Math.min(o.ts, R0 - 0.4) : ta;
+    const enter = o ? clamp(o.enter) : 1;
+    const r = smooth(R0, R1, t), fade = 1 - smooth(R0, R0 + 0.6, t);
+    root.rotation.y = 0.1 * Math.sin(ta * w);
+    root.position.y = -0.6 * (1 - easeOut(enter));
+    look.y = lerp(0.05, 0.42, smooth(DONE - 0.3, DONE + 1.5, t) * (1 - r));
+    camera.lookAt(look);
+
+    const lit = rings.map((rg, i) => {
+      Qa.setFromAxisAngle(Y, rg.prec * ta); Qb.setFromAxisAngle(Y, rg.spin * ta);
+      Qc.copy(Qa).multiply(rg.tilt).multiply(Qb);
+      const seat = easeInOut(clamp((t - L[i]) / LD));
+      rg.g.quaternion.copy(Qc).slerp(rg.lock, seat * (1 - r));
+      const gk = smooth(0.8, 1, seat) * fade;
+      rg.mat.uniforms.uLit.value.copy(navyLit).lerp(goldLit, gk * 0.9);
+      rg.mat.uniforms.uShade.value.copy(navyShade).lerp(goldShade, gk * 0.9);
+      rg.personMat.color.copy(greyC).lerp(accC, gk);
+      rg.tickMat.opacity = 0.2 + 0.22 * gk;
+      return gk;
+    });
+
+    const secure = smooth(DONE, DONE + 0.5, t) * fade;
+    for (let i = 0; i < 9; i++) {
+      const [rate, ph] = ledRate[i];
+      const blink = Math.sin(ta * rate + ph) > 0.55 ? 1 : 0;
+      col.copy(greyC).lerp(lineC, blink * 0.8).lerp(accC, secure);
+      leds.setColorAt(i, col);
+    }
+    leds.instanceColor.needsUpdate = true;
+
+    const pa = t - DONE, pk = clamp(pa / 1.3);
+    pulse.visible = pa > 0 && pa < 1.3;
+    pulse.scale.setScalar(lerp(0.3, 1.65, easeOut(pk))); pulseMat.opacity = 0.75 * (1 - pk);
+
+    for (let b = 0; b < NB; b++) {
+      const f = flow[b], u = clamp((t - f.start) / 0.95);
+      const on = u > 0 && u < 1 && t < R0;
+      const e = easeInOut(u), th = f.a0 + f.d * e, rr = lerp(f.R, f.rt, easeInOut(Math.min(1, u * 1.2)));
+      setInst(beads, b, Math.sin(th) * rr, f.ty * e, Math.cos(th) * rr, on ? 1 - 0.5 * smooth(0.75, 1, u) : 0.0001);
+    }
+    beads.instanceMatrix.needsUpdate = true;
+
+    // outline draws, gold fills from the tip up, the check pops; on release it drains and undraws
+    const draw = smooth(DONE + 0.5, DONE + 1.4, t) * (1 - smooth(R0 + 0.3, R0 + 0.9, t));
+    outlineGeo.setDrawRange(0, Math.round(outlinePts.length * draw));
+    const fill = smooth(DONE + 1.0, DONE + 1.9, t) * (1 - smooth(R0 - 0.2, R0 + 0.5, t));
+    faceMat.uniforms.uFill.value = lerp(-0.4, 0.4, fill);
+    insetMat.opacity = 0.75 * smooth(0.85, 1, fill);
+    const pop = easeOut(clamp((t - (DONE + 1.9)) / 0.35)) * (1 - smooth(R0 - 0.2, R0 + 0.1, t));
+    check.scale.setScalar(Math.max(pop, 0.0001)); check.visible = pop > 0.002;
+    const hold = smooth(DONE + 2.0, DONE + 2.8, t) * (1 - smooth(R0, R0 + 0.6, t));
+    shield.visible = draw > 0.001 || fill > 0.001;
+    shield.position.y = lerp(SHY - 0.12, SHY, smooth(DONE + 0.5, DONE + 1.8, t)) + 0.025 * Math.sin(ta * w * 3) * hold;
+    shield.rotation.y = 0.28 * Math.sin(ta * w * 2) * hold;
+    return { lit };
+  }
+  return { scene, camera, update, still: 7.4 };
+}
+
+/* ---------- the page ---------- */
+const builders = { controls: sceneControls };
+const views = [...document.querySelectorAll("[data-scene]")].map((card) => {
+  const canvas = card.querySelector("canvas");
+  return {
+    card, canvas, ctx: canvas.getContext("2d"), kind: card.dataset.scene,
+    w: 0, h: 0, t: 0, playing: true, still: false, dirty: true, s: null,
+    lights: [...card.querySelectorAll(".ov-controls li:not(.hd)")],
+    btn: Object.fromEntries([...card.querySelectorAll("[data-act]")].map((b) => [b.dataset.act, b])),
+  };
+});
+
+let renderer = null;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+  renderer.setPixelRatio(1); renderer.setClearColor(0x000000, 0);
+} catch (err) {
+  views.forEach((v) => { v.canvas.insertAdjacentHTML("afterend", '<div class="fallback">This browser can\'t draw WebGL here, so the animation can\'t play.</div>'); });
+}
+
+function dispose(scene) {
+  scene.traverse((o) => {
+    o.geometry?.dispose();
+    const m = o.material; if (Array.isArray(m)) m.forEach((x) => x.dispose()); else m?.dispose();
+  });
+}
+function build() {
+  for (const v of views) { if (v.s) dispose(v.s.scene); v.s = builders[v.kind](); v.dirty = true; }
+  if (stage) { if (stage.v.s) dispose(stage.v.s.scene); stage.v.s = sceneControls(); stage.v.dirty = true; stage.v.shown = false; }
+}
+
+let glW = 0, glH = 0;
+function blit(v) {
+  if (glW !== v.w || glH !== v.h) { renderer.setSize(v.w, v.h, false); glW = v.w; glH = v.h; }
+  v.s.camera.aspect = v.w / v.h; v.s.camera.updateProjectionMatrix();
+  renderer.render(v.s.scene, v.s.camera);
+  v.ctx.clearRect(0, 0, v.w, v.h); v.ctx.drawImage(renderer.domElement, 0, 0);
+}
+function render(v, t) {
+  const out = v.s.update(t);
+  blit(v);
+  if (v.lights.length && out?.lit) v.lights.forEach((li, i) => li.classList.toggle("on", out.lit[i] > 0.5));
+}
+
+/* B on the stage: the wipe follows the chapter titles; the piece restarts whenever its layer comes back into view. */
+const pvEl = document.getElementById("pv");
+const stage = pvEl && {
+  titles: [...pvEl.querySelectorAll("[data-ch]")],
+  layers: [...pvEl.querySelectorAll("[data-layer]")],
+  marks: [...pvEl.querySelectorAll("[data-mark]")],
+  v: { canvas: pvEl.querySelector("canvas"), ctx: pvEl.querySelector("canvas").getContext("2d"), w: 0, h: 0, s: null, ta: 0, ts: 0, shown: false, started: false, still: false },
+};
+function stageWipe() {
+  const box = pvEl.getBoundingClientRect();
+  const at = (el) => (el.getBoundingClientRect().top - box.top) / box.height;
+  const ps = stage.titles.map((title, i) => {
+    const p = clamp((0.98 - at(title)) / 0.4);
+    stage.layers[i].style.transform = `translateY(${((1 - p) * 100).toFixed(3)}%)`;
+    stage.layers[i].firstElementChild.style.transform = `translateY(${(-(1 - p) * 100).toFixed(3)}%)`;
+    return p;
+  });
+  const active = stage.titles.filter((title) => at(title) < 0.62).length;
+  stage.marks.forEach((m, i) => m.classList.toggle("on", i === active));
+  return ps;
+}
+function stageFrame(dt) {
+  if (!stage || !stage.v.s || stage.v.w < 4) return;
+  const [p1, p2] = stageWipe();
+  const r = pvEl.getBoundingClientRect();
+  const v = stage.v;
+  const visible = p1 > 0 && p2 < 1 && r.bottom > 0 && r.top < innerHeight;
+  if (!visible) { v.shown = false; return; }
+  if (allStill) { if (!v.still || v.dirty) { v.s.update(v.s.still); blit(v); v.still = true; v.dirty = false; } return; }
+  v.still = false;
+  if (!v.shown) { v.shown = true; v.ta = 0; v.ts = 0; v.started = false; }
+  v.ta += dt;
+  if (p1 >= 0.5) v.started = true;
+  if (v.started) v.ts += dt;
+  v.s.update(0, { ts: v.ts, ta: v.ta, enter: p1 });
+  blit(v);
+}
+
+const ro = new ResizeObserver((entries) => {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  for (const e of entries) {
+    if (stage && e.target === stage.v.canvas) {
+      const v = stage.v, w = Math.max(1, Math.round(e.contentRect.width * dpr)), h = Math.max(1, Math.round(e.contentRect.height * dpr));
+      if (w !== v.w || h !== v.h) { v.w = w; v.h = h; v.canvas.width = w; v.canvas.height = h; v.dirty = true; }
+      continue;
+    }
+    const v = views.find((x) => x.canvas === e.target); if (!v) continue;
+    const w = Math.max(1, Math.round(e.contentRect.width * dpr)), h = Math.max(1, Math.round(e.contentRect.height * dpr));
+    if (w !== v.w || h !== v.h) { v.w = w; v.h = h; v.canvas.width = w; v.canvas.height = h; v.dirty = true; }
+  }
+});
+views.forEach((v) => ro.observe(v.canvas));
+if (stage) ro.observe(stage.v.canvas);
+
+/* controls */
+let allStill = reduce;
+const press = (b, on) => b && b.setAttribute("aria-pressed", String(on));
+function syncCard(v) {
+  v.btn.play.textContent = v.playing ? "Pause" : "Play";
+  press(v.btn.play, !v.playing);
+  press(v.btn.still, v.still);
+}
+views.forEach((v) => {
+  v.btn.play.addEventListener("click", () => { v.playing = !v.playing; v.still = false; if (v.playing && allStill) setStill(false); syncCard(v); v.dirty = true; });
+  v.btn.replay.addEventListener("click", () => { v.t = 0; v.playing = true; v.still = false; if (allStill) setStill(false); syncCard(v); v.dirty = true; });
+  v.btn.still.addEventListener("click", () => { v.still = !v.still; syncCard(v); v.dirty = true; });
+  syncCard(v);
+});
+const $ = (id) => document.getElementById(id);
+function setStill(on) {
+  allStill = on; press($("mot-move"), !on); press($("mot-still"), on);
+  views.forEach((v) => (v.dirty = true));
+  if (stage) { stage.v.dirty = true; stage.v.shown = false; }
+}
+$("mot-move").addEventListener("click", () => setStill(false));
+$("mot-still").addEventListener("click", () => setStill(true));
+setStill(allStill);
+
+if (renderer) {
+  build();
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    for (const v of views) {
+      if (v.w < 4) continue;
+      const rect = v.canvas.getBoundingClientRect();
+      const onScreen = rect.bottom > -40 && rect.top < innerHeight + 40;
+      if (!onScreen) continue;
+      if (allStill || v.still) { if (v.dirty) { render(v, v.s.still); v.dirty = false; } continue; }
+      if (!v.playing || document.hidden) { if (v.dirty) { render(v, v.t); v.dirty = false; } continue; }
+      v.t += dt; render(v, v.t); v.dirty = false;
+    }
+    stageFrame(dt);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  window.__hdt = { views, render, setStill };
+}
+</script>
+
+</body>
+</html>

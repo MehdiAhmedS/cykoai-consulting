@@ -29,6 +29,10 @@ List every `status: "draft"` and every "TBC" in `src/content/site.ts` in `docs/v
 - Unconfirmed items must be hidden in production (already the rule), and any section left empty because of that must still read well.
 - Screenshot the production build (served on port 3100, as the brief's check list describes) to prove it.
 
+Mehdi signed off every draft on 17 October (the sign-off sheet), so `site.ts` and `projects.ts` should list nothing as draft or TBC. Treat any you find as a regression and list it in FINAL.md. Three things were left off on purpose, so don't flag them: the Engagement cover's Effort row, the "Who does the work" block (it renders only once members are listed), and the penetration-testing entry's stack.
+
+The sign-off added Kenya and Tanzania to the hero globe as clients. The still frame that phones and reduced motion get is a pre-rendered image, so it doesn't show them yet. With the dev server running, run `node scripts/render-globe-still.mjs` after any colour changes to the globe, check that both new markers appear, and commit both WebP files.
+
 Also update `layout.tsx` metadata. The title and description still describe "enterprise AI … digital transformation". Write a draft title and description that match the real offers, and mark them for Mehdi's approval in FINAL.md. Don't ship them silently.
 
 ## 4. Quality checks, on a production build
